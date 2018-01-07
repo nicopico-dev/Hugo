@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- TODO Add fastScrollEnabled -->
+    <!-- TODO Implement a section indexer -->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rcvTimeline"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/vertical_margin"
+        android:paddingLeft="@dimen/horizontal_margin"
+        android:paddingRight="@dimen/horizontal_margin"
+        android:paddingTop="@dimen/vertical_margin"
+        android:scrollbars="vertical"
+        android:scrollbarStyle="outsideInset"
+        tools:listitem="@layout/item_timeline"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/space_large"
+        android:src="@drawable/ic_add"
+        app:fabSize="normal"
+        app:layout_anchorGravity="bottom"
+        app:layout_behavior=".ui.shared.behavior.HideFabOnScroll"/>
+
+</android.support.design.widget.CoordinatorLayout>

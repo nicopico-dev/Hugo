@@ -1,0 +1,24 @@
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:locale="fr">
+
+    <string name="app_name">Hugo</string>
+
+    <string name="care_type_change">Couche</string>
+    <string name="care_type_food">Nourriture</string>
+    <string name="care_type_health_hygiene">Santé &amp; hygiène</string>
+
+    <string name="care_umbilical_cord">Soin du cordon</string>
+    <string name="care_face">Soin du visage</string>
+    <string name="care_bath">Bain</string>
+    <string name="care_vitamins">Vitamines</string>
+    <string name="care_change_pee">Pipi</string>
+    <string name="care_change_poo">Caca</string>
+
+    <string name="care_breast_feeding_left">Sein gauche, %d minutes</string>
+    <string name="care_breast_feeding_right">Sein droit, %d minutes</string>
+    <string name="care_breast_extraction">Tire-lait %d mL</string>
+    <string name="care_bottle_feeding_maternal">Biberon %d mL de lait maternel</string>
+    <string name="care_bottle_feeding_artificial">Biberon %d mL de lait artificiel</string>
+
+</resources>
