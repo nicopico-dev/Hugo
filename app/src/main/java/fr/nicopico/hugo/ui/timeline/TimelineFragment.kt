@@ -8,10 +8,7 @@ import android.view.ViewGroup
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.domain.redux.appStore
 import fr.nicopico.hugo.ui.BaseFragment
-import fr.nicopico.hugo.ui.shared.SpaceItemDecoration
-import fr.nicopico.hugo.ui.shared.click
-import fr.nicopico.hugo.ui.shared.dimensionForOffset
-import fr.nicopico.hugo.ui.shared.toast
+import fr.nicopico.hugo.ui.shared.*
 import kotlinx.android.synthetic.main.fragment_timeline.*
 import redux.api.Store
 
@@ -38,7 +35,10 @@ class TimelineFragment : BaseFragment() {
             addItemDecoration(DateSectionDecoration(context, timelineAdapter))
         }
 
-        fabAdd.click { toast("TODO Add") }
+        fabAdd.click { toggleFabMenu() }
+        fabAddChange.click { onAddChange() }
+        fabAddFood.click { onAddFood() }
+        fabAddHealthHygiene.click { onAddHealthAndHygiene() }
 
         refresh()
         subscription = appStore.subscribe {
@@ -53,6 +53,30 @@ class TimelineFragment : BaseFragment() {
 
     private fun refresh() {
         timelineAdapter.data = appStore.state.timeline
+    }
+
+    private fun toggleFabMenu() {
+        // TODO Animate
+        if (groupFabs.visibility == View.VISIBLE) {
+            groupFabs.hide()
+        } else {
+            groupFabs.show()
+        }
+    }
+
+    private fun onAddFood() {
+        toggleFabMenu()
+        toast("TODO Add food")
+    }
+
+    private fun onAddChange() {
+        toggleFabMenu()
+        toast("TODO Add change")
+    }
+
+    private fun onAddHealthAndHygiene() {
+        toggleFabMenu()
+        toast("TODO Add health & hygiene")
     }
 }
 

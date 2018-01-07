@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="FabLabel">
+        <item name="android:background">@drawable/fab_label_bg</item>
+        <item name="android:elevation">2dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/grey700</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingLeft">@dimen/space_micro</item>
+        <item name="android:paddingRight">@dimen/space_micro</item>
+    </style>
+
     <style name="Text"/>
 
     <style name="Text.Strong">

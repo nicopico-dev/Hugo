@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="ic_change">@drawable/ic_add</drawable>
+    <drawable name="ic_food">@drawable/ic_add</drawable>
+    <drawable name="ic_health_hygiene">@drawable/ic_add</drawable>
+</resources>
