@@ -22,6 +22,7 @@ class TimelineFragment : BaseFragment() {
     private val timelineAdapter by lazy {
         TimelineAdapter(context!!)
     }
+    private var previousTimelineCount = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_timeline, container, false)
@@ -31,7 +32,7 @@ class TimelineFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         rcvTimeline.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
             adapter = timelineAdapter
 
             // Decorations
@@ -57,6 +58,10 @@ class TimelineFragment : BaseFragment() {
 
     private fun refresh() {
         timelineAdapter.data = appStore.state.timeline
+        if (previousTimelineCount < timelineAdapter.itemCount) {
+            previousTimelineCount = timelineAdapter.itemCount
+            rcvTimeline.scrollToPosition(previousTimelineCount - 1)
+        }
     }
 
     private fun toggleFabMenu() {

@@ -2,13 +2,37 @@ package fr.nicopico.hugo.domain.model
 
 sealed class Care(val type: CareType)
 
-object UmbilicalCord : Care(CareType.HEALTH_HYGIENE)
-object Face : Care(CareType.HEALTH_HYGIENE)
-object Bath : Care(CareType.HEALTH_HYGIENE)
-object Vitamins : Care(CareType.HEALTH_HYGIENE)
+object UmbilicalCord : Care(CareType.HEALTH_HYGIENE) {
+    override fun toString(): String {
+        return "UmbilicalCord"
+    }
+}
+object Face : Care(CareType.HEALTH_HYGIENE) {
+    override fun toString(): String {
+        return "Face"
+    }
+}
+object Bath : Care(CareType.HEALTH_HYGIENE) {
+    override fun toString(): String {
+        return "Bath"
+    }
+}
+object Vitamins : Care(CareType.HEALTH_HYGIENE) {
+    override fun toString(): String {
+        return "Vitamins"
+    }
+}
 
-object Pee : Care(CareType.CHANGE)
-object Poo : Care(CareType.CHANGE)
+object Pee : Care(CareType.CHANGE) {
+    override fun toString(): String {
+        return "Pee"
+    }
+}
+object Poo : Care(CareType.CHANGE) {
+    override fun toString(): String {
+        return "Poo"
+    }
+}
 
 data class BreastFeeding(
         val breast: Breast,
