@@ -21,4 +21,8 @@
     <string name="care_bottle_feeding_maternal">Biberon %d mL de lait maternel</string>
     <string name="care_bottle_feeding_artificial">Biberon %d mL de lait artificiel</string>
 
+    <string name="date_time_format">%1$s à %2$s</string>
+    <string name="submit">valider</string>
+    <string name="cancel">annuler</string>
+
 </resources>
