@@ -14,6 +14,10 @@ import redux.api.Store
 
 class TimelineFragment : BaseFragment() {
 
+    companion object {
+        const val REQUEST_ADD_CHANGE = 1
+    }
+
     private var subscription: Store.Subscription? = null
     private val timelineAdapter by lazy {
         TimelineAdapter(context!!)
@@ -64,14 +68,16 @@ class TimelineFragment : BaseFragment() {
         }
     }
 
+    private fun onAddChange() {
+        toggleFabMenu()
+        val dialogFragment = AddChangeDialogFragment.create()
+        dialogFragment.setTargetFragment(this, REQUEST_ADD_CHANGE)
+        dialogFragment.show(fragmentManager, "ADD_CHANGE")
+    }
+
     private fun onAddFood() {
         toggleFabMenu()
         toast("TODO Add food")
-    }
-
-    private fun onAddChange() {
-        toggleFabMenu()
-        toast("TODO Add change")
     }
 
     private fun onAddHealthAndHygiene() {
@@ -79,4 +85,3 @@ class TimelineFragment : BaseFragment() {
         toast("TODO Add health & hygiene")
     }
 }
-

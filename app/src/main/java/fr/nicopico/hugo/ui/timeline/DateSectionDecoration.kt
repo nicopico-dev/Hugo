@@ -2,7 +2,6 @@ package fr.nicopico.hugo.ui.timeline
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
-import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -11,8 +10,7 @@ import fr.nicopico.hugo.domain.model.Timeline
 import fr.nicopico.hugo.ui.shared.SectionItemDecoration
 import fr.nicopico.hugo.ui.shared.dp
 import fr.nicopico.hugo.utils.HugoLogger
-import fr.nicopico.hugo.utils.debug
-import fr.nicopico.hugo.utils.verbose
+import fr.nicopico.hugo.utils.getDateFormat
 import java.util.*
 
 class DateSectionDecoration(
@@ -21,7 +19,7 @@ class DateSectionDecoration(
 ) : SectionItemDecoration<Timeline.Entry>(adapter), HugoLogger {
 
     private val inflater = LayoutInflater.from(context)
-    private val dateFormat = DateFormat.getLongDateFormat(context)
+    private val dateFormat = getDateFormat(context)
     private val headerHeight = 24.dp(context)
 
     override fun sameHeader(itemA: Timeline.Entry, itemB: Timeline.Entry): Boolean {

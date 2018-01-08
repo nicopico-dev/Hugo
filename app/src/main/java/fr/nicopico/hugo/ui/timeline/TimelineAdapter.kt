@@ -4,7 +4,6 @@ import android.content.Context
 import android.support.annotation.StringRes
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
-import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import android.widget.TextView
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.domain.model.*
 import fr.nicopico.hugo.ui.shared.dimensionForOffset
+import fr.nicopico.hugo.utils.getTimeFormat
 import kotlin.properties.Delegates
 
 class TimelineAdapter(
@@ -39,7 +39,7 @@ class TimelineAdapter(
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private val timeFormat = DateFormat.getTimeFormat(itemView.context)
+        private val timeFormat = getTimeFormat(itemView.context)
         private val txtType: TextView = itemView.findViewById(R.id.txtType)
         private val txtTime: TextView = itemView.findViewById(R.id.txtTime)
         private val details: ViewGroup = itemView.findViewById(R.id.details)
