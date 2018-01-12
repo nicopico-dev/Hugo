@@ -14,10 +14,6 @@ import redux.api.Store
 
 class TimelineFragment : BaseFragment() {
 
-    companion object {
-        const val REQUEST_ADD_CHANGE = 1
-    }
-
     private var subscription: Store.Subscription? = null
     private val timelineAdapter by lazy {
         TimelineAdapter(context!!)
@@ -76,7 +72,6 @@ class TimelineFragment : BaseFragment() {
     private fun onAddChange() {
         toggleFabMenu()
         val dialogFragment = AddChangeDialogFragment.create()
-        dialogFragment.setTargetFragment(this, REQUEST_ADD_CHANGE)
         dialogFragment.show(fragmentManager, "ADD_CHANGE")
     }
 
@@ -87,6 +82,7 @@ class TimelineFragment : BaseFragment() {
 
     private fun onAddHealthAndHygiene() {
         toggleFabMenu()
-        toast("TODO Add health & hygiene")
+        val dialogFragment = AddHealthAndHygieneDialogFragment.create()
+        dialogFragment.show(fragmentManager, "ADD_HEALTH_HYGIENE")
     }
 }

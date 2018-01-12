@@ -24,5 +24,9 @@
     <string name="date_time_format">%1$s à %2$s</string>
     <string name="submit">valider</string>
     <string name="cancel">annuler</string>
+    <string name="care_hygiene_bath">Bain</string>
+    <string name="care_hygiene_face">Soin du visage</string>
+    <string name="care_hygiene_umbilical_cord">Soin du cordon</string>
+    <string name="care_health_vitamins">Vitamines</string>
 
 </resources>

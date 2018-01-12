@@ -14,7 +14,7 @@
         android:drawablePadding="@dimen/space_micro"
         android:drawableStart="@drawable/ic_change"
         android:padding="@dimen/space_small"
-        android:text="@string/care_type_change"
+        android:text="@string/care_type_health_hygiene"
         android:textAppearance="?android:attr/textAppearanceMediumInverse"/>
 
     <TextView
@@ -37,7 +37,7 @@
         android:layout_marginStart="@dimen/space_medium"
         android:layout_marginTop="@dimen/space_medium"
         android:labelFor="@id/chkFace"
-        android:text="@string/care_change_pee"
+        android:text="@string/care_hygiene_face"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtDateOrTime"/>
 
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space_medium"
         android:labelFor="@id/chkBath"
-        android:text="@string/care_change_poo"
+        android:text="@string/care_hygiene_bath"
         app:layout_constraintLeft_toLeftOf="@id/_txtFace"
         app:layout_constraintTop_toBottomOf="@id/_txtFace"/>
 
@@ -56,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="end"
-        app:constraint_referenced_ids="_txtPee,_txtPoo"/>
+        app:constraint_referenced_ids="_txtFace,_txtBath"/>
 
     <Switch
         android:id="@+id/chkBath"
@@ -73,6 +73,51 @@
         android:layout_marginStart="@dimen/space_small"
         app:layout_constraintBaseline_toBaselineOf="@id/_txtFace"
         app:layout_constraintStart_toEndOf="@id/barrier"/>
+
+    <TextView
+        android:id="@+id/_txtUmbilicalCord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_medium"
+        android:layout_marginTop="@dimen/space_medium"
+        android:labelFor="@id/chkUmbilicalCord"
+        android:text="@string/care_hygiene_umbilical_cord"
+        app:layout_constraintBaseline_toBaselineOf="@id/_txtFace"
+        app:layout_constraintStart_toEndOf="@id/chkFace"/>
+
+    <TextView
+        android:id="@+id/_txtVitamins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_medium"
+        android:layout_marginTop="@dimen/space_medium"
+        android:labelFor="@id/chkVitamins"
+        android:text="@string/care_health_vitamins"
+        app:layout_constraintStart_toEndOf="@id/chkBath"
+        app:layout_constraintBaseline_toBaselineOf="@id/_txtBath"/>
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="_txtUmbilicalCord,_txtVitamins"/>
+
+    <Switch
+        android:id="@+id/chkUmbilicalCord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_small"
+        app:layout_constraintBaseline_toBaselineOf="@id/_txtUmbilicalCord"
+        app:layout_constraintStart_toEndOf="@id/barrier2"/>
+
+    <Switch
+        android:id="@+id/chkVitamins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_small"
+        app:layout_constraintBaseline_toBaselineOf="@id/_txtVitamins"
+        app:layout_constraintStart_toEndOf="@id/barrier2"/>
 
     <Button
         android:id="@+id/btnSubmit"
