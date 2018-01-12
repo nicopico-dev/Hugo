@@ -2,13 +2,15 @@ package fr.nicopico.hugo.ui.shared
 
 import android.graphics.Canvas
 import android.graphics.Rect
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
 import kotlin.properties.Delegates
 
-
+// TODO Handle reverse layout
 abstract class SectionItemDecoration<T>(
         adapter: RecyclerView.Adapter<*>
 ) : RecyclerView.ItemDecoration() {
@@ -51,7 +53,12 @@ abstract class SectionItemDecoration<T>(
         val left = parent.paddingLeft
         val right = parent.width - parent.paddingRight
 
-        for (i in 0 until parent.childCount) {
+        var range: IntProgression = 0 until parent.childCount
+        if (parent.reverseLayout()) {
+            range = range.reversed()
+        }
+
+        for (i in range) {
             val child = parent.getChildAt(i)
 
             val position = parent.getChildAdapterPosition(child)
@@ -75,10 +82,25 @@ abstract class SectionItemDecoration<T>(
     }
 
     protected open fun hasHeader(parent: RecyclerView, position: Int): Boolean {
-        return position == 0 || !sameHeader(getItem(parent, position), getItem(parent, position - 1))
+        return if (parent.reverseLayout()) {
+            position == parent.adapter.itemCount - 1
+                    || !sameHeader(getItem(parent, position), getItem(parent, position + 1))
+        } else {
+            position == 0
+                    || !sameHeader(getItem(parent, position), getItem(parent, position - 1))
+        }
     }
 
     private fun clear() {
         headerViews.clear()
+    }
+
+    private fun RecyclerView.reverseLayout(): Boolean {
+        val lm = layoutManager
+        return when (lm) {
+            is LinearLayoutManager -> lm.reverseLayout
+            is GridLayoutManager -> lm.reverseLayout
+            else -> false
+        }
     }
 }
