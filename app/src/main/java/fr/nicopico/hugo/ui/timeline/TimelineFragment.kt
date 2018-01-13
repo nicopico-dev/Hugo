@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import fr.nicopico.hugo.R
+import fr.nicopico.hugo.domain.model.CareType
 import fr.nicopico.hugo.domain.redux.appStore
 import fr.nicopico.hugo.ui.BaseFragment
 import fr.nicopico.hugo.ui.shared.*
@@ -37,9 +38,9 @@ class TimelineFragment : BaseFragment() {
         }
 
         fabAdd.click { toggleFabMenu() }
-        fabAddChange.click { onAddChange() }
-        fabAddFood.click { onAddFood() }
-        fabAddHealthHygiene.click { onAddHealthAndHygiene() }
+        fabAddChange.click(onAddEntryFactory(CareType.CHANGE))
+        fabAddFood.click(onAddEntryFactory(CareType.FOOD))
+        fabAddHealthHygiene.click(onAddEntryFactory(CareType.HEALTH_HYGIENE))
 
         refresh()
         subscription = appStore.subscribe {
@@ -69,20 +70,15 @@ class TimelineFragment : BaseFragment() {
         }
     }
 
-    private fun onAddChange() {
-        toggleFabMenu()
-        val dialogFragment = AddChangeDialogFragment.create()
-        dialogFragment.show(fragmentManager, "ADD_CHANGE")
-    }
-
-    private fun onAddFood() {
-        toggleFabMenu()
-        toast("TODO Add food")
-    }
-
-    private fun onAddHealthAndHygiene() {
-        toggleFabMenu()
-        val dialogFragment = AddHealthAndHygieneDialogFragment.create()
-        dialogFragment.show(fragmentManager, "ADD_HEALTH_HYGIENE")
+    private fun onAddEntryFactory(careType: CareType): (View) -> Unit {
+        return {
+            toggleFabMenu()
+            val dialogFragment = when (careType) {
+                CareType.CHANGE -> AddChangeDialogFragment.create()
+                CareType.FOOD -> TODO()
+                CareType.HEALTH_HYGIENE -> AddHealthAndHygieneDialogFragment.create()
+            }
+            dialogFragment.show(fragmentManager, "ADD_ENTRY")
+        }
     }
 }
