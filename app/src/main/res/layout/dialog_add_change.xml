@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space_medium"
         android:layout_marginTop="@dimen/space_medium"
-        android:labelFor="@id/chkFace"
+        android:labelFor="@id/chkPee"
         android:text="@string/care_change_pee"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtDateOrTime"/>
@@ -46,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space_medium"
-        android:labelFor="@id/chkBath"
+        android:labelFor="@id/chkPoo"
         android:text="@string/care_change_poo"
         app:layout_constraintLeft_toLeftOf="@id/_txtPee"
         app:layout_constraintTop_toBottomOf="@id/_txtPee"/>
@@ -59,7 +59,7 @@
         app:constraint_referenced_ids="_txtPee,_txtPoo"/>
 
     <Switch
-        android:id="@+id/chkBath"
+        android:id="@+id/chkPee"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space_small"
@@ -67,7 +67,7 @@
         app:layout_constraintStart_toEndOf="@id/barrier"/>
 
     <Switch
-        android:id="@+id/chkFace"
+        android:id="@+id/chkPoo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space_small"

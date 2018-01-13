@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:drawablePadding="@dimen/space_micro"
-        android:drawableStart="@drawable/ic_change"
+        android:drawableStart="@drawable/ic_health_hygiene"
         android:padding="@dimen/space_small"
         android:text="@string/care_type_health_hygiene"
         android:textAppearance="?android:attr/textAppearanceMediumInverse"/>

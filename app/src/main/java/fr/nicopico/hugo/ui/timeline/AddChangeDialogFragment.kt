@@ -33,8 +33,8 @@ class AddChangeDialogFragment : AddTimelineEntryDialogFragment() {
         btnSubmit.click {
             val time = getEntryTime()
             val cares = mutableListOf<Care>()
-            if (chkFace.isChecked) cares.add(Pee)
-            if (chkBath.isChecked) cares.add(Poo)
+            if (chkPee.isChecked) cares.add(Pee)
+            if (chkPoo.isChecked) cares.add(Poo)
 
             if (cares.isNotEmpty()) {
                 val entry = Timeline.Entry(CareType.CHANGE, time, cares)
