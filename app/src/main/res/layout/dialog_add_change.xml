@@ -31,7 +31,7 @@
         tools:text="4 janvier 2018 à 10h20"/>
 
     <TextView
-        android:id="@+id/_txtFace"
+        android:id="@+id/_txtPee"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space_medium"
@@ -42,14 +42,14 @@
         app:layout_constraintTop_toBottomOf="@id/txtDateOrTime"/>
 
     <TextView
-        android:id="@+id/_txtBath"
+        android:id="@+id/_txtPoo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space_medium"
         android:labelFor="@id/chkBath"
         android:text="@string/care_change_poo"
-        app:layout_constraintLeft_toLeftOf="@id/_txtFace"
-        app:layout_constraintTop_toBottomOf="@id/_txtFace"/>
+        app:layout_constraintLeft_toLeftOf="@id/_txtPee"
+        app:layout_constraintTop_toBottomOf="@id/_txtPee"/>
 
     <android.support.constraint.Barrier
         android:id="@+id/barrier"
@@ -63,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space_small"
-        app:layout_constraintBaseline_toBaselineOf="@id/_txtBath"
+        app:layout_constraintBaseline_toBaselineOf="@id/_txtPoo"
         app:layout_constraintStart_toEndOf="@id/barrier"/>
 
     <Switch
@@ -71,7 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space_small"
-        app:layout_constraintBaseline_toBaselineOf="@id/_txtFace"
+        app:layout_constraintBaseline_toBaselineOf="@id/_txtPee"
         app:layout_constraintStart_toEndOf="@id/barrier"/>
 
     <Button
@@ -84,6 +84,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/_txtBath"/>
+        app:layout_constraintTop_toBottomOf="@id/_txtPoo"/>
 
 </android.support.constraint.ConstraintLayout>

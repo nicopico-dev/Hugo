@@ -6,5 +6,6 @@
 
     <color name="grey900">#212121</color>
     <color name="grey700">#616161</color>
+    <color name="red">#e53935</color>
 
 </resources>

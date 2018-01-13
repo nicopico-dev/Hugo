@@ -10,6 +10,7 @@ import fr.nicopico.hugo.domain.model.*
 import fr.nicopico.hugo.domain.redux.ADD_ENTRY
 import fr.nicopico.hugo.domain.redux.appStore
 import fr.nicopico.hugo.ui.shared.click
+import fr.nicopico.hugo.ui.shared.confirm
 import kotlinx.android.synthetic.main.dialog_add_change.*
 
 class AddChangeDialogFragment : AddTimelineEntryDialogFragment() {
@@ -35,10 +36,18 @@ class AddChangeDialogFragment : AddTimelineEntryDialogFragment() {
             if (chkFace.isChecked) cares.add(Pee)
             if (chkBath.isChecked) cares.add(Poo)
 
-            val entry = Timeline.Entry(CareType.CHANGE, time, cares)
-            appStore.dispatch(ADD_ENTRY(entry))
-
-            dismiss()
+            if (cares.isNotEmpty()) {
+                val entry = Timeline.Entry(CareType.CHANGE, time, cares)
+                appStore.dispatch(ADD_ENTRY(entry))
+                dismiss()
+            } else {
+                // Nothing selected -> ask for confirmation
+                confirm(context!!, R.string.confirm_no_change_message, R.string.care_change_nothing, R.string.cancel) {
+                    val entry = Timeline.Entry(CareType.CHANGE, time, cares)
+                    appStore.dispatch(ADD_ENTRY(entry))
+                    dismiss()
+                }
+            }
         }
     }
 

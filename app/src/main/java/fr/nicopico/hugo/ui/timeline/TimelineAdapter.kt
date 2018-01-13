@@ -1,7 +1,9 @@
 package fr.nicopico.hugo.ui.timeline
 
 import android.content.Context
+import android.graphics.Typeface
 import android.support.annotation.StringRes
+import android.support.v4.content.ContextCompat
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -57,10 +59,20 @@ class TimelineAdapter(
             entry.cares.forEach {
                 details.addView(careView(it))
             }
+
+            // Special case for Change without pee nor poo
+            if (entry.type == CareType.CHANGE && entry.cares.isEmpty()) {
+                val txtNothing = TextView(itemView.context).apply {
+                    setText(R.string.care_change_nothing)
+                    setTextColor(ContextCompat.getColor(context, R.color.red))
+                    setTypeface(typeface, Typeface.ITALIC)
+                }
+                details.addView(txtNothing)
+            }
         }
 
         private fun careView(care: Care): View {
-            return when(care) {
+            return when (care) {
                 UmbilicalCord -> textView(R.string.care_umbilical_cord)
                 Face -> textView(R.string.care_face)
                 Bath -> textView(R.string.care_bath)
@@ -68,7 +80,7 @@ class TimelineAdapter(
                 Pee -> textView(R.string.care_change_pee)
                 Poo -> textView(R.string.care_change_poo)
                 is BreastFeeding -> textView(
-                        when(care.breast) {
+                        when (care.breast) {
                             Breast.LEFT -> R.string.care_breast_feeding_left
                             Breast.RIGHT -> R.string.care_breast_feeding_right
                         },
