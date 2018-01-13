@@ -55,10 +55,8 @@ class TimelineAdapter(
 
             txtTime.text = timeFormat.format(entry.time)
 
+            // Clean-up for recycled views
             details.removeAllViews()
-            entry.cares.forEach {
-                details.addView(careView(it))
-            }
 
             // Special case for Change without pee nor poo
             if (entry.type == CareType.CHANGE && entry.cares.isEmpty()) {
@@ -68,6 +66,10 @@ class TimelineAdapter(
                     setTypeface(typeface, Typeface.ITALIC)
                 }
                 details.addView(txtNothing)
+            } else {
+                entry.cares
+                        .map { careView(it) }
+                        .forEach { details.addView(it) }
             }
         }
 

@@ -18,6 +18,10 @@ class AddHealthAndHygieneDialogFragment : AddTimelineEntryDialogFragment() {
         fun create() = AddHealthAndHygieneDialogFragment()
     }
 
+    private val checkboxes by lazy {
+        arrayOf(chkBath, chkFace, chkUmbilicalCord, chkVitamins)
+    }
+
     override val dateOrTimeTextView: TextView
         get() = txtDateOrTime
 
@@ -28,6 +32,17 @@ class AddHealthAndHygieneDialogFragment : AddTimelineEntryDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Enable the submit button if at least one checkbox is checked
+        val checkedChangeListener = { _: View?, _: Boolean? ->
+            btnSubmit.isEnabled = checkboxes.any { it.isChecked }
+        }
+        for (checkbox in checkboxes) {
+            checkbox.setOnCheckedChangeListener(checkedChangeListener)
+        }
+        // Initial state
+        checkedChangeListener.invoke(null, null)
+
 
         btnSubmit.click {
             val time = getEntryTime()
