@@ -5,6 +5,6 @@
     <dimen name="space_medium">16dp</dimen>
     <dimen name="space_large">24dp</dimen>
 
-    <dimen name="vertical_margin">@dimen/space_medium</dimen>
-    <dimen name="horizontal_margin">@dimen/space_medium</dimen>
+    <dimen name="vertical_margin">16dp</dimen>
+    <dimen name="horizontal_margin">16dp</dimen>
 </resources>

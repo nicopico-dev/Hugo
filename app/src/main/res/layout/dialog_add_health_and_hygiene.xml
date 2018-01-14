@@ -13,7 +13,10 @@
         android:background="@color/colorPrimary"
         android:drawablePadding="@dimen/space_micro"
         android:drawableStart="@drawable/ic_health_hygiene"
-        android:padding="@dimen/space_small"
+        android:paddingBottom="@dimen/space_small"
+        android:paddingEnd="@dimen/vertical_margin"
+        android:paddingStart="@dimen/vertical_margin"
+        android:paddingTop="@dimen/space_small"
         android:text="@string/care_type_health_hygiene"
         android:textAppearance="?android:attr/textAppearanceMediumInverse"/>
 
@@ -21,20 +24,20 @@
         android:id="@+id/txtDateOrTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/space_medium"
+        android:layout_marginStart="@dimen/vertical_margin"
         android:layout_marginTop="@dimen/space_medium"
+        android:drawableEnd="@drawable/ic_edit"
+        android:drawablePadding="@dimen/space_small"
+        android:gravity="center_vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/_txtTitle"
-        android:gravity="center_vertical"
-        android:drawablePadding="@dimen/space_small"
-        android:drawableEnd="@drawable/ic_edit"
         tools:text="4 janvier 2018 à 10h20"/>
 
     <TextView
         android:id="@+id/_txtFace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/space_medium"
+        android:layout_marginStart="@dimen/vertical_margin"
         android:layout_marginTop="@dimen/space_medium"
         android:labelFor="@id/chkFace"
         android:text="@string/care_hygiene_face"
@@ -78,7 +81,7 @@
         android:id="@+id/_txtUmbilicalCord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/space_medium"
+        android:layout_marginStart="@dimen/space_large"
         android:layout_marginTop="@dimen/space_medium"
         android:labelFor="@id/chkUmbilicalCord"
         android:text="@string/care_hygiene_umbilical_cord"
@@ -89,12 +92,10 @@
         android:id="@+id/_txtVitamins"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/space_medium"
-        android:layout_marginTop="@dimen/space_medium"
         android:labelFor="@id/chkVitamins"
         android:text="@string/care_health_vitamins"
-        app:layout_constraintStart_toEndOf="@id/chkBath"
-        app:layout_constraintBaseline_toBaselineOf="@id/_txtBath"/>
+        app:layout_constraintBaseline_toBaselineOf="@id/_txtBath"
+        app:layout_constraintStart_toStartOf="@id/_txtUmbilicalCord"/>
 
     <android.support.constraint.Barrier
         android:id="@+id/barrier2"
@@ -124,7 +125,10 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/space_medium"
+        android:layout_marginBottom="@dimen/space_medium"
+        android:layout_marginEnd="@dimen/vertical_margin"
+        android:layout_marginStart="@dimen/vertical_margin"
+        android:layout_marginTop="@dimen/space_medium"
         android:text="@string/submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
