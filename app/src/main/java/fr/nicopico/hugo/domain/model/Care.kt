@@ -41,7 +41,8 @@ data class BreastFeeding(
 ) : Care(CareType.FOOD)
 
 data class BreastExtraction(
-        val volume: Int
+        val volume: Int,
+        val breasts: Set<Breast>
 ) : Care(CareType.FOOD)
 
 data class BottleFeeding(

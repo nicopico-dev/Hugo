@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imgRemove"
+        android:layout_width="?android:listPreferredItemHeightSmall"
+        android:layout_height="?android:listPreferredItemHeightSmall"
+        android:contentDescription="@string/desc_remove_bottle_feeding"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_remove"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/_txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/care_food_breast_feeding"
+        app:layout_constraintBottom_toBottomOf="@id/imgRemove"
+        app:layout_constraintStart_toEndOf="@id/imgRemove"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/_txtLeftBreast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/edtLeftBreastDuration"
+        android:text="@string/breast_left"
+        app:layout_constraintBaseline_toBaselineOf="@id/edtLeftBreastDuration"
+        app:layout_constraintStart_toStartOf="@id/_txtTitle"/>
+
+    <EditText
+        android:id="@+id/edtLeftBreastDuration"
+        android:layout_width="@dimen/care_edit_width"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_medium"
+        android:layout_marginTop="@dimen/space_small"
+        android:inputType="number"
+        app:layout_constraintStart_toEndOf="@id/barrier"
+        app:layout_constraintTop_toBottomOf="@id/_txtTitle"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_micro"
+        android:text="@string/unit_minutes"
+        android:textAppearance="@style/Text.Light"
+        app:layout_constraintBaseline_toBaselineOf="@id/edtLeftBreastDuration"
+        app:layout_constraintStart_toEndOf="@id/edtLeftBreastDuration"/>
+
+    <TextView
+        android:id="@+id/_txtRightBreast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/edtRightBreastDuration"
+        android:text="@string/breast_right"
+        app:layout_constraintBaseline_toBaselineOf="@id/edtRightBreastDuration"
+        app:layout_constraintStart_toStartOf="@id/_txtLeftBreast"/>
+
+    <EditText
+        android:id="@+id/edtRightBreastDuration"
+        android:layout_width="@dimen/care_edit_width"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_medium"
+        android:layout_marginTop="@dimen/space_micro"
+        android:inputType="number"
+        app:layout_constraintStart_toEndOf="@id/barrier"
+        app:layout_constraintTop_toBottomOf="@id/edtLeftBreastDuration"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_micro"
+        android:text="@string/unit_minutes"
+        android:textAppearance="@style/Text.Light"
+        app:layout_constraintBaseline_toBaselineOf="@id/edtRightBreastDuration"
+        app:layout_constraintStart_toEndOf="@id/edtRightBreastDuration"/>
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="_txtLeftBreast,_txtRightBreast"/>
+
+</android.support.constraint.ConstraintLayout>

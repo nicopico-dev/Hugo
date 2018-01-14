@@ -6,6 +6,13 @@
 
     <string name="submit">valider</string>
     <string name="cancel">annuler</string>
+    <string name="unit_ml">mL</string>
+    <string name="unit_minutes">minutes</string>
+
+    <string name="breast_left">Sein gauche</string>
+    <string name="breast_right">Sein droit</string>
+    <string name="maternal_milk">(lait maternel)</string>
+    <string name="artificial_milk">(lait artificiel)</string>
 
     <string name="care_type_change">Couche</string>
     <string name="care_type_food">Nourriture</string>
@@ -19,6 +26,11 @@
     <string name="care_change_poo">Caca</string>
     <string name="care_change_nothing">Pas de pipi ni de caca</string>
 
+    <string name="care_food_breast_feeding">Allaitement</string>
+    <string name="care_food_bottle_feeding">Biberon</string>
+    <string name="care_food_maternal_bottle_feeding">Biberon (lait maternel)</string>
+    <string name="care_food_artificial_bottle_feeding">Biberon</string>
+    <string name="care_food_extraction">Tire-lait</string>
     <string name="care_breast_feeding_left">Sein gauche, %d minutes</string>
     <string name="care_breast_feeding_right">Sein droit, %d minutes</string>
     <string name="care_breast_extraction">Tire-lait %d mL</string>
@@ -32,5 +44,8 @@
     <string name="care_health_vitamins">Vitamines</string>
 
     <string name="confirm_no_change_message">Vous n\'avez sélectionner aucune option, confirmez-vous votre choix?</string>
+    <string name="desc_remove_bottle_feeding">Supprimer le biberon</string>
+    <string name="desc_remove_breast_feeding">Supprimer l\'allaitement</string>
+    <string name="desc_remove_breast_extraction">Supprimer le tire-lait</string>
 
 </resources>

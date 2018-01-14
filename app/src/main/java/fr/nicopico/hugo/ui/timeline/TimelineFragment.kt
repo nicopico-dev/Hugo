@@ -75,7 +75,7 @@ class TimelineFragment : BaseFragment() {
             toggleFabMenu()
             val dialogFragment = when (careType) {
                 CareType.CHANGE -> AddChangeDialogFragment.create()
-                CareType.FOOD -> TODO()
+                CareType.FOOD -> AddFoodDialogFragment.create()
                 CareType.HEALTH_HYGIENE -> AddHealthAndHygieneDialogFragment.create()
             }
             dialogFragment.show(fragmentManager, "ADD_ENTRY")

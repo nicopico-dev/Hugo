@@ -7,4 +7,5 @@
 
     <dimen name="vertical_margin">16dp</dimen>
     <dimen name="horizontal_margin">16dp</dimen>
+    <dimen name="care_edit_width">40dp</dimen>
 </resources>

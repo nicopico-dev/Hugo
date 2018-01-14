@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imgRemove"
+        android:layout_width="?android:listPreferredItemHeightSmall"
+        android:layout_height="?android:listPreferredItemHeightSmall"
+        android:contentDescription="@string/desc_remove_breast_feeding"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_remove"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/_txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/edtBottle"
+        android:text="@string/care_food_bottle_feeding"
+        app:layout_constraintBottom_toBottomOf="@id/imgRemove"
+        app:layout_constraintStart_toEndOf="@id/imgRemove"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <EditText
+        android:id="@+id/edtBottle"
+        android:layout_width="@dimen/care_edit_width"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_medium"
+        android:inputType="number"
+        app:layout_constraintBaseline_toBaselineOf="@id/_txtTitle"
+        app:layout_constraintStart_toEndOf="@id/_txtTitle"
+        android:imeOptions="actionDone"/>
+
+    <TextView
+        android:id="@+id/_txtUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_micro"
+        android:text="@string/unit_ml"
+        android:textAppearance="@style/Text.Light"
+        app:layout_constraintBaseline_toBaselineOf="@id/edtBottle"
+        app:layout_constraintStart_toEndOf="@id/edtBottle"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_small"
+        android:layout_marginStart="@dimen/space_medium"
+        app:layout_constraintBaseline_toBaselineOf="@id/_txtUnit"
+        app:layout_constraintStart_toEndOf="@id/_txtUnit"
+        android:text="@string/artificial_milk"
+        style="@style/Text.Light"/>
+
+</android.support.constraint.ConstraintLayout>

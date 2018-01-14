@@ -11,17 +11,22 @@
         <item name="android:paddingRight">@dimen/space_micro</item>
     </style>
 
-    <style name="Text"/>
+    <style name="FoodCare">
+        <item name="android:background">@drawable/food_care_bg</item>
+        <item name="android:textAppearance">?android:textAppearanceSmallInverse</item>
+    </style>
+
+    <style name="Text">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/grey900</item>
+    </style>
 
     <style name="Text.Strong">
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/grey900</item>
     </style>
 
     <style name="Text.Light">
         <item name="android:textStyle">italic</item>
-        <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/grey700</item>
     </style>
 
