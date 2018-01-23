@@ -48,4 +48,6 @@
     <string name="desc_remove_breast_feeding">Supprimer l\'allaitement</string>
     <string name="desc_remove_breast_extraction">Supprimer le tire-lait</string>
 
+    <string name="menu_licenses">Licenses</string>
+
 </resources>
