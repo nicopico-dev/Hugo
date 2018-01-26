@@ -1,4 +1,4 @@
-package fr.nicopico.hugo.domain.redux
+package fr.nicopico.hugo.domain
 
 import fr.nicopico.hugo.domain.model.Timeline
 

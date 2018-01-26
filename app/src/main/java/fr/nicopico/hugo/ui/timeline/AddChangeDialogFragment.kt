@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import fr.nicopico.hugo.R
+import fr.nicopico.hugo.domain.ADD_ENTRY
+import fr.nicopico.hugo.domain.appStore
 import fr.nicopico.hugo.domain.model.*
-import fr.nicopico.hugo.domain.redux.ADD_ENTRY
-import fr.nicopico.hugo.domain.redux.appStore
 import fr.nicopico.hugo.ui.shared.click
 import fr.nicopico.hugo.ui.shared.confirm
 import kotlinx.android.synthetic.main.dialog_add_change.*

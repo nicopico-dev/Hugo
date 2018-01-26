@@ -1,6 +1,6 @@
 @file:Suppress("ClassName")
 
-package fr.nicopico.hugo.domain.redux
+package fr.nicopico.hugo.domain
 
 import fr.nicopico.hugo.domain.model.*
 import fr.nicopico.hugo.utils.HugoLogger
