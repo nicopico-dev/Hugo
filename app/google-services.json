@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "219309098874",
+    "firebase_url": "https://hugo-5df2b.firebaseio.com",
+    "project_id": "hugo-5df2b",
+    "storage_bucket": "hugo-5df2b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:219309098874:android:3d82980fdbf85c9b",
+        "android_client_info": {
+          "package_name": "fr.nicopico.hugo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "219309098874-eh1m3gkm492afaeeqr45vi8hlgjob87d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fr.nicopico.hugo",
+            "certificate_hash": "3150140b5035d5d2c60dc81bba0d3736a985154f"
+          }
+        },
+        {
+          "client_id": "219309098874-a3fv246vihcvh8gpk58mtacnln8eri6p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDubL1lnjriJADLyxRNK_RtEffgb59FoQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "219309098874-a3fv246vihcvh8gpk58mtacnln8eri6p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
