@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import fr.nicopico.hugo.R
-import fr.nicopico.hugo.domain.appStore
-import fr.nicopico.hugo.domain.model.CareType
+import fr.nicopico.hugo.model.CareType
+import fr.nicopico.hugo.redux.appStore
 import fr.nicopico.hugo.ui.BaseFragment
 import fr.nicopico.hugo.ui.shared.*
 import kotlinx.android.synthetic.main.fragment_timeline.*

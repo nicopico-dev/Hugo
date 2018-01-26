@@ -1,4 +1,4 @@
-package fr.nicopico.hugo.domain.model
+package fr.nicopico.hugo.model
 
 import java.text.SimpleDateFormat
 import java.util.*

@@ -11,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import fr.nicopico.hugo.R
-import fr.nicopico.hugo.domain.model.*
+import fr.nicopico.hugo.model.*
 import fr.nicopico.hugo.ui.shared.dimensionForOffset
 import fr.nicopico.hugo.utils.getTimeFormat
 import kotlin.properties.Delegates

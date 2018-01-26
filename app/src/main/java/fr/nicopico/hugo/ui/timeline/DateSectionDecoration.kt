@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import fr.nicopico.hugo.R
-import fr.nicopico.hugo.domain.model.Timeline
+import fr.nicopico.hugo.model.Timeline
 import fr.nicopico.hugo.ui.shared.SectionItemDecoration
 import fr.nicopico.hugo.ui.shared.dp
 import fr.nicopico.hugo.utils.HugoLogger

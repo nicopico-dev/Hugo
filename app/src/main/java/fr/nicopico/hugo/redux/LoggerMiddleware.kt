@@ -1,4 +1,4 @@
-package fr.nicopico.hugo.domain
+package fr.nicopico.hugo.redux
 
 import fr.nicopico.hugo.utils.HugoLogger
 import fr.nicopico.hugo.utils.debug
