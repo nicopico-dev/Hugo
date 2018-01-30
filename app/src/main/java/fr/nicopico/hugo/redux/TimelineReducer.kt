@@ -21,9 +21,6 @@ val timelineReducer = Reducer<AppState> { state, action ->
         is REMOVE_ENTRY -> {
             state.copy(timeline = state.timeline - action.entry)
         }
-        is ADD_ENTRIES -> {
-            state.copy(timeline = state.timeline + action.entries)
-        }
         else -> state
     }
 }
@@ -31,4 +28,3 @@ val timelineReducer = Reducer<AppState> { state, action ->
 data class ADD_ENTRY(val entry: Timeline.Entry)
 data class UPDATE_ENTRY(val oldEntry: Timeline.Entry, val newEntry: Timeline.Entry)
 data class REMOVE_ENTRY(val entry: Timeline.Entry)
-data class ADD_ENTRIES(val entries: List<Timeline.Entry>)
