@@ -2,11 +2,11 @@
 
 package fr.nicopico.hugo.redux
 
+import fr.nicopico.hugo.model.Timeline
 import fr.nicopico.hugo.service.AuthService
 import fr.nicopico.hugo.service.RemoteService
-import fr.nicopico.hugo.utils.Result
+import fr.nicopico.hugo.service.TimelineFetcher
 import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
 import redux.INIT
 import redux.api.Dispatcher
 import redux.api.Store
@@ -15,27 +15,37 @@ import redux.api.enhancer.Middleware
 class RemoteMiddleware(
         private val authService: AuthService,
         private val remoteService: RemoteService
-): Middleware<AppState> {
+) : Middleware<AppState> {
 
     override fun dispatch(store: Store<AppState>, next: Dispatcher, action: Any): Any {
         when (action) {
-            INIT -> authService.addOnUserChangeListener { user ->
-                store.dispatch(REQUEST_REMOTE_DATA(user))
+            INIT -> authService.apply {
+                addOnUserChangeListener { store.dispatch(REQUEST_REMOTE_DATA(it)) }
+                async { signIn() }
             }
-            is REQUEST_REMOTE_DATA -> {
-                launch {
-                    val result = async { remoteService.fetchTimeline(store) }.await()
-                    val resultAction: Any = when(result) {
-                        is Result.Success -> REMOTE_DATA_FETCHED(result.value)
-                        is Result.Failure -> REMOTE_DATA_ERROR(result.error)
-                    }
-                    store.dispatch(resultAction)
-                }
-            }
-            is ADD_ENTRY -> async { remoteService.saveEntry(action.entry) }
-            is UPDATE_ENTRY -> async { remoteService.saveEntry(action.newEntry) }
-            is REMOVE_ENTRY -> async{ remoteService.removeEntry(action.entry) }
+            is REQUEST_REMOTE_DATA -> remoteService.fetchTimeline(ReduxTimelineFetcher(store))
+            is ADD_ENTRY -> remoteService.addEntry(action.entry)
+            is UPDATE_ENTRY -> remoteService.updateEntry(action.entry)
+            is REMOVE_ENTRY -> remoteService.removeEntry(action.entry)
         }
         return next.dispatch(action)
+    }
+
+    private class ReduxTimelineFetcher(val store: Store<AppState>) : TimelineFetcher {
+        override fun onEntryAdded(entry: Timeline.Entry) {
+            store.dispatch(ENTRY_ADDED(entry))
+        }
+
+        override fun onEntryModified(entry: Timeline.Entry) {
+            store.dispatch(ENTRY_MODIFIED(entry))
+        }
+
+        override fun onEntryRemoved(entry: Timeline.Entry) {
+            store.dispatch(ENTRY_REMOVED(entry))
+        }
+
+        override fun onError(exception: Exception) {
+            store.dispatch(REMOTE_DATA_ERROR(exception))
+        }
     }
 }

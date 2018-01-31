@@ -7,7 +7,7 @@ import redux.api.Store
 import redux.api.enhancer.Middleware
 
 object LoggerMiddleware : Middleware<AppState> {
-    private val logger = HugoLogger("actions")
+    private val logger = HugoLogger("REDUX")
     override fun dispatch(store: Store<AppState>, next: Dispatcher, action: Any): Any {
         logger.debug { "Dispatching $action" }
         return next.dispatch(action)

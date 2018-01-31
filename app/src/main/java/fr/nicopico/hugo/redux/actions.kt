@@ -10,9 +10,9 @@ data class REMOTE_DATA_FETCHED(val timeline: Timeline)
 data class REMOTE_DATA_ERROR(val error: Exception)
 
 data class ADD_ENTRY(val entry: Timeline.Entry)
-data class UPDATE_ENTRY(val oldEntry: Timeline.Entry, val newEntry: Timeline.Entry)
+data class UPDATE_ENTRY(val entry: Timeline.Entry)
 data class REMOVE_ENTRY(val entry: Timeline.Entry)
 
 data class ENTRY_ADDED(val entry: Timeline.Entry)
-data class ENTRY_MODIFIED(val oldEntry: Timeline.Entry, val newEntry: Timeline.Entry)
+data class ENTRY_MODIFIED(val entry: Timeline.Entry)
 data class ENTRY_REMOVED(val entry: Timeline.Entry)

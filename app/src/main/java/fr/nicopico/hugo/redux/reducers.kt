@@ -9,10 +9,10 @@ val timelineReducer = Reducer<AppState> { state, action ->
             state.copy(timeline = state.timeline + action.entry)
         }
         is ENTRY_MODIFIED -> {
-            val index = state.timeline.indexOf(action.oldEntry)
+            val index = state.timeline.indexOf(action.entry)
             val updatedTimeline = state.timeline.toMutableList().apply {
                 removeAt(index)
-                add(index, action.newEntry)
+                add(index, action.entry)
             }
             state.copy(timeline = Timeline(updatedTimeline))
         }
@@ -26,7 +26,7 @@ val timelineReducer = Reducer<AppState> { state, action ->
 val remoteReducer = Reducer<AppState> { state, action ->
     when (action) {
         is REQUEST_REMOTE_DATA -> state.copy(user = action.user, loading = true)
-        // TODO Merge with local data ?
+    // TODO Merge with local data ?
         is REMOTE_DATA_FETCHED -> state.copy(loading = false, timeline = action.timeline)
         else -> state
     }

@@ -19,15 +19,17 @@ interface AuthService {
 
 private object FirebaseAuthService : AuthService {
 
-    private val auth = FirebaseAuth.getInstance()
+    private val auth by lazy { FirebaseAuth.getInstance() }
 
-    private val currentUser: User? = auth.currentUser?.convert()
+    private val currentUser: User?
+        get() = auth.currentUser?.convert()
 
     private val onUserChangeListeners = mutableListOf<OnUserChangeListener>()
     override fun addOnUserChangeListener(listener: OnUserChangeListener) {
         onUserChangeListeners += listener
         currentUser?.let { listener(it) }
     }
+
     override fun removeOnUserChangeListener(listener: OnUserChangeListener) {
         onUserChangeListeners -= listener
     }
