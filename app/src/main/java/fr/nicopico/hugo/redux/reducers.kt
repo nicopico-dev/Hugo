@@ -1,5 +1,6 @@
 package fr.nicopico.hugo.redux
 
+import fr.nicopico.hugo.model.Timeline
 import redux.api.Reducer
 
 val timelineReducer = Reducer<AppState> { state, action ->
@@ -13,7 +14,7 @@ val timelineReducer = Reducer<AppState> { state, action ->
                 removeAt(index)
                 add(index, action.newEntry)
             }
-            state.copy(timeline = updatedTimeline)
+            state.copy(timeline = Timeline(updatedTimeline))
         }
         is ENTRY_REMOVED -> {
             state.copy(timeline = state.timeline - action.entry)

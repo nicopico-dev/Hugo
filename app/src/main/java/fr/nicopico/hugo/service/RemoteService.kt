@@ -17,7 +17,7 @@ interface RemoteService {
         val INSTANCE: RemoteService by lazy { FirebaseRemoteService }
     }
 
-    suspend fun fetchTimeline(dispatcher: Dispatcher): Result<List<Timeline.Entry>>
+    suspend fun fetchTimeline(dispatcher: Dispatcher): Result<Timeline>
     suspend fun saveEntry(entry: Timeline.Entry)
     suspend fun removeEntry(entry: Timeline.Entry)
 }
@@ -26,7 +26,7 @@ private object FirebaseRemoteService : RemoteService, HugoLogger {
 
     private val db by lazy { FirebaseFirestore.getInstance() }
 
-    override suspend fun fetchTimeline(dispatcher: Dispatcher): Result<List<Timeline.Entry>> =
+    override suspend fun fetchTimeline(dispatcher: Dispatcher): Result<Timeline> =
             suspendCoroutine {
                 // TODO Do not hardcode path
                 db.collection("/users/sgIdPDnelqvAoH4JbFiL/babies/hugo/timeline")

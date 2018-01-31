@@ -13,12 +13,12 @@ import redux.createStore
 data class AppState(
         val user: User?,
         val loading: Boolean = false,
-        val timeline: List<Timeline.Entry>
+        val timeline: Timeline
 )
 
 private val initialState = AppState(
         user = null,
-        timeline = emptyList()
+        timeline = Timeline()
 )
 
 private val enhancer = applyMiddleware(
