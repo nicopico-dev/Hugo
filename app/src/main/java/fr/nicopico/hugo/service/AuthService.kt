@@ -1,4 +1,4 @@
-package fr.nicopico.hugo.remote
+package fr.nicopico.hugo.service
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser

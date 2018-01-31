@@ -3,7 +3,9 @@
 package fr.nicopico.hugo.redux
 
 import fr.nicopico.hugo.model.Timeline
-import fr.nicopico.hugo.remote.*
+import fr.nicopico.hugo.service.AuthService
+import fr.nicopico.hugo.service.RemoteService
+import fr.nicopico.hugo.service.User
 import redux.applyMiddleware
 import redux.combineReducers
 import redux.createStore

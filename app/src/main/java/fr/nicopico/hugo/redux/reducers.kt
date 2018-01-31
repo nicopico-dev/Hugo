@@ -1,16 +1,13 @@
-@file:Suppress("ClassName")
-
 package fr.nicopico.hugo.redux
 
-import fr.nicopico.hugo.model.Timeline
 import redux.api.Reducer
 
 val timelineReducer = Reducer<AppState> { state, action ->
     when (action) {
-        is ADD_ENTRY -> {
+        is ENTRY_ADDED -> {
             state.copy(timeline = state.timeline + action.entry)
         }
-        is UPDATE_ENTRY -> {
+        is ENTRY_MODIFIED -> {
             val index = state.timeline.indexOf(action.oldEntry)
             val updatedTimeline = state.timeline.toMutableList().apply {
                 removeAt(index)
@@ -18,13 +15,18 @@ val timelineReducer = Reducer<AppState> { state, action ->
             }
             state.copy(timeline = updatedTimeline)
         }
-        is REMOVE_ENTRY -> {
+        is ENTRY_REMOVED -> {
             state.copy(timeline = state.timeline - action.entry)
         }
         else -> state
     }
 }
 
-data class ADD_ENTRY(val entry: Timeline.Entry)
-data class UPDATE_ENTRY(val oldEntry: Timeline.Entry, val newEntry: Timeline.Entry)
-data class REMOVE_ENTRY(val entry: Timeline.Entry)
+val remoteReducer = Reducer<AppState> { state, action ->
+    when (action) {
+        is REQUEST_REMOTE_DATA -> state.copy(user = action.user, loading = true)
+        // TODO Merge with local data ?
+        is REMOTE_DATA_FETCHED -> state.copy(loading = false, timeline = action.timeline)
+        else -> state
+    }
+}
