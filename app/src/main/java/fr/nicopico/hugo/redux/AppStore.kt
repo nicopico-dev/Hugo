@@ -23,7 +23,7 @@ private val initialState = AppState(
 
 private val enhancer = applyMiddleware(
         LoggerMiddleware,
-        RemoteMiddleware(AuthService.INSTANCE, RemoteService.INSTANCE)
+        RemoteMiddleware(AuthService.create(), RemoteService.create())
 )
 private val reducer = combineReducers(timelineReducer, remoteReducer)
 

@@ -9,7 +9,7 @@ typealias OnUserChangeListener = (User) -> Unit
 
 interface AuthService {
     companion object {
-        val INSTANCE: AuthService by lazy { FirebaseAuthService }
+        fun create(): AuthService = FirebaseAuthService()
     }
 
     fun addOnUserChangeListener(listener: OnUserChangeListener)
@@ -17,7 +17,7 @@ interface AuthService {
     suspend fun signIn(): Result<User>
 }
 
-private object FirebaseAuthService : AuthService {
+private class FirebaseAuthService : AuthService {
 
     private val auth by lazy { FirebaseAuth.getInstance() }
 

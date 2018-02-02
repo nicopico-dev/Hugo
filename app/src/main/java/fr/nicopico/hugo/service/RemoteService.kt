@@ -1,18 +1,16 @@
 package fr.nicopico.hugo.service
 
 import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import fr.nicopico.hugo.model.*
+import fr.nicopico.hugo.model.Timeline
 import fr.nicopico.hugo.utils.HugoLogger
 import fr.nicopico.hugo.utils.error
 import fr.nicopico.hugo.utils.verbose
 import fr.nicopico.hugo.utils.warn
-import java.util.*
 
 interface RemoteService {
     companion object {
-        val INSTANCE: RemoteService by lazy { FirebaseRemoteService }
+        fun create(): RemoteService = FirebaseRemoteService()
     }
 
     fun fetchTimeline(fetcher: TimelineFetcher)
@@ -28,10 +26,10 @@ interface TimelineFetcher {
     fun onError(exception: Exception)
 }
 
-private object FirebaseRemoteService : RemoteService, HugoLogger {
+private class FirebaseRemoteService : RemoteService, HugoLogger {
 
     private val db by lazy { FirebaseFirestore.getInstance() }
-    private const val timelinePath = "/users/sgIdPDnelqvAoH4JbFiL/babies/hugo/timeline"
+    private val timelinePath = "/users/sgIdPDnelqvAoH4JbFiL/babies/hugo/timeline"
 
     override fun fetchTimeline(fetcher: TimelineFetcher) {
         db.collection(timelinePath)
@@ -43,7 +41,7 @@ private object FirebaseRemoteService : RemoteService, HugoLogger {
 
                     @Suppress("IMPLICIT_CAST_TO_ANY")
                     for (change in querySnapshot.documentChanges) {
-                        val entry = Serializer.deserialize(change.document)
+                        val entry = change.toEntry()
                         when (change.type) {
                             DocumentChange.Type.ADDED -> fetcher.onEntryAdded(entry)
                             DocumentChange.Type.MODIFIED -> fetcher.onEntryModified(entry)
@@ -55,7 +53,7 @@ private object FirebaseRemoteService : RemoteService, HugoLogger {
 
     override fun addEntry(entry: Timeline.Entry) {
         db.collection(timelinePath)
-                .add(Serializer.serialize(entry))
+                .add(entry.toDocument())
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) verbose { "Entry added: $entry" }
                     else error(task.exception) { "Unable to add entry $entry" }
@@ -70,7 +68,7 @@ private object FirebaseRemoteService : RemoteService, HugoLogger {
 
         db.collection(timelinePath)
                 .document(entry.remoteId)
-                .set(Serializer.serialize(entry))
+                .set(entry.toDocument())
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) verbose { "Entry updated: $entry" }
                     else error(task.exception) { "Unable to update entry $entry" }
@@ -92,79 +90,9 @@ private object FirebaseRemoteService : RemoteService, HugoLogger {
                 }
     }
 
-    private object Serializer {
+    private fun DocumentChange.toEntry(): Timeline.Entry
+            = EntrySerializer.deserialize(this.document.id, this.document.data)
 
-        const val KEY_SCHEMA = "schema"
-        const val KEY_REMOTE_ID = "remoteId"
-        const val KEY_TYPE = "type"
-        const val KEY_TIME = "time"
-        const val KEY_NOTES = "notes"
-        const val KEY_CARES = "cares"
-
-        const val CARE_UMBILICAL_CORD = "UmbilicalCord"
-        const val CARE_FACE = "Face"
-        const val CARE_BATH = "Bath"
-        const val CARE_VITAMINS = "Vitamins"
-        const val CARE_PEE = "Pee"
-        const val CARE_POO = "Poo"
-
-        fun serialize(entry: Timeline.Entry, schema: Int = 1): Map<String, *> {
-            verbose { "Serializing $entry to Firebase (schema $schema)" }
-
-            if (schema == 1) {
-                return entry.run {
-                    mapOf(
-                            KEY_SCHEMA to 1,
-                            KEY_REMOTE_ID to remoteId,
-                            KEY_TYPE to type.toString(),
-                            KEY_TIME to time,
-                            KEY_NOTES to notes,
-                            KEY_CARES to cares.map { care: Care ->
-                                when(care) {
-                                    UmbilicalCord -> CARE_UMBILICAL_CORD
-                                    Face -> CARE_FACE
-                                    Bath -> CARE_BATH
-                                    Vitamins -> CARE_VITAMINS
-                                    Pee -> CARE_PEE
-                                    Poo -> CARE_POO
-                                    is BreastFeeding -> TODO()
-                                    is BreastExtraction -> TODO()
-                                    is BottleFeeding -> TODO()
-                                }
-                            }
-                    )
-                }
-            } else {
-                throw UnsupportedOperationException("Serialization of schema $schema is not supported")
-            }
-        }
-
-        fun deserialize(document: DocumentSnapshot): Timeline.Entry {
-            val id = document.id
-            val data = document.data
-            val schema = data[KEY_SCHEMA] as Long
-            verbose { "De-serializing from Firebase $data (schema $schema)" }
-
-            if (schema == 1L) {
-                return Timeline.Entry(
-                        remoteId = id,
-                        type = CareType.valueOf(data[KEY_TYPE] as String),
-                        time = data[KEY_TIME] as Date,
-                        cares = (data[KEY_CARES] as List<*>).map {
-                            when(it) {
-                                CARE_UMBILICAL_CORD -> UmbilicalCord
-                                CARE_FACE -> Face
-                                CARE_BATH -> Bath
-                                CARE_VITAMINS -> Vitamins
-                                CARE_PEE -> Pee
-                                CARE_POO -> Poo
-                                else -> throw UnsupportedOperationException("Unable to deserialize care data $it")
-                            }
-                        },
-                        notes = data[KEY_NOTES] as String?
-                )
-            }
-            throw UnsupportedOperationException("De-serialization of schema $schema is not supported")
-        }
-    }
+    private fun Timeline.Entry.toDocument(): Map<String, Any?>
+            = EntrySerializer.serialize(this)
 }
