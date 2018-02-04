@@ -1,5 +1,6 @@
 package fr.nicopico.hugo.redux
 
+import fr.nicopico.hugo.model.AppState
 import fr.nicopico.hugo.utils.HugoLogger
 import fr.nicopico.hugo.utils.debug
 import redux.api.Dispatcher

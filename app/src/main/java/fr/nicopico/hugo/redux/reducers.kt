@@ -1,5 +1,6 @@
 package fr.nicopico.hugo.redux
 
+import fr.nicopico.hugo.model.AppState
 import fr.nicopico.hugo.model.Timeline
 import redux.api.Reducer
 
@@ -26,7 +27,6 @@ val timelineReducer = Reducer<AppState> { state, action ->
 val remoteReducer = Reducer<AppState> { state, action ->
     when (action) {
         is REQUEST_REMOTE_DATA -> state.copy(user = action.user, loading = true)
-    // TODO Merge with local data ?
         is REMOTE_DATA_FETCHED -> state.copy(loading = false, timeline = action.timeline)
         else -> state
     }

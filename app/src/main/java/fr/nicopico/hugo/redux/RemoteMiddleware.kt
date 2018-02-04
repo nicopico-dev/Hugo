@@ -2,6 +2,7 @@
 
 package fr.nicopico.hugo.redux
 
+import fr.nicopico.hugo.model.AppState
 import fr.nicopico.hugo.model.Timeline
 import fr.nicopico.hugo.service.AuthService
 import fr.nicopico.hugo.service.RemoteService
