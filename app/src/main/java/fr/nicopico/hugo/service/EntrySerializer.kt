@@ -14,6 +14,18 @@ object EntrySerializer : HugoLogger {
     private const val KEY_NOTES = "notes"
     private const val KEY_CARES = "cares"
 
+    private const val KEY_FOOD_TYPE = "foodType"
+    private const val FOOD_TYPE_BREAST_FEEDING = "BreastFeeding"
+    private const val FOOD_TYPE_BREAST_EXTRACTION = "BreastExtraction"
+    private const val FOOD_TYPE_BOTTLE_FEEDING = "BottleFeeding"
+
+    private const val KEY_BREAST = "breast"
+    private const val KEY_BREASTS = "breasts"
+    private const val KEY_VOLUME = "volume"
+    private const val KEY_DURATION = "duration"
+    private const val KEY_MATERNAL_MILK = "maternalMilk"
+
+
     private const val CARE_UMBILICAL_CORD = "UmbilicalCord"
     private const val CARE_FACE = "Face"
     private const val CARE_BATH = "Bath"
@@ -21,6 +33,7 @@ object EntrySerializer : HugoLogger {
     private const val CARE_PEE = "Pee"
     private const val CARE_POO = "Poo"
 
+    @Suppress("IMPLICIT_CAST_TO_ANY")
     fun serialize(entry: Timeline.Entry, schema: Int = 1): Map<String, *> {
         verbose { "Serializing $entry to Firebase (schema $schema)" }
 
@@ -33,16 +46,28 @@ object EntrySerializer : HugoLogger {
                         KEY_TIME to time,
                         KEY_NOTES to notes,
                         KEY_CARES to cares.map { care: Care ->
-                            when(care) {
+                            when (care) {
                                 UmbilicalCord -> CARE_UMBILICAL_CORD
                                 Face -> CARE_FACE
                                 Bath -> CARE_BATH
                                 Vitamins -> CARE_VITAMINS
                                 Pee -> CARE_PEE
                                 Poo -> CARE_POO
-                                is BreastFeeding -> TODO()
-                                is BreastExtraction -> TODO()
-                                is BottleFeeding -> TODO()
+                                is BreastFeeding -> mapOf(
+                                        KEY_FOOD_TYPE to FOOD_TYPE_BREAST_FEEDING,
+                                        KEY_BREAST to care.breast.name,
+                                        KEY_DURATION to care.duration
+                                )
+                                is BreastExtraction -> mapOf(
+                                        KEY_FOOD_TYPE to FOOD_TYPE_BREAST_EXTRACTION,
+                                        KEY_BREASTS to care.breasts.map { it.name },
+                                        KEY_VOLUME to care.volume
+                                )
+                                is BottleFeeding -> mapOf(
+                                        KEY_FOOD_TYPE to FOOD_TYPE_BOTTLE_FEEDING,
+                                        KEY_VOLUME to care.volume,
+                                        KEY_MATERNAL_MILK to care.maternalMilk
+                                )
                             }
                         }
                 )
@@ -52,6 +77,7 @@ object EntrySerializer : HugoLogger {
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun deserialize(remoteId: String?, data: Map<String, Any?>): Timeline.Entry {
         val schema = data[KEY_SCHEMA] as Long
         verbose { "De-serializing from Firebase $data (schema $schema)" }
@@ -59,7 +85,7 @@ object EntrySerializer : HugoLogger {
         if (schema == 1L) {
             return Timeline.Entry(
                     remoteId = remoteId,
-                    type = CareType.valueOf(data[KEY_TYPE] as String),
+                    type = data[KEY_TYPE].asCareType(),
                     time = data[KEY_TIME] as Date,
                     cares = (data[KEY_CARES] as List<*>).map {
                         when (it) {
@@ -69,6 +95,21 @@ object EntrySerializer : HugoLogger {
                             CARE_VITAMINS -> Vitamins
                             CARE_PEE -> Pee
                             CARE_POO -> Poo
+                            is Map<*, *> -> when (it[KEY_FOOD_TYPE]) {
+                                FOOD_TYPE_BREAST_FEEDING -> BreastFeeding(
+                                        breast = it[KEY_BREAST].asBreast(),
+                                        duration = it[KEY_DURATION].asInt()
+                                )
+                                FOOD_TYPE_BREAST_EXTRACTION -> BreastExtraction(
+                                        volume = it[KEY_VOLUME].asInt(),
+                                        breasts = it[KEY_BREASTS].asBreastSet()
+                                )
+                                FOOD_TYPE_BOTTLE_FEEDING -> BottleFeeding(
+                                        volume = it[KEY_VOLUME].asInt(),
+                                        maternalMilk = it[KEY_MATERNAL_MILK] as Boolean
+                                )
+                                else -> throw UnsupportedOperationException("Unable to deserialize care data $it (food type)")
+                            }
                             else -> throw UnsupportedOperationException("Unable to deserialize care data $it")
                         }
                     },
@@ -77,4 +118,14 @@ object EntrySerializer : HugoLogger {
         }
         throw UnsupportedOperationException("De-serialization of schema $schema is not supported")
     }
+
+    /**
+     * Firebase store numbers as Long, but we want Int
+     */
+    private fun Any?.asInt() = (this as Long).toInt()
+    private fun Any?.asCareType() = CareType.valueOf(this as String)
+    private fun Any?.asBreast() = Breast.valueOf(this as String)
+    private fun Any?.asBreastSet() = (this as Iterable<*>)
+            .map { it.asBreast() }
+            .toSet()
 }

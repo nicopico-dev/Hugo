@@ -31,6 +31,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space_medium"
         android:inputType="number"
+        android:nextFocusForward="@id/chkLeftBreast"
+        android:nextFocusDown="@id/chkLeftBreast"
         app:layout_constraintBaseline_toBaselineOf="@id/_txtTitle"
         app:layout_constraintStart_toEndOf="@id/_txtTitle"/>
 

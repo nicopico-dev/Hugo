@@ -113,7 +113,7 @@ class AddFoodDialogFragment : AddTimelineEntryDialogFragment() {
 
     private fun getBreastExtraction(): Care? {
         return breastExtractionView?.let {
-            val volumeText = it.findViewById<EditText>(R.id.edtBottle).text.toString()
+            val volumeText = it.findViewById<EditText>(R.id.edtExtraction).text.toString()
             val leftBreast = it.findViewById<CheckBox>(R.id.chkLeftBreast).isChecked
             val rightBreast = it.findViewById<CheckBox>(R.id.chkRightBreast).isChecked
             val breasts = when {
