@@ -54,6 +54,7 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'io.mockk:mockk:1.6.3'
+    testImplementation 'com.natpryce:hamkrest:1.4.2.2'
 
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'

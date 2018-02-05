@@ -5,17 +5,17 @@ package fr.nicopico.hugo.redux
 import fr.nicopico.hugo.model.AppState
 import fr.nicopico.hugo.model.Timeline
 import fr.nicopico.hugo.service.AuthService
-import fr.nicopico.hugo.service.RemoteService
 import fr.nicopico.hugo.service.TimelineFetcher
+import fr.nicopico.hugo.service.TimelineService
 import kotlinx.coroutines.experimental.async
 import redux.INIT
 import redux.api.Dispatcher
 import redux.api.Store
 import redux.api.enhancer.Middleware
 
-class RemoteMiddleware(
+class TimelineMiddleware(
         private val authService: AuthService,
-        private val remoteService: RemoteService
+        private val timelineService: TimelineService
 ) : Middleware<AppState> {
 
     override fun dispatch(store: Store<AppState>, next: Dispatcher, action: Any): Any {
@@ -24,10 +24,10 @@ class RemoteMiddleware(
                 addOnUserChangeListener { store.dispatch(REQUEST_REMOTE_DATA(it)) }
                 async { signIn() }
             }
-            is REQUEST_REMOTE_DATA -> remoteService.fetchTimeline(ReduxTimelineFetcher(store))
-            is ADD_ENTRY -> remoteService.addEntry(action.entry)
-            is UPDATE_ENTRY -> remoteService.updateEntry(action.entry)
-            is REMOVE_ENTRY -> remoteService.removeEntry(action.entry)
+            is REQUEST_REMOTE_DATA -> timelineService.fetchTimeline(ReduxTimelineFetcher(store))
+            is ADD_ENTRY -> timelineService.addEntry(action.entry)
+            is UPDATE_ENTRY -> timelineService.updateEntry(action.entry)
+            is REMOVE_ENTRY -> timelineService.removeEntry(action.entry)
         }
         return next.dispatch(action)
     }

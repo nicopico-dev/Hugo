@@ -2,15 +2,13 @@ package fr.nicopico.hugo.service
 
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import fr.nicopico.hugo.model.Timeline
-import fr.nicopico.hugo.utils.HugoLogger
-import fr.nicopico.hugo.utils.error
-import fr.nicopico.hugo.utils.verbose
-import fr.nicopico.hugo.utils.warn
+import fr.nicopico.hugo.utils.*
 
-interface RemoteService {
+interface TimelineService {
     companion object {
-        fun create(): RemoteService = FirebaseRemoteService()
+        fun create(user: User): TimelineService = FirebaseTimelineService(user)
     }
 
     fun fetchTimeline(fetcher: TimelineFetcher)
@@ -26,13 +24,20 @@ interface TimelineFetcher {
     fun onError(exception: Exception)
 }
 
-private class FirebaseRemoteService : RemoteService, HugoLogger {
+private class FirebaseTimelineService(user: User) : TimelineService, HugoLogger {
 
     private val db by lazy { FirebaseFirestore.getInstance() }
     private val timelinePath = "/users/sgIdPDnelqvAoH4JbFiL/babies/hugo/timeline"
 
+    private var registration: ListenerRegistration? = null
+
     override fun fetchTimeline(fetcher: TimelineFetcher) {
-        db.collection(timelinePath)
+        registration?.let {
+            info("Remove previous fetch listener")
+            it.remove()
+        }
+
+        registration = db.collection(timelinePath)
                 .addSnapshotListener { querySnapshot, exception ->
                     if (exception != null) {
                         fetcher.onError(exception)
