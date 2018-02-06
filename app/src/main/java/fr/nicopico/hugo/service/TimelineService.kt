@@ -1,103 +1,151 @@
 package fr.nicopico.hugo.service
 
 import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ListenerRegistration
-import fr.nicopico.hugo.model.Timeline
-import fr.nicopico.hugo.utils.*
+import fr.nicopico.hugo.model.*
+import fr.nicopico.hugo.utils.HugoLogger
+import fr.nicopico.hugo.utils.verbose
+import java.util.*
 
-interface TimelineService {
+interface TimelineService : FetcherService<Timeline.Entry> {
     companion object {
-        fun create(user: User): TimelineService = FirebaseTimelineService(user)
+        fun create(): TimelineService = FirebaseTimelineService()
     }
 
-    fun fetchTimeline(fetcher: TimelineFetcher)
-    fun addEntry(entry: Timeline.Entry)
-    fun updateEntry(entry: Timeline.Entry)
-    fun removeEntry(entry: Timeline.Entry)
+    var user: User
+    var baby: Baby
 }
 
-interface TimelineFetcher {
-    fun onEntryAdded(entry: Timeline.Entry)
-    fun onEntryModified(entry: Timeline.Entry)
-    fun onEntryRemoved(entry: Timeline.Entry)
-    fun onError(exception: Exception)
+private class FirebaseTimelineService : FirebaseFetcherService<Timeline.Entry>(), TimelineService {
+
+    override lateinit var user: User
+    override lateinit var baby: Baby
+
+    override val collectionPath
+        get() = "/users/${user.uid}/babies/${baby.key}/timeline"
+
+    override fun remoteId(entry: Timeline.Entry): String?
+            = entry.remoteId
+    override fun convert(entry: Timeline.Entry): Map<String, Any?>
+            = TimelineEntrySerializer.serialize(entry)
+    override fun convert(change: DocumentChange): Timeline.Entry
+            = TimelineEntrySerializer.deserialize(change.document.id, change.document.data)
 }
 
-private class FirebaseTimelineService(user: User) : TimelineService, HugoLogger {
+private object TimelineEntrySerializer : HugoLogger {
 
-    private val db by lazy { FirebaseFirestore.getInstance() }
-    private val timelinePath = "/users/sgIdPDnelqvAoH4JbFiL/babies/hugo/timeline"
+    private const val KEY_SCHEMA = "schema"
+    private const val KEY_REMOTE_ID = "remoteId"
+    private const val KEY_TYPE = "type"
+    private const val KEY_TIME = "time"
+    private const val KEY_NOTES = "notes"
+    private const val KEY_CARES = "cares"
 
-    private var registration: ListenerRegistration? = null
+    private const val KEY_FOOD_TYPE = "foodType"
+    private const val FOOD_TYPE_BREAST_FEEDING = "BreastFeeding"
+    private const val FOOD_TYPE_BREAST_EXTRACTION = "BreastExtraction"
+    private const val FOOD_TYPE_BOTTLE_FEEDING = "BottleFeeding"
 
-    override fun fetchTimeline(fetcher: TimelineFetcher) {
-        registration?.let {
-            info("Remove previous fetch listener")
-            it.remove()
-        }
+    private const val KEY_BREAST = "breast"
+    private const val KEY_BREASTS = "breasts"
+    private const val KEY_VOLUME = "volume"
+    private const val KEY_DURATION = "duration"
+    private const val KEY_MATERNAL_MILK = "maternalMilk"
 
-        registration = db.collection(timelinePath)
-                .addSnapshotListener { querySnapshot, exception ->
-                    if (exception != null) {
-                        fetcher.onError(exception)
-                        return@addSnapshotListener
-                    }
 
-                    @Suppress("IMPLICIT_CAST_TO_ANY")
-                    for (change in querySnapshot.documentChanges) {
-                        val entry = change.toEntry()
-                        when (change.type) {
-                            DocumentChange.Type.ADDED -> fetcher.onEntryAdded(entry)
-                            DocumentChange.Type.MODIFIED -> fetcher.onEntryModified(entry)
-                            DocumentChange.Type.REMOVED -> fetcher.onEntryRemoved(entry)
+    private const val CARE_UMBILICAL_CORD = "UmbilicalCord"
+    private const val CARE_FACE = "Face"
+    private const val CARE_BATH = "Bath"
+    private const val CARE_VITAMINS = "Vitamins"
+    private const val CARE_PEE = "Pee"
+    private const val CARE_POO = "Poo"
+
+    @Suppress("IMPLICIT_CAST_TO_ANY")
+    fun serialize(entry: Timeline.Entry, schema: Int = 1): Map<String, *> {
+        verbose { "Serializing $entry to Firebase (schema $schema)" }
+
+        if (schema == 1) {
+            return entry.run {
+                mapOf(
+                        KEY_SCHEMA to 1,
+                        KEY_REMOTE_ID to remoteId,
+                        KEY_TYPE to type.toString(),
+                        KEY_TIME to time,
+                        KEY_NOTES to notes,
+                        KEY_CARES to cares.map { care: Care ->
+                            when (care) {
+                                UmbilicalCord -> CARE_UMBILICAL_CORD
+                                Face -> CARE_FACE
+                                Bath -> CARE_BATH
+                                Vitamins -> CARE_VITAMINS
+                                Pee -> CARE_PEE
+                                Poo -> CARE_POO
+                                is BreastFeeding -> mapOf(
+                                        KEY_FOOD_TYPE to FOOD_TYPE_BREAST_FEEDING,
+                                        KEY_BREAST to care.breast.name,
+                                        KEY_DURATION to care.duration
+                                )
+                                is BreastExtraction -> mapOf(
+                                        KEY_FOOD_TYPE to FOOD_TYPE_BREAST_EXTRACTION,
+                                        KEY_BREASTS to care.breasts.map { it.name },
+                                        KEY_VOLUME to care.volume
+                                )
+                                is BottleFeeding -> mapOf(
+                                        KEY_FOOD_TYPE to FOOD_TYPE_BOTTLE_FEEDING,
+                                        KEY_VOLUME to care.volume,
+                                        KEY_MATERNAL_MILK to care.maternalMilk
+                                )
+                            }
                         }
-                    }
-                }
-    }
-
-    override fun addEntry(entry: Timeline.Entry) {
-        db.collection(timelinePath)
-                .add(entry.toDocument())
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) verbose { "Entry added: $entry" }
-                    else error(task.exception) { "Unable to add entry $entry" }
-                }
-    }
-
-    override fun updateEntry(entry: Timeline.Entry) {
-        if (entry.remoteId == null) {
-            warn { "Entry $entry cannot be updated (no remoteId)" }
-            return
+                )
+            }
+        } else {
+            throw UnsupportedOperationException("Serialization of schema $schema is not supported")
         }
-
-        db.collection(timelinePath)
-                .document(entry.remoteId)
-                .set(entry.toDocument())
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) verbose { "Entry updated: $entry" }
-                    else error(task.exception) { "Unable to update entry $entry" }
-                }
     }
 
-    override fun removeEntry(entry: Timeline.Entry) {
-        if (entry.remoteId == null) {
-            warn { "Entry $entry cannot be removed (no remoteId)" }
-            return
+    @Suppress("UNCHECKED_CAST")
+    fun deserialize(remoteId: String?, data: Map<String, Any?>): Timeline.Entry {
+        val schema = data[KEY_SCHEMA] as Long
+        verbose { "De-serializing from Firebase $data (schema $schema)" }
+
+        if (schema == 1L) {
+            return Timeline.Entry(
+                    remoteId = remoteId,
+                    type = data[KEY_TYPE].asEnum(),
+                    time = data[KEY_TIME] as Date,
+                    cares = (data[KEY_CARES] as List<*>).map {
+                        when (it) {
+                            CARE_UMBILICAL_CORD -> UmbilicalCord
+                            CARE_FACE -> Face
+                            CARE_BATH -> Bath
+                            CARE_VITAMINS -> Vitamins
+                            CARE_PEE -> Pee
+                            CARE_POO -> Poo
+                            is Map<*, *> -> when (it[KEY_FOOD_TYPE]) {
+                                FOOD_TYPE_BREAST_FEEDING -> BreastFeeding(
+                                        breast = it[KEY_BREAST].asEnum(),
+                                        duration = it[KEY_DURATION].asInt()
+                                )
+                                FOOD_TYPE_BREAST_EXTRACTION -> BreastExtraction(
+                                        volume = it[KEY_VOLUME].asInt(),
+                                        breasts = it[KEY_BREASTS].asBreastSet()
+                                )
+                                FOOD_TYPE_BOTTLE_FEEDING -> BottleFeeding(
+                                        volume = it[KEY_VOLUME].asInt(),
+                                        maternalMilk = it[KEY_MATERNAL_MILK] as Boolean
+                                )
+                                else -> throw UnsupportedOperationException("Unable to deserialize care data $it (food type)")
+                            }
+                            else -> throw UnsupportedOperationException("Unable to deserialize care data $it")
+                        }
+                    },
+                    notes = data[KEY_NOTES] as String?
+            )
         }
-
-        db.collection(timelinePath)
-                .document(entry.remoteId)
-                .delete()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) verbose { "Entry removed: $entry" }
-                    else error(task.exception) { "Unable to remove entry $entry" }
-                }
+        throw UnsupportedOperationException("De-serialization of schema $schema is not supported")
     }
 
-    private fun DocumentChange.toEntry(): Timeline.Entry
-            = EntrySerializer.deserialize(this.document.id, this.document.data)
-
-    private fun Timeline.Entry.toDocument(): Map<String, Any?>
-            = EntrySerializer.serialize(this)
+    private fun Any?.asBreastSet() = (this as Iterable<*>)
+            .map { it.asEnum<Breast>() }
+            .toSet()
 }

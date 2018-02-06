@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.CareType
+import fr.nicopico.hugo.redux.FETCH_TIMELINE
+import fr.nicopico.hugo.redux.STOP_FETCHING_TIMELINE
 import fr.nicopico.hugo.redux.appStore
 import fr.nicopico.hugo.ui.BaseFragment
 import fr.nicopico.hugo.ui.shared.*
@@ -46,6 +48,16 @@ class TimelineFragment : BaseFragment() {
         subscription = appStore.subscribe {
             refresh()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        appStore.dispatch(FETCH_TIMELINE)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        appStore.dispatch(STOP_FETCHING_TIMELINE)
     }
 
     override fun onDestroyView() {

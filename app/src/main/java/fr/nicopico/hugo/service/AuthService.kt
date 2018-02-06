@@ -2,6 +2,8 @@ package fr.nicopico.hugo.service
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import fr.nicopico.hugo.model.AnonymousUser
+import fr.nicopico.hugo.model.User
 import fr.nicopico.hugo.utils.Result
 import kotlinx.coroutines.experimental.suspendCancellableCoroutine
 
@@ -67,22 +69,5 @@ private fun FirebaseUser.convert(): User {
         return AnonymousUser(uid)
     } else {
         TODO("No support for authenticated user yet")
-    }
-}
-
-sealed class User(val uid: String)
-class AnonymousUser(uid: String) : User(uid) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as AnonymousUser
-        if (uid != other.uid) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        return uid.hashCode()
     }
 }
