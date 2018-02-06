@@ -6,43 +6,37 @@ import android.view.Menu
 import android.view.MenuItem
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import fr.nicopico.hugo.R
-import fr.nicopico.hugo.model.Baby
-import fr.nicopico.hugo.redux.*
+import fr.nicopico.hugo.redux.SIGN_IN
+import fr.nicopico.hugo.redux.appStore
 import fr.nicopico.hugo.ui.BaseActivity
-import fr.nicopico.hugo.ui.timeline.TimelineFragment
+import fr.nicopico.hugo.ui.shared.toast
+import redux.api.Store
 
 
 class MainActivity : BaseActivity() {
+
+    private var subscription: Store.Subscription? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (savedInstanceState == null) {
-            appStore.subscribe {
-                with(appStore.state) {
-                    when {
-                        babies.isEmpty() -> appStore.dispatch(ADD_BABY(Baby("Hugo")))
-                        selectedBaby == null -> appStore.dispatch(SELECT_BABY(babies[0]))
-                        else -> supportFragmentManager
-                                .beginTransaction()
-                                .replace(R.id.container, TimelineFragment())
-                                .commit()
-                    }
-                    null
-                }
-            }
+        val state = appStore.state
+        if (state.user == null) {
+            appStore.dispatch(SIGN_IN)
         }
     }
 
     override fun onResume() {
         super.onResume()
-        appStore.dispatch(FETCH_BABIES)
+        subscription = appStore.subscribe {
+            toast("${appStore.state}")
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        appStore.dispatch(STOP_FETCHING_BABIES)
+        subscription?.unsubscribe()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -11,15 +11,15 @@ interface BabyService : FetcherService<Baby> {
         fun create(): BabyService = FirebaseBabyService()
     }
 
-    var user: User
+    var user: User?
 }
 
 private class FirebaseBabyService : FirebaseFetcherService<Baby>(), BabyService, HugoLogger {
 
-    override lateinit var user: User
+    override var user: User? = null
 
     override val collectionPath
-        get() = "/users/${user.uid}/babies"
+        get() = "/users/${user!!.uid}/babies"
 
     override fun remoteId(entry: Baby): String?
             = entry.key

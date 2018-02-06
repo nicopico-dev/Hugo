@@ -11,17 +11,17 @@ interface TimelineService : FetcherService<Timeline.Entry> {
         fun create(): TimelineService = FirebaseTimelineService()
     }
 
-    var user: User
-    var baby: Baby
+    var user: User?
+    var baby: Baby?
 }
 
 private class FirebaseTimelineService : FirebaseFetcherService<Timeline.Entry>(), TimelineService {
 
-    override lateinit var user: User
-    override lateinit var baby: Baby
+    override var user: User? = null
+    override var baby: Baby? = null
 
     override val collectionPath
-        get() = "/users/${user.uid}/babies/${baby.key}/timeline"
+        get() = "/users/${user!!.uid}/babies/${baby!!.key}/timeline"
 
     override fun remoteId(entry: Timeline.Entry): String?
             = entry.remoteId

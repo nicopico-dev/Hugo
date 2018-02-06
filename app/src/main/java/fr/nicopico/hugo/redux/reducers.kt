@@ -39,18 +39,9 @@ val timelineReducer = Reducer<AppState> { state, action ->
 
 val remoteReducer = Reducer<AppState> { state, action ->
     when (action) {
-        is AUTHENTICATED -> state.copy(loading = true, user = action.user)
-
-        // Babies
-        FETCH_BABIES -> state.copy(loading = true, babies = emptyList())
-        is BABIES_FETCHED -> state.copy(loading = false, babies = action.babies)
-        STOP_FETCHING_BABIES -> state.copy(loading = false)
-
-        // Timeline
-        FETCH_TIMELINE -> state.copy(loading = true, timeline = Timeline())
-        STOP_FETCHING_TIMELINE -> state.copy(loading = false)
-        is TIMELINE_FETCHED -> state.copy(loading = false, timeline = action.timeline)
-
+        is AUTHENTICATED -> state.copy(user = action.user)
+        FETCH_BABIES -> state.copy(babies = emptyList())
+        FETCH_TIMELINE -> state.copy(timeline = Timeline())
         else -> state
     }
 }

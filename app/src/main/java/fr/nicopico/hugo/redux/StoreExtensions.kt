@@ -2,9 +2,9 @@ package fr.nicopico.hugo.redux
 
 import redux.api.Store
 
-fun <S, R> Store<S>.distinctSubscribe(extractor: (S) -> R, subscriber: (R) -> Unit) {
+fun <S, R> Store<S>.distinctSubscribe(extractor: (S) -> R, subscriber: (R) -> Unit): Store.Subscription {
     var previous: R? = extractor(state)
-    subscribe {
+    return subscribe {
         val last = extractor(state)
         if (last === previous) {
             previous = last

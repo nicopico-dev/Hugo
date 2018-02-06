@@ -20,6 +20,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/lib_main.kotlin_module'
+    }
 }
 
 kotlin {
@@ -42,7 +46,8 @@ dependencies {
     implementation "com.android.support:customtabs:$support_version"
     implementation "com.android.support:design:$support_version"
     implementation "com.android.support:recyclerview-v7:$support_version"
-    implementation "com.android.support.constraint:constraint-layout:1.1.0-beta4"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta4'
+    implementation 'androidx.core:core-ktx:0.1'
 
     implementation "com.google.android.gms:play-services-oss-licenses:$firebase_version"
     implementation "com.google.firebase:firebase-firestore:$firebase_version"
@@ -51,6 +56,7 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:2.3.0'
 
     implementation 'com.github.pardom:redux-kotlin:1.2.1'
+    implementation 'com.github.pardom:redux-logger-kotlin:1.2.4'
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'io.mockk:mockk:1.6.3'

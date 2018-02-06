@@ -3,19 +3,22 @@ package fr.nicopico.hugo.service
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
-import fr.nicopico.hugo.utils.*
+import fr.nicopico.hugo.utils.HugoLogger
+import fr.nicopico.hugo.utils.error
+import fr.nicopico.hugo.utils.verbose
+import fr.nicopico.hugo.utils.warn
 
-abstract class FirebaseFetcherService<T> : HugoLogger {
+abstract class FirebaseFetcherService<T> : FetcherService<T>, HugoLogger {
 
     private val db by lazy { FirebaseFirestore.getInstance() }
     protected abstract val collectionPath: String
 
     private var registration: ListenerRegistration? = null
 
-    fun fetch(fetcher: Fetcher<T>) {
-        registration?.let {
-            info("Remove previous fetch listener")
-            it.remove()
+    override fun fetch(fetcher: Fetcher<T>) {
+        if (registration != null) {
+            warn(m = "Fetching already set, use stopFetching() first to change the fetcher")
+            return
         }
 
         registration = db.collection(collectionPath)
@@ -37,20 +40,28 @@ abstract class FirebaseFetcherService<T> : HugoLogger {
                 }
     }
 
-    fun stopFetching() {
+    override fun stopFetching() {
         registration?.remove()
     }
 
-    fun addEntry(entry: T) {
+    override fun addEntry(entry: T) {
+        val remoteId = remoteId(entry)
         db.collection(collectionPath)
-                .add(convert(entry))
+                .run {
+                    if (remoteId == null) {
+                        document()
+                    } else {
+                        document(remoteId)
+                    }
+                }
+                .set(convert(entry))
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) verbose { "Entry added: $entry" }
                     else error(task.exception) { "Unable to add entry $entry" }
                 }
     }
 
-    fun updateEntry(entry: T) {
+    override fun updateEntry(entry: T) {
         val remoteId = remoteId(entry)
         if (remoteId == null) {
             warn { "Entry $entry cannot be updated (no remoteId)" }
@@ -66,7 +77,7 @@ abstract class FirebaseFetcherService<T> : HugoLogger {
                 }
     }
 
-    fun removeEntry(entry: T) {
+    override fun removeEntry(entry: T) {
         val remoteId = remoteId(entry)
         if (remoteId == null) {
             warn { "Entry $entry cannot be removed (no remoteId)" }

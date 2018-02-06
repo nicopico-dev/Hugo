@@ -4,21 +4,30 @@ import fr.nicopico.hugo.model.AppState
 import fr.nicopico.hugo.model.Baby
 import fr.nicopico.hugo.service.BabyService
 import fr.nicopico.hugo.service.Fetcher
+import fr.nicopico.hugo.utils.HugoLogger
+import fr.nicopico.hugo.utils.warn
 import redux.api.Dispatcher
 import redux.api.Store
 import redux.api.enhancer.Middleware
 
-class BabyMiddleware(private val babyService: BabyService) : Middleware<AppState> {
+class BabyMiddleware(private val babyService: BabyService) : Middleware<AppState>, HugoLogger {
 
     override fun dispatch(store: Store<AppState>, next: Dispatcher, action: Any): Any {
-        when(action) {
-            is AUTHENTICATED -> babyService.user = action.user
+        if (action is AUTHENTICATED) {
+            babyService.user = action.user
+        }
 
-            FETCH_BABIES -> babyService.fetch(ReduxBabyFetcher(store))
-            STOP_FETCHING_BABIES -> babyService.stopFetching()
-            is ADD_BABY -> babyService.addEntry(action.baby)
-            is UPDATE_BABY -> babyService.updateEntry(action.baby)
-            is REMOVE_BABY -> babyService.removeEntry(action.baby)
+        // Do not process actions until the user is authenticated
+        if (babyService.user != null) {
+            when (action) {
+                FETCH_BABIES -> babyService.fetch(ReduxBabyFetcher(store))
+                STOP_FETCHING_BABIES -> babyService.stopFetching()
+                is ADD_BABY -> babyService.addEntry(action.baby)
+                is UPDATE_BABY -> babyService.updateEntry(action.baby)
+                is REMOVE_BABY -> babyService.removeEntry(action.baby)
+            }
+        } else {
+            warn { "Ignore $action as babyService is not ready" }
         }
         return next.dispatch(action)
     }

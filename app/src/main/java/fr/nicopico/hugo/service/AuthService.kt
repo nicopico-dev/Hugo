@@ -7,15 +7,11 @@ import fr.nicopico.hugo.model.User
 import fr.nicopico.hugo.utils.Result
 import kotlinx.coroutines.experimental.suspendCancellableCoroutine
 
-typealias OnUserChangeListener = (User) -> Unit
-
 interface AuthService {
     companion object {
         fun create(): AuthService = FirebaseAuthService()
     }
 
-    fun addOnUserChangeListener(listener: OnUserChangeListener)
-    fun removeOnUserChangeListener(listener: OnUserChangeListener)
     suspend fun signIn(): Result<User>
 }
 
@@ -25,16 +21,6 @@ private class FirebaseAuthService : AuthService {
 
     private val currentUser: User?
         get() = auth.currentUser?.convert()
-
-    private val onUserChangeListeners = mutableListOf<OnUserChangeListener>()
-    override fun addOnUserChangeListener(listener: OnUserChangeListener) {
-        onUserChangeListeners += listener
-        currentUser?.let { listener(it) }
-    }
-
-    override fun removeOnUserChangeListener(listener: OnUserChangeListener) {
-        onUserChangeListeners -= listener
-    }
 
     override suspend fun signIn(): Result<User> = suspendCancellableCoroutine { cont ->
         val currentUser = currentUser
@@ -48,18 +34,11 @@ private class FirebaseAuthService : AuthService {
                 if (it.isSuccessful) {
                     it.result.user.convert().let { user ->
                         cont.resume(Result.Success(user))
-                        notifyUserChange(user)
                     }
                 } else {
                     cont.resume(Result.Failure(it.exception ?: Exception("Unknown error")))
                 }
             }
-        }
-    }
-
-    private fun notifyUserChange(user: User) {
-        for (listener in onUserChangeListeners) {
-            listener(user)
         }
     }
 }

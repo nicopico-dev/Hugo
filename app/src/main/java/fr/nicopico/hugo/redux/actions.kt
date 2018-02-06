@@ -7,11 +7,11 @@ import fr.nicopico.hugo.model.Message
 import fr.nicopico.hugo.model.Timeline
 import fr.nicopico.hugo.model.User
 
+object SIGN_IN
 data class AUTHENTICATED(val user: User)
 
 object FETCH_BABIES
 object STOP_FETCHING_BABIES
-data class BABIES_FETCHED(val babies: List<Baby>)
 data class SELECT_BABY(val baby: Baby)
 data class ADD_BABY(val baby: Baby)
 data class UPDATE_BABY(val baby: Baby)
@@ -22,7 +22,6 @@ data class BABY_REMOVED(val baby: Baby)
 
 object FETCH_TIMELINE
 object STOP_FETCHING_TIMELINE
-data class TIMELINE_FETCHED(val timeline: Timeline)
 data class REMOTE_ERROR(val error: Exception)
 
 data class ADD_ENTRY(val entry: Timeline.Entry)
