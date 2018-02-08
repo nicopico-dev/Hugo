@@ -3,19 +3,30 @@ package fr.nicopico.hugo.service
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
-import fr.nicopico.hugo.utils.HugoLogger
-import fr.nicopico.hugo.utils.error
-import fr.nicopico.hugo.utils.verbose
-import fr.nicopico.hugo.utils.warn
+import fr.nicopico.hugo.utils.*
+import kotlin.properties.Delegates
 
 abstract class FirebaseFetcherService<T> : FetcherService<T>, HugoLogger {
 
     private val db by lazy { FirebaseFirestore.getInstance() }
     protected abstract val collectionPath: String
+    protected var ready: Boolean by Delegates.observable(false) { _, _, newValue ->
+        val fetcher = shouldFetcher
+        if (newValue && fetcher != null) {
+            this.fetch(fetcher)
+        }
+    }
 
     private var registration: ListenerRegistration? = null
+    // Fetcher that should be used once the service is ready
+    private var shouldFetcher: Fetcher<T>? = null
 
     override fun fetch(fetcher: Fetcher<T>) {
+        if (!ready && shouldFetcher == null) {
+            info("Defer fetching until the service is ready")
+            shouldFetcher = fetcher
+        }
+
         if (registration != null) {
             warn(m = "Fetching already set, use stopFetching() first to change the fetcher")
             return
@@ -41,10 +52,16 @@ abstract class FirebaseFetcherService<T> : FetcherService<T>, HugoLogger {
     }
 
     override fun stopFetching() {
+        shouldFetcher = null
         registration?.remove()
     }
 
     override fun addEntry(entry: T) {
+        if (!ready) {
+            warn(m = "Service is not ready")
+            return
+        }
+
         val remoteId = remoteId(entry)
         db.collection(collectionPath)
                 .run {
@@ -62,6 +79,11 @@ abstract class FirebaseFetcherService<T> : FetcherService<T>, HugoLogger {
     }
 
     override fun updateEntry(entry: T) {
+        if (!ready) {
+            warn(m = "Service is not ready")
+            return
+        }
+
         val remoteId = remoteId(entry)
         if (remoteId == null) {
             warn { "Entry $entry cannot be updated (no remoteId)" }
@@ -78,6 +100,11 @@ abstract class FirebaseFetcherService<T> : FetcherService<T>, HugoLogger {
     }
 
     override fun removeEntry(entry: T) {
+        if (!ready) {
+            warn(m = "Service is not ready")
+            return
+        }
+
         val remoteId = remoteId(entry)
         if (remoteId == null) {
             warn { "Entry $entry cannot be removed (no remoteId)" }

@@ -5,6 +5,7 @@ import fr.nicopico.hugo.model.Baby
 import fr.nicopico.hugo.model.User
 import fr.nicopico.hugo.utils.HugoLogger
 import fr.nicopico.hugo.utils.verbose
+import kotlin.properties.Delegates
 
 interface BabyService : FetcherService<Baby> {
     companion object {
@@ -16,7 +17,9 @@ interface BabyService : FetcherService<Baby> {
 
 private class FirebaseBabyService : FirebaseFetcherService<Baby>(), BabyService, HugoLogger {
 
-    override var user: User? = null
+    override var user: User? by Delegates.observable(null) { _, _: User?, newValue: User? ->
+        ready = newValue != null
+    }
 
     override val collectionPath
         get() = "/users/${user!!.uid}/babies"

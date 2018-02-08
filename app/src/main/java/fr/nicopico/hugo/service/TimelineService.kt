@@ -5,6 +5,7 @@ import fr.nicopico.hugo.model.*
 import fr.nicopico.hugo.utils.HugoLogger
 import fr.nicopico.hugo.utils.verbose
 import java.util.*
+import kotlin.properties.Delegates
 
 interface TimelineService : FetcherService<Timeline.Entry> {
     companion object {
@@ -17,8 +18,12 @@ interface TimelineService : FetcherService<Timeline.Entry> {
 
 private class FirebaseTimelineService : FirebaseFetcherService<Timeline.Entry>(), TimelineService {
 
-    override var user: User? = null
-    override var baby: Baby? = null
+    override var user: User? by Delegates.observable(null) { _, _: User?, newValue: User? ->
+        ready = newValue != null && baby != null
+    }
+    override var baby: Baby? by Delegates.observable(null) { _, _: Baby?, newValue: Baby? ->
+        ready = newValue != null && user != null
+    }
 
     override val collectionPath
         get() = "/users/${user!!.uid}/babies/${baby!!.key}/timeline"

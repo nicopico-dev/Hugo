@@ -5,7 +5,6 @@ import fr.nicopico.hugo.model.Timeline
 import fr.nicopico.hugo.service.Fetcher
 import fr.nicopico.hugo.service.TimelineService
 import fr.nicopico.hugo.utils.HugoLogger
-import fr.nicopico.hugo.utils.warn
 import redux.api.Dispatcher
 import redux.api.Store
 import redux.api.enhancer.Middleware
@@ -19,18 +18,14 @@ class TimelineMiddleware(private val timelineService: TimelineService) : Middlew
             timelineService.baby = action.baby
         }
 
-        // Do not process actions until the user is authenticated
-        if (timelineService.user != null && timelineService.baby != null) {
-            when(action) {
-                FETCH_TIMELINE -> timelineService.fetch(ReduxTimelineFetcher(store))
-                STOP_FETCHING_TIMELINE -> timelineService.stopFetching()
-                is ADD_ENTRY -> timelineService.addEntry(action.entry)
-                is UPDATE_ENTRY -> timelineService.updateEntry(action.entry)
-                is REMOVE_ENTRY -> timelineService.removeEntry(action.entry)
-            }
-        } else {
-            warn { "Ignore $action as timelineService is not ready" }
+        when(action) {
+            FETCH_TIMELINE -> timelineService.fetch(ReduxTimelineFetcher(store))
+            STOP_FETCHING_TIMELINE -> timelineService.stopFetching()
+            is ADD_ENTRY -> timelineService.addEntry(action.entry)
+            is UPDATE_ENTRY -> timelineService.updateEntry(action.entry)
+            is REMOVE_ENTRY -> timelineService.removeEntry(action.entry)
         }
+
         return next.dispatch(action)
     }
 
