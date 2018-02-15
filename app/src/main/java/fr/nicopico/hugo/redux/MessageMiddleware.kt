@@ -8,7 +8,7 @@ import redux.api.enhancer.Middleware
 /**
  * Automatically remove transient message from state
  */
-object MessageMiddleware : Middleware<AppState> {
+class MessageMiddleware : Middleware<AppState> {
     override fun dispatch(store: Store<AppState>, next: Dispatcher, action: Any): Any {
         val result = next.dispatch(action)
         if (action is DISPLAY_MESSAGE && action.message.transient) {

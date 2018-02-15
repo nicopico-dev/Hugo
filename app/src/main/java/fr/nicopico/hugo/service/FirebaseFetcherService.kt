@@ -6,7 +6,7 @@ import com.google.firebase.firestore.ListenerRegistration
 import fr.nicopico.hugo.utils.*
 import kotlin.properties.Delegates
 
-abstract class FirebaseFetcherService<T> : FetcherService<T>, HugoLogger {
+internal abstract class FirebaseFetcherService<T> : FetcherService<T>, HugoLogger {
 
     private val db by lazy { FirebaseFirestore.getInstance() }
     protected abstract val collectionPath: String
