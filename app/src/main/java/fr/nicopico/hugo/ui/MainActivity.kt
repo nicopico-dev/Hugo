@@ -8,13 +8,16 @@ import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.AppState
 import fr.nicopico.hugo.redux.appStore
+import fr.nicopico.hugo.redux.subscribeDistinct
 import fr.nicopico.hugo.ui.babies.BabySelectionFragment
 import fr.nicopico.hugo.ui.login.LoginFragment
 import fr.nicopico.hugo.ui.timeline.TimelineFragment
+import fr.nicopico.hugo.utils.HugoLogger
+import fr.nicopico.hugo.utils.debug
 import redux.api.Store
 
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), HugoLogger {
 
     private var subscription: Store.Subscription? = null
 
@@ -27,7 +30,7 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        subscription = appStore.subscribe {
+        subscription = appStore.subscribeDistinct {
             updateScreen(appStore.state)
         }
     }
@@ -52,13 +55,27 @@ class MainActivity : BaseActivity() {
     }
 
     private fun updateScreen(state: AppState) {
-        val fragment = when {
-            state.user == null -> LoginFragment()
-            state.selectedBaby == null -> BabySelectionFragment()
-            else -> TimelineFragment()
+        val screen = when {
+            state.user == null -> LoginFragment.SCREEN
+            state.selectedBaby == null -> BabySelectionFragment.SCREEN
+            else -> TimelineFragment.SCREEN
         }
+
+        val currentScreen = supportFragmentManager.findFragmentById(R.id.container).let {
+            (it as? BaseFragment)?.screen
+        }
+        if (screen == currentScreen) return
+
+        debug { "Switch screen to $screen" }
+        val fragment = when(screen) {
+            LoginFragment.SCREEN -> LoginFragment()
+            BabySelectionFragment.SCREEN -> BabySelectionFragment()
+            TimelineFragment.SCREEN -> TimelineFragment()
+            else -> throw UnsupportedOperationException("Unknown screen $screen")
+        }
+
         supportFragmentManager.beginTransaction()
                 .replace(R.id.container, fragment)
-                .commitNow()
+                .commit()
     }
 }

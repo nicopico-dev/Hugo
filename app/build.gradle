@@ -32,6 +32,10 @@ kotlin {
     }
 }
 
+androidExtensions {
+    experimental = true
+}
+
 dependencies {
     ext.support_version = '27.0.2'
     ext.coroutines_version = '0.20'

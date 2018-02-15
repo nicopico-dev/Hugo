@@ -14,4 +14,12 @@ fun View.hide() {
     visibility = View.GONE
 }
 
+fun View.visible(visible: Boolean) {
+    visibility = if (visible) {
+        View.VISIBLE
+    } else {
+        View.GONE
+    }
+}
+
 fun View.isVisible() = visibility == View.VISIBLE

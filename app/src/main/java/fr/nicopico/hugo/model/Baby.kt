@@ -9,13 +9,11 @@ data class Baby(
 ) {
 
     companion object {
-        private val rnd = Random(System.currentTimeMillis())
-
         private fun createKey(value: String): String {
             return Normalizer.normalize(value, Normalizer.Form.NFKD)
                     .replace("[\\p{InCombiningDiacriticalMarks}]".toRegex(), "")
                     .toUpperCase(Locale.ROOT)
-                    .replace("[^A-Z0-9]".toRegex(), "_") + "_${rnd.nextInt()}"
+                    .replace("[^A-Z0-9]".toRegex(), "_") + "_${System.currentTimeMillis()}"
         }
     }
 

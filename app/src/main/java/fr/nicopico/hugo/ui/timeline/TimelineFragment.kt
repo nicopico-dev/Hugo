@@ -17,9 +17,15 @@ import redux.api.Store
 
 class TimelineFragment : BaseFragment() {
 
+    companion object {
+        const val SCREEN = "SCREEN_TIMELINE"
+    }
+
+    override val screen: String = SCREEN
+
     private var subscription: Store.Subscription? = null
     private val timelineAdapter by lazy {
-        TimelineAdapter(context!!)
+        TimelineAdapter(context!!, appStore.state.timeline)
     }
     private var previousTimelineCount = 0
 
@@ -44,6 +50,7 @@ class TimelineFragment : BaseFragment() {
         fabAddFood.click(onAddEntryFactory(CareType.FOOD))
         fabAddHealthHygiene.click(onAddEntryFactory(CareType.HEALTH_HYGIENE))
 
+        // TODO Use LiveData + LifeCycleObserver for interaction with the appStore?
         refresh()
         subscription = appStore.subscribe {
             refresh()
@@ -66,7 +73,8 @@ class TimelineFragment : BaseFragment() {
     }
 
     private fun refresh() {
-        timelineAdapter.data = appStore.state.timeline
+        val timeline = appStore.state.timeline
+        timelineAdapter.data = timeline
         if (previousTimelineCount < timelineAdapter.itemCount) {
             previousTimelineCount = timelineAdapter.itemCount
             rcvTimeline.scrollToPosition(previousTimelineCount - 1)

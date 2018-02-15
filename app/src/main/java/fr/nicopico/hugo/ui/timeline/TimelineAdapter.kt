@@ -14,6 +14,8 @@ import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.*
 import fr.nicopico.hugo.ui.shared.dimensionForOffset
 import fr.nicopico.hugo.utils.getTimeFormat
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.item_timeline.*
 import kotlin.properties.Delegates
 
 class TimelineAdapter(
@@ -22,8 +24,8 @@ class TimelineAdapter(
 ) : RecyclerView.Adapter<TimelineAdapter.ViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
-    var data by Delegates.observable(data) { _, previous, new ->
-        val callback = TimelineEntryDiffUtilCallback(previous, new)
+    var data by Delegates.observable(data) { _, old, new ->
+        val callback = TimelineEntryDiffUtilCallback(old, new)
         val diffResult = DiffUtil.calculateDiff(callback, false)
         diffResult.dispatchUpdatesTo(this)
     }
@@ -39,12 +41,11 @@ class TimelineAdapter(
 
     override fun getItemCount(): Int = data.size
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(
+            override val containerView: View
+    ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
         private val timeFormat = getTimeFormat(itemView.context)
-        private val txtType: TextView = itemView.findViewById(R.id.txtType)
-        private val txtTime: TextView = itemView.findViewById(R.id.txtTime)
-        private val details: ViewGroup = itemView.findViewById(R.id.details)
 
         fun bind(entry: Timeline.Entry) {
             txtType.setText(when (entry.type) {
@@ -115,7 +116,7 @@ class TimelineAdapter(
         }
     }
 
-    class TimelineEntryDiffUtilCallback(
+    private class TimelineEntryDiffUtilCallback(
             private val previousEntries: List<Timeline.Entry>,
             private val newEntries: List<Timeline.Entry>
     ) : DiffUtil.Callback() {

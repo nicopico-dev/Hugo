@@ -54,6 +54,7 @@ internal abstract class FirebaseFetcherService<T> : FetcherService<T>, HugoLogge
     override fun stopFetching() {
         shouldFetcher = null
         registration?.remove()
+        registration = null
     }
 
     override fun addEntry(entry: T) {
