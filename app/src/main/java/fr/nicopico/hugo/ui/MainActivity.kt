@@ -7,8 +7,8 @@ import android.view.MenuItem
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.AppState
+import fr.nicopico.hugo.redux.StateHelper
 import fr.nicopico.hugo.redux.appStore
-import fr.nicopico.hugo.redux.subscribeDistinct
 import fr.nicopico.hugo.ui.babies.BabySelectionFragment
 import fr.nicopico.hugo.ui.login.LoginFragment
 import fr.nicopico.hugo.ui.timeline.TimelineFragment
@@ -17,26 +17,24 @@ import fr.nicopico.hugo.utils.debug
 import redux.api.Store
 
 
-class MainActivity : BaseActivity(), HugoLogger {
+class MainActivity : BaseActivity(), StateHelper, HugoLogger {
 
     private var subscription: Store.Subscription? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        updateScreen(appStore.state)
     }
 
-    override fun onResume() {
-        super.onResume()
-        subscription = appStore.subscribeDistinct {
+    override fun onStart() {
+        super.onStart()
+        subscription = subscribe {
             updateScreen(appStore.state)
         }
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onStop() {
+        super.onStop()
         subscription?.unsubscribe()
     }
 
