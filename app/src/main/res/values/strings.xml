@@ -36,6 +36,8 @@
     <string name="care_breast_extraction">Tire-lait %d mL</string>
     <string name="care_bottle_feeding_maternal">Biberon %d mL de lait maternel</string>
     <string name="care_bottle_feeding_artificial">Biberon %d mL de lait artificiel</string>
+    <string name="care_bottle_feeding_water">Biberon %d mL d\'eau</string>
+    <string name="care_bottle_feeding_other">Biberon %d mL</string>
 
     <string name="date_time_format">%1$s à %2$s</string>
     <string name="care_hygiene_bath">Bain</string>

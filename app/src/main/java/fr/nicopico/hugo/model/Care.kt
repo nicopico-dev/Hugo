@@ -48,9 +48,15 @@ data class BreastExtraction(
 data class BottleFeeding(
         /** volume in milliliters */
         val volume: Int,
-        /** `true` if the milk used was maternal milk extracted earlier */
-        val maternalMilk: Boolean = false
-) : Care(CareType.FOOD)
+        val content: String
+) : Care(CareType.FOOD) {
+    companion object {
+        const val MATERNAL_MILK = "MATERNAL_MILK"
+        const val ARTIFICIAL_MILK = "ARTIFICIAL_MILK"
+        const val WATER = "WATER"
+        const val OTHER = "OTHER"
+    }
+}
 
 enum class Breast { LEFT, RIGHT }
 

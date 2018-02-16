@@ -54,8 +54,7 @@ private object TimelineEntrySerializer : HugoLogger {
     private const val KEY_BREASTS = "breasts"
     private const val KEY_VOLUME = "volume"
     private const val KEY_DURATION = "duration"
-    private const val KEY_MATERNAL_MILK = "maternalMilk"
-
+    private const val KEY_CONTENT = "content"
 
     private const val CARE_UMBILICAL_CORD = "UmbilicalCord"
     private const val CARE_FACE = "Face"
@@ -97,7 +96,7 @@ private object TimelineEntrySerializer : HugoLogger {
                                 is BottleFeeding -> mapOf(
                                         KEY_FOOD_TYPE to FOOD_TYPE_BOTTLE_FEEDING,
                                         KEY_VOLUME to care.volume,
-                                        KEY_MATERNAL_MILK to care.maternalMilk
+                                        KEY_CONTENT to care.content
                                 )
                             }
                         }
@@ -137,7 +136,7 @@ private object TimelineEntrySerializer : HugoLogger {
                                 )
                                 FOOD_TYPE_BOTTLE_FEEDING -> BottleFeeding(
                                         volume = it[KEY_VOLUME].asInt(),
-                                        maternalMilk = it[KEY_MATERNAL_MILK] as Boolean
+                                        content = it[KEY_CONTENT] as String
                                 )
                                 else -> throw UnsupportedOperationException("Unable to deserialize care data $it (food type)")
                             }

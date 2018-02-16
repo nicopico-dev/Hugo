@@ -89,14 +89,14 @@ class AddFoodDialogFragment : AddTimelineEntryDialogFragment() {
     private fun getMaternalBottleFeedingCare(): Care? {
         return bottleMaternalFeedingView?.let {
             val volumeText = it.findViewById<EditText>(R.id.edtBottle).text.toString()
-            BottleFeeding(Integer.parseInt(volumeText), true)
+            BottleFeeding(Integer.parseInt(volumeText), BottleFeeding.MATERNAL_MILK)
         }
     }
 
     private fun getArtificialBottleFeedingCare(): Care? {
         return bottleArtificialFeedingView?.let {
             val volumeText = it.findViewById<EditText>(R.id.edtBottle).text.toString()
-            BottleFeeding(Integer.parseInt(volumeText), false)
+            BottleFeeding(Integer.parseInt(volumeText), BottleFeeding.ARTIFICIAL_MILK)
         }
     }
 
