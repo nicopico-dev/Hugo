@@ -6,14 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import fr.nicopico.hugo.R
+import fr.nicopico.hugo.model.AppState
 import fr.nicopico.hugo.model.CareType
 import fr.nicopico.hugo.redux.FETCH_TIMELINE
+import fr.nicopico.hugo.redux.ReduxLifecycleListener
 import fr.nicopico.hugo.redux.STOP_FETCHING_TIMELINE
 import fr.nicopico.hugo.redux.appStore
 import fr.nicopico.hugo.ui.BaseFragment
 import fr.nicopico.hugo.ui.shared.*
 import kotlinx.android.synthetic.main.fragment_timeline.*
-import redux.api.Store
 
 class TimelineFragment : BaseFragment() {
 
@@ -23,11 +24,15 @@ class TimelineFragment : BaseFragment() {
 
     override val screen: String = SCREEN
 
-    private var subscription: Store.Subscription? = null
     private val timelineAdapter by lazy {
         TimelineAdapter(context!!, appStore.state.timeline)
     }
     private var previousTimelineCount = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        lifecycle.addObserver(ReduxLifecycleListener(::updateScreen, FETCH_TIMELINE, STOP_FETCHING_TIMELINE))
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_timeline, container, false)
@@ -49,32 +54,10 @@ class TimelineFragment : BaseFragment() {
         fabAddChange.click(onAddEntryFactory(CareType.CHANGE))
         fabAddFood.click(onAddEntryFactory(CareType.FOOD))
         fabAddHealthHygiene.click(onAddEntryFactory(CareType.HEALTH_HYGIENE))
-
-        // TODO Use LiveData + LifeCycleObserver for interaction with the appStore?
-        refresh()
-        subscription = appStore.subscribe {
-            refresh()
-        }
     }
 
-    override fun onResume() {
-        super.onResume()
-        appStore.dispatch(FETCH_TIMELINE)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        appStore.dispatch(STOP_FETCHING_TIMELINE)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        subscription?.unsubscribe()
-    }
-
-    private fun refresh() {
-        val timeline = appStore.state.timeline
-        timelineAdapter.data = timeline
+    private fun updateScreen(state: AppState) {
+        timelineAdapter.data = state.timeline
         if (previousTimelineCount < timelineAdapter.itemCount) {
             previousTimelineCount = timelineAdapter.itemCount
             rcvTimeline.scrollToPosition(previousTimelineCount - 1)

@@ -7,35 +7,20 @@ import android.view.MenuItem
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.AppState
-import fr.nicopico.hugo.redux.StateHelper
-import fr.nicopico.hugo.redux.appStore
+import fr.nicopico.hugo.redux.ReduxLifecycleListener
 import fr.nicopico.hugo.ui.babies.BabySelectionFragment
 import fr.nicopico.hugo.ui.login.LoginFragment
 import fr.nicopico.hugo.ui.timeline.TimelineFragment
 import fr.nicopico.hugo.utils.HugoLogger
 import fr.nicopico.hugo.utils.debug
-import redux.api.Store
 
 
-class MainActivity : BaseActivity(), StateHelper, HugoLogger {
-
-    private var subscription: Store.Subscription? = null
+class MainActivity : BaseActivity(), HugoLogger {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        subscription = subscribe {
-            updateScreen(appStore.state)
-        }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        subscription?.unsubscribe()
+        lifecycle.addObserver(ReduxLifecycleListener(::updateScreen))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
