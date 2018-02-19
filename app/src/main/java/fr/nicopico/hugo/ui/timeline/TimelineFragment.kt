@@ -1,6 +1,7 @@
 package fr.nicopico.hugo.ui.timeline
 
 import android.os.Bundle
+import android.support.v4.app.DialogFragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -76,7 +77,7 @@ class TimelineFragment : BaseFragment() {
     private fun onAddEntryFactory(careType: CareType): (View) -> Unit {
         return {
             toggleFabMenu()
-            val dialogFragment = when (careType) {
+            val dialogFragment: DialogFragment = when (careType) {
                 CareType.CHANGE -> AddChangeDialogFragment.create()
                 CareType.FOOD -> AddFoodDialogFragment.create()
                 CareType.HEALTH_HYGIENE -> AddHealthAndHygieneDialogFragment.create()

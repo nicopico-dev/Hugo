@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.view.plusAssign
 import fr.nicopico.hugo.R
 import kotlinx.android.synthetic.main.dialog_form.*
+import kotlin.properties.Delegates
 
 abstract class FormDialogFragment : BottomSheetDialogFragment() {
 
@@ -17,14 +18,19 @@ abstract class FormDialogFragment : BottomSheetDialogFragment() {
     protected open val formLayoutId: Int? = null
     protected open val formLayout: View? = null
 
+    protected var submittable by Delegates.observable(true) { _, _, value ->
+        btnSubmit.isEnabled = value
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         require(formLayout != null || formLayoutId != null)
-        val layout = inflater.inflate(R.layout.dialog_form, container, false)
-        return formLayoutId?.let { layoutId ->
-            inflater.inflate(layoutId, layout.findViewById(R.id.formContainer))
-        } ?: layout.apply {
-            findViewById<ViewGroup>(R.id.formContainer) += formLayout!!
-        }
+        val themedInflater = LayoutInflater.from(context)
+        return themedInflater.inflate(R.layout.dialog_form, container, false)
+                .apply {
+                    findViewById<ViewGroup>(R.id.formContainer) += formLayoutId
+                            ?.let { layoutId -> inflater.inflate(layoutId, formContainer, false) }
+                            ?: formLayout!!
+                }
     }
 
     @CallSuper

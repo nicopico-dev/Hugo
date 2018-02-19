@@ -11,14 +11,14 @@ import android.widget.TextView
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.*
 import fr.nicopico.hugo.redux.ADD_ENTRY
-import fr.nicopico.hugo.redux.appStore
+import fr.nicopico.hugo.redux.StateHelper
 import fr.nicopico.hugo.ui.shared.click
 import fr.nicopico.hugo.ui.shared.hide
 import fr.nicopico.hugo.ui.shared.show
 import kotlinx.android.synthetic.main.dialog_add_food.*
 import java.util.*
 
-class AddFoodDialogFragment : AddTimelineEntryDialogFragment() {
+class AddFoodDialogFragment : AddTimelineEntryDialogFragment(), StateHelper {
 
     companion object {
         fun create() = AddFoodDialogFragment()
@@ -31,13 +31,11 @@ class AddFoodDialogFragment : AddTimelineEntryDialogFragment() {
 
     private val inflater by lazy { LayoutInflater.from(context) }
 
+    override val dialogTitle: CharSequence by lazy { getString(R.string.care_type_food) }
+    override val formLayoutId: Int? = R.layout.dialog_add_food
     override val dateOrTimeTextView: TextView
         get() = txtDateOrTime
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val themedInflater = LayoutInflater.from(context)
-        return themedInflater.inflate(R.layout.dialog_add_food, container, false)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,22 +53,22 @@ class AddFoodDialogFragment : AddTimelineEntryDialogFragment() {
         addBreastExtraction.click {
             it.toggle(R.layout.include_breast_extraction) { v -> breastExtractionView = v }
         }
+    }
 
-        btnSubmit.click {
-            val time = getEntryTime()
-            val cares = listOfNotNull(
-                    getMaternalBottleFeedingCare(),
-                    getArtificialBottleFeedingCare(),
-                    getBreastFeedingCare(Breast.LEFT),
-                    getBreastFeedingCare(Breast.RIGHT),
-                    getBreastExtraction()
-            )
+    override fun onSubmit(view: View) {
+        val time = getEntryTime()
+        val cares = listOfNotNull(
+                getMaternalBottleFeedingCare(),
+                getArtificialBottleFeedingCare(),
+                getBreastFeedingCare(Breast.LEFT),
+                getBreastFeedingCare(Breast.RIGHT),
+                getBreastExtraction()
+        )
 
-            val entry = Timeline.Entry(CareType.FOOD, time, cares)
-            appStore.dispatch(ADD_ENTRY(entry))
+        val entry = Timeline.Entry(CareType.FOOD, time, cares)
+        dispatch(ADD_ENTRY(entry))
 
-            dismiss()
-        }
+        dismiss()
     }
 
     private fun View.toggle(@LayoutRes layout: Int, propertySetter: (View) -> Unit) {

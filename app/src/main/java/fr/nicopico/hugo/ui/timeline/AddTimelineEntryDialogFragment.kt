@@ -2,16 +2,16 @@ package fr.nicopico.hugo.ui.timeline
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.BottomSheetDialogFragment
 import android.view.View
 import android.widget.TextView
 import fr.nicopico.hugo.R
+import fr.nicopico.hugo.ui.shared.FormDialogFragment
 import fr.nicopico.hugo.ui.shared.click
 import fr.nicopico.hugo.utils.round
 import kotlinx.android.synthetic.main.dialog_add_change.*
 import java.util.*
 
-abstract class AddTimelineEntryDialogFragment : BottomSheetDialogFragment() {
+abstract class AddTimelineEntryDialogFragment : FormDialogFragment() {
 
     companion object {
         private const val REQUEST_CODE_TIME_DATE = 1
