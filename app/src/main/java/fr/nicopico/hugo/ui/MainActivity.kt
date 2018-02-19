@@ -44,7 +44,7 @@ class MainActivity : BaseActivity(), HugoLogger {
             else -> TimelineFragment.SCREEN
         }
 
-        val currentScreen = supportFragmentManager.findFragmentById(R.id.container).let {
+        val currentScreen = supportFragmentManager.findFragmentById(R.id.formContainer).let {
             (it as? BaseFragment)?.screen
         }
         if (screen == currentScreen) return
@@ -58,7 +58,7 @@ class MainActivity : BaseActivity(), HugoLogger {
         }
 
         supportFragmentManager.beginTransaction()
-                .replace(R.id.container, fragment)
+                .replace(R.id.formContainer, fragment)
                 .commit()
     }
 }

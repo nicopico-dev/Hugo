@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.AppState
-import fr.nicopico.hugo.model.Baby
 import fr.nicopico.hugo.redux.*
 import fr.nicopico.hugo.ui.BaseFragment
 import fr.nicopico.hugo.ui.shared.SpaceItemDecoration
@@ -48,8 +47,8 @@ class BabySelectionFragment : BaseFragment() {
         }
 
         fabAdd.click {
-            // TODO Show baby form
-            appStore.dispatch(ADD_BABY(Baby("Hugo")))
+            val dialogFragment = AddBabyDialogFragment.create()
+            dialogFragment.show(fragmentManager, "ADD_BABY")
         }
 
         babyAdapter.listener = { baby -> appStore.dispatch(SELECT_BABY(baby)) }

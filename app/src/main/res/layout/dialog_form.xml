@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:drawablePadding="@dimen/space_micro"
+        android:paddingBottom="@dimen/space_small"
+        android:paddingEnd="@dimen/vertical_margin"
+        android:paddingStart="@dimen/vertical_margin"
+        android:paddingTop="@dimen/space_small"
+        android:textAppearance="?android:attr/textAppearanceMediumInverse"
+        tools:drawableStart="@drawable/ic_change"
+        tools:text="Title"/>
+
+    <FrameLayout
+        android:id="@+id/formContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/space_small"
+        android:layout_marginEnd="@dimen/vertical_margin"
+        android:layout_marginStart="@dimen/vertical_margin"
+        android:layout_marginTop="@dimen/space_medium"
+        tools:background="#94000000"
+        tools:minHeight="200dp"/>
+
+    <Button
+        android:id="@+id/btnCancel"
+        style="@style/Button.Link"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/vertical_margin"
+        android:layout_marginStart="@dimen/vertical_margin"
+        android:text="@string/cancel"/>
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/space_medium"
+        android:layout_marginEnd="@dimen/vertical_margin"
+        android:layout_marginStart="@dimen/vertical_margin"
+        android:text="@string/submit"/>
+
+</LinearLayout>

@@ -9,6 +9,9 @@
     <string name="unit_ml">mL</string>
     <string name="unit_minutes">minutes</string>
 
+    <string name="baby">Bébé</string>
+    <string name="baby_name">Prénom</string>
+
     <string name="breast_left">Sein gauche</string>
     <string name="breast_right">Sein droit</string>
     <string name="maternal_milk">(lait maternel)</string>
