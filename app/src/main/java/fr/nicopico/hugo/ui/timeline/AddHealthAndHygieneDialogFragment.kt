@@ -16,7 +16,7 @@ class AddHealthAndHygieneDialogFragment : AddTimelineEntryDialogFragment(), Stat
         fun create() = AddHealthAndHygieneDialogFragment()
     }
 
-    override val dialogTitle: CharSequence by lazy { getString(R.string.care_type_health_hygiene) }
+    override val dialogTitleId = R.string.care_type_health_hygiene
     override val formLayoutId: Int? = R.layout.dialog_add_health_and_hygiene
     override val dateOrTimeTextView: TextView
         get() = txtDateOrTime

@@ -15,7 +15,7 @@ class AddChangeDialogFragment : AddTimelineEntryDialogFragment(), StateHelper {
         fun create() = AddChangeDialogFragment()
     }
 
-    override val dialogTitle: CharSequence by lazy { getString(R.string.care_type_change) }
+    override val dialogTitleId = R.string.care_type_change
     override val formLayoutId: Int? = R.layout.dialog_add_change
     override val dateOrTimeTextView: TextView
         get() = txtDateOrTime

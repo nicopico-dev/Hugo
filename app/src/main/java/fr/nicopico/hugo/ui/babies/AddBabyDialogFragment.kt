@@ -15,7 +15,7 @@ class AddBabyDialogFragment : FormDialogFragment(), StateHelper {
         fun create() = AddBabyDialogFragment()
     }
 
-    override val dialogTitle: CharSequence by lazy { getString(R.string.baby) }
+    override val dialogTitleId: Int = R.string.baby
     override val formLayout: View?
         get() = edtName
 

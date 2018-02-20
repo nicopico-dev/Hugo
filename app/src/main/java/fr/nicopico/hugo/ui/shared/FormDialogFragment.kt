@@ -13,8 +13,8 @@ import kotlin.properties.Delegates
 
 abstract class FormDialogFragment : BottomSheetDialogFragment() {
 
-    protected abstract val dialogTitle: CharSequence
-    protected open val dialogIcon: Int = 0
+    protected abstract val dialogTitleId: Int
+    protected open val dialogIconId: Int = 0
     protected open val formLayoutId: Int? = null
     protected open val formLayout: View? = null
 
@@ -38,8 +38,8 @@ abstract class FormDialogFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         txtTitle.apply {
-            text = dialogTitle
-            drawables(start = dialogIcon)
+            setText(dialogTitleId)
+            drawables(start = dialogIconId)
         }
 
         btnSubmit.click(::onSubmit)

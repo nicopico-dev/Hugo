@@ -31,7 +31,7 @@ class AddFoodDialogFragment : AddTimelineEntryDialogFragment(), StateHelper {
 
     private val inflater by lazy { LayoutInflater.from(context) }
 
-    override val dialogTitle: CharSequence by lazy { getString(R.string.care_type_food) }
+    override val dialogTitleId = R.string.care_type_food
     override val formLayoutId: Int? = R.layout.dialog_add_food
     override val dateOrTimeTextView: TextView
         get() = txtDateOrTime
