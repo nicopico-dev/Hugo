@@ -13,6 +13,7 @@ data class AUTHENTICATED(val user: User)
 object FETCH_BABIES
 object STOP_FETCHING_BABIES
 data class SELECT_BABY(val baby: Baby)
+object UNSELECT_BABY
 data class ADD_BABY(val baby: Baby)
 data class UPDATE_BABY(val baby: Baby)
 data class REMOVE_BABY(val baby: Baby)

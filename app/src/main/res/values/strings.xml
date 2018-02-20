@@ -11,6 +11,7 @@
 
     <string name="baby">Bébé</string>
     <string name="baby_name">Prénom</string>
+    <string name="menu_select_baby">Sélectionner un autre bébé</string>
 
     <string name="breast_left">Sein gauche</string>
     <string name="breast_right">Sein droit</string>

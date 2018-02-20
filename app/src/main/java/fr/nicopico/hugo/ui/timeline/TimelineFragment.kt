@@ -3,21 +3,16 @@ package fr.nicopico.hugo.ui.timeline
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v7.widget.LinearLayoutManager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.AppState
 import fr.nicopico.hugo.model.CareType
-import fr.nicopico.hugo.redux.FETCH_TIMELINE
-import fr.nicopico.hugo.redux.ReduxLifecycleListener
-import fr.nicopico.hugo.redux.STOP_FETCHING_TIMELINE
-import fr.nicopico.hugo.redux.appStore
+import fr.nicopico.hugo.redux.*
 import fr.nicopico.hugo.ui.BaseFragment
 import fr.nicopico.hugo.ui.shared.*
 import kotlinx.android.synthetic.main.fragment_timeline.*
 
-class TimelineFragment : BaseFragment() {
+class TimelineFragment : BaseFragment(), StateHelper {
 
     companion object {
         const val SCREEN = "SCREEN_TIMELINE"
@@ -33,6 +28,7 @@ class TimelineFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycle.addObserver(ReduxLifecycleListener(::updateScreen, FETCH_TIMELINE, STOP_FETCHING_TIMELINE))
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -55,6 +51,17 @@ class TimelineFragment : BaseFragment() {
         fabAddChange.click(onAddEntryFactory(CareType.CHANGE))
         fabAddFood.click(onAddEntryFactory(CareType.FOOD))
         fabAddHealthHygiene.click(onAddEntryFactory(CareType.HEALTH_HYGIENE))
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.timeline_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menu_select_baby) {
+            dispatch(UNSELECT_BABY)
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun updateScreen(state: AppState) {

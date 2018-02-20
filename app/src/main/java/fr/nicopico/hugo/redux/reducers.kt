@@ -17,6 +17,7 @@ val babyReducer = Reducer<AppState> { state, action ->
         }
         is BABY_REMOVED -> state.copy(babies = state.babies - action.baby)
         is SELECT_BABY -> state.copy(selectedBaby = action.baby)
+        UNSELECT_BABY -> state.copy(selectedBaby = null)
         else -> state
     }
 }
