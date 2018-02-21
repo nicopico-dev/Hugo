@@ -1,6 +1,5 @@
 package fr.nicopico.hugo.service
 
-import com.google.firebase.firestore.DocumentChange
 import fr.nicopico.hugo.model.Baby
 import fr.nicopico.hugo.model.User
 import fr.nicopico.hugo.utils.HugoLogger
@@ -26,10 +25,10 @@ private class FirebaseBabyService : FirebaseFetcherService<Baby>(), BabyService,
 
     override fun remoteId(entry: Baby): String?
             = entry.key
-    override fun convert(entry: Baby): Map<String, Any?>
+    override fun convert(remoteId: String, entry: Baby): Map<String, Any?>
             = BabySerializer.serialize(entry)
-    override fun convert(change: DocumentChange): Baby
-            = BabySerializer.deserialize(change.document.data)
+    override fun convert(data: Map<String, Any?>): Baby
+            = BabySerializer.deserialize(data)
 }
 
 private object BabySerializer : HugoLogger {

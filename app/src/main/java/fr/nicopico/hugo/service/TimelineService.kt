@@ -1,6 +1,5 @@
 package fr.nicopico.hugo.service
 
-import com.google.firebase.firestore.DocumentChange
 import fr.nicopico.hugo.model.*
 import fr.nicopico.hugo.utils.HugoLogger
 import fr.nicopico.hugo.utils.verbose
@@ -30,10 +29,10 @@ private class FirebaseTimelineService : FirebaseFetcherService<Timeline.Entry>()
 
     override fun remoteId(entry: Timeline.Entry): String?
             = entry.remoteId
-    override fun convert(entry: Timeline.Entry): Map<String, Any?>
-            = TimelineEntrySerializer.serialize(entry)
-    override fun convert(change: DocumentChange): Timeline.Entry
-            = TimelineEntrySerializer.deserialize(change.document.id, change.document.data)
+    override fun convert(remoteId: String, entry: Timeline.Entry): Map<String, Any?>
+            = TimelineEntrySerializer.serialize(remoteId, entry)
+    override fun convert(data: Map<String, Any?>): Timeline.Entry
+            = TimelineEntrySerializer.deserialize(data)
 }
 
 private object TimelineEntrySerializer : HugoLogger {
@@ -64,7 +63,7 @@ private object TimelineEntrySerializer : HugoLogger {
     private const val CARE_POO = "Poo"
 
     @Suppress("IMPLICIT_CAST_TO_ANY")
-    fun serialize(entry: Timeline.Entry, schema: Int = 1): Map<String, *> {
+    fun serialize(remoteId: String, entry: Timeline.Entry, schema: Int = 1): Map<String, *> {
         verbose { "Serializing $entry to Firebase (schema $schema)" }
 
         if (schema == 1) {
@@ -108,13 +107,13 @@ private object TimelineEntrySerializer : HugoLogger {
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun deserialize(remoteId: String?, data: Map<String, Any?>): Timeline.Entry {
+    fun deserialize(data: Map<String, Any?>): Timeline.Entry {
         val schema = data[KEY_SCHEMA] as Long
         verbose { "De-serializing from Firebase $data (schema $schema)" }
 
         if (schema == 1L) {
             return Timeline.Entry(
-                    remoteId = remoteId,
+                    remoteId = data[KEY_REMOTE_ID] as String?,
                     type = data[KEY_TYPE].asEnum(),
                     time = data[KEY_TIME] as Date,
                     cares = (data[KEY_CARES] as List<*>).map {

@@ -1,6 +1,8 @@
 package fr.nicopico.hugo.service
 
 interface FetcherService<T> {
+    suspend fun getEntry(remoteId: String): T
+
     fun fetch(fetcher: Fetcher<T>)
     fun stopFetching()
 

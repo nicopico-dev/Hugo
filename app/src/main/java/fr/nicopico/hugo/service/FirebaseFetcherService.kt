@@ -4,6 +4,7 @@ import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import fr.nicopico.hugo.utils.*
+import kotlin.coroutines.experimental.suspendCoroutine
 import kotlin.properties.Delegates
 
 internal abstract class FirebaseFetcherService<T> : FetcherService<T>, HugoLogger {
@@ -20,6 +21,19 @@ internal abstract class FirebaseFetcherService<T> : FetcherService<T>, HugoLogge
     private var registration: ListenerRegistration? = null
     // Fetcher that should be used once the service is ready
     private var shouldFetcher: Fetcher<T>? = null
+
+    override suspend fun getEntry(remoteId: String): T = suspendCoroutine { cont ->
+        db.collection(collectionPath)
+                .document(remoteId)
+                .get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        cont.resume(convert(task.result.data))
+                    } else {
+                        cont.resumeWithException(task.exception!!)
+                    }
+                }
+    }
 
     override fun fetch(fetcher: Fetcher<T>) {
         if (!ready && shouldFetcher == null) {
@@ -63,16 +77,19 @@ internal abstract class FirebaseFetcherService<T> : FetcherService<T>, HugoLogge
             return
         }
 
-        val remoteId = remoteId(entry)
+        lateinit var remoteId: String
         db.collection(collectionPath)
                 .run {
-                    if (remoteId == null) {
+                    if (remoteId(entry) == null) {
                         document()
                     } else {
                         document(remoteId)
+                    }.apply {
+                        // Retrieve the document id (new or existing)
+                        remoteId = id
                     }
                 }
-                .set(convert(entry))
+                .set(convert(remoteId, entry))
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) verbose { "Entry added: $entry" }
                     else error(task.exception) { "Unable to add entry $entry" }
@@ -93,7 +110,7 @@ internal abstract class FirebaseFetcherService<T> : FetcherService<T>, HugoLogge
 
         db.collection(collectionPath)
                 .document(remoteId)
-                .set(convert(entry))
+                .set(convert(remoteId, entry))
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) verbose { "Entry updated: $entry" }
                     else error(task.exception) { "Unable to update entry $entry" }
@@ -122,6 +139,10 @@ internal abstract class FirebaseFetcherService<T> : FetcherService<T>, HugoLogge
     }
 
     protected abstract fun remoteId(entry: T): String?
-    protected abstract fun convert(entry: T): Map<String, Any?>
-    protected abstract fun convert(change: DocumentChange): T
+    protected abstract fun convert(remoteId: String, entry: T): Map<String, Any?>
+    protected abstract fun convert(data: Map<String, Any?>): T
+
+    private fun convert(change: DocumentChange): T {
+        return convert(change.document.data)
+    }
 }
