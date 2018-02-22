@@ -8,6 +8,13 @@ inline fun View.click(crossinline listener: (View) -> Unit) {
     setOnClickListener { listener.invoke(this) }
 }
 
+inline fun View.longClick(crossinline listener: (View) -> Unit) {
+    setOnLongClickListener {
+        listener.invoke(this)
+        return@setOnLongClickListener true
+    }
+}
+
 fun View.show() {
     visibility = View.VISIBLE
 }
@@ -32,3 +39,10 @@ fun TextView.drawables(
         @DrawableRes end: Int = 0,
         @DrawableRes bottom: Int = 0
 ) = setCompoundDrawablesRelativeWithIntrinsicBounds(start, top, end, bottom)
+
+fun TextView.editorAction(listener: (View) -> Unit) {
+    setOnEditorActionListener { _, _, _ ->
+        listener.invoke(this)
+        return@setOnEditorActionListener false
+    }
+}

@@ -32,6 +32,15 @@ fun <T> LifecycleOwner.load(loader: () -> T): Deferred<T> {
     return deferred
 }
 
+fun <T> LifecycleOwner.loadSuspend(loader: suspend () -> T): Deferred<T> {
+    val deferred = async(context = Background, start = CoroutineStart.LAZY) {
+        loader()
+    }
+
+    lifecycle.addObserver(CoroutineLifecycleListener(deferred))
+    return deferred
+}
+
 infix fun <T> Deferred<T>.then(block: (T) -> Unit): Job {
     return launch(context = UI) {
         block(this@then.await())

@@ -12,11 +12,11 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TimePicker
 import fr.nicopico.hugo.R
-import fr.nicopico.hugo.ui.shared.click
-import fr.nicopico.hugo.ui.shared.hide
-import fr.nicopico.hugo.ui.shared.isVisible
-import fr.nicopico.hugo.ui.shared.show
-import fr.nicopico.hugo.utils.*
+import fr.nicopico.hugo.ui.shared.*
+import fr.nicopico.hugo.utils.getDateFormat
+import fr.nicopico.hugo.utils.getTimeFormat
+import fr.nicopico.hugo.utils.withHourMinute
+import fr.nicopico.hugo.utils.withYearMonthDay
 import kotlinx.android.synthetic.main.dialog_time_date_picker.*
 import java.util.*
 

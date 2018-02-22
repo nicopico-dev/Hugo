@@ -29,11 +29,15 @@ private val reduxLogger = object : Logger<AppState> {
     }
 }
 
+val authService = AuthService.create()
+val babyService = BabyService.create()
+val timelineService = TimelineService.create()
+
 private val enhancer = applyMiddleware(
         createLoggerMiddleware(reduxLogger),
         MessageMiddleware(),
-        AuthMiddleware(AuthService.create()),
-        RemoteMiddleware(BabyService.create(), TimelineService.create())
+        AuthMiddleware(authService),
+        RemoteMiddleware(babyService, timelineService)
 )
 private val reducer = combineReducers(babyReducer, timelineReducer, remoteReducer)
 

@@ -8,7 +8,7 @@ val babyReducer = Reducer<AppState> { state, action ->
     when (action) {
         is BABY_ADDED -> state.copy(babies = state.babies + action.baby)
         is BABY_MODIFIED -> {
-            val index = state.babies.indexOf(action.baby)
+            val index = state.babies.indexOfFirst { it.key == action.baby.key }
             val updatedBabies = state.babies.toMutableList().apply {
                 removeAt(index)
                 add(index, action.baby)
@@ -26,7 +26,7 @@ val timelineReducer = Reducer<AppState> { state, action ->
     when (action) {
         is ENTRY_ADDED -> state.copy(timeline = state.timeline + action.entry)
         is ENTRY_MODIFIED -> {
-            val index = state.timeline.indexOf(action.entry)
+            val index = state.timeline.indexOfFirst { it.remoteId == action.entry.remoteId }
             val updatedTimeline = state.timeline.toMutableList().apply {
                 removeAt(index)
                 add(index, action.entry)

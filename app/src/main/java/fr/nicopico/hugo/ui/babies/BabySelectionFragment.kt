@@ -46,12 +46,10 @@ class BabySelectionFragment : BaseFragment() {
             addItemDecoration(SpaceItemDecoration(layoutManager, dimensionForOffset(R.dimen.space_medium)))
         }
 
-        fabAdd.click {
-            val dialogFragment = AddBabyDialogFragment.create()
-            dialogFragment.show(fragmentManager, "ADD_BABY")
-        }
-
-        babyAdapter.listener = { baby -> appStore.dispatch(SELECT_BABY(baby)) }
+        // Interactions
+        fabAdd.click { AddBabyDialogFragment.show(fm) }
+        babyAdapter.clickListener = { baby -> appStore.dispatch(SELECT_BABY(baby)) }
+        babyAdapter.longClickListener = { baby -> EditBabyDialogFragment.show(fm, baby) }
     }
     private fun updateScreen(state: AppState) {
         babyAdapter.data = state.babies

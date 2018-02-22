@@ -9,9 +9,12 @@ import android.view.ViewGroup
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.Baby
 import fr.nicopico.hugo.ui.shared.click
+import fr.nicopico.hugo.ui.shared.longClick
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_baby.*
 import kotlin.properties.Delegates
+
+private typealias BabyListener = (Baby) -> Unit
 
 class BabyAdapter(
         context: Context,
@@ -24,7 +27,8 @@ class BabyAdapter(
         val diffResult = DiffUtil.calculateDiff(callback, false)
         diffResult.dispatchUpdatesTo(this)
     }
-    var listener: ((Baby) -> Unit)? = null
+    var clickListener: BabyListener? = null
+    var longClickListener: BabyListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder =
             inflater.inflate(R.layout.item_baby, parent, false)
@@ -43,7 +47,8 @@ class BabyAdapter(
         private lateinit var baby: Baby
 
         init {
-            txtBabyName.click { listener?.invoke(baby) }
+            containerView.click { clickListener?.invoke(baby) }
+            containerView.longClick { longClickListener?.invoke(baby) }
         }
 
         fun bindTo(baby: Baby) {
