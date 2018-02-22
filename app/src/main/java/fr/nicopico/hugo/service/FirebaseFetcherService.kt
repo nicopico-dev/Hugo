@@ -80,14 +80,17 @@ internal abstract class FirebaseFetcherService<T> : FetcherService<T>, HugoLogge
         lateinit var remoteId: String
         db.collection(collectionPath)
                 .run {
-                    if (remoteId(entry) == null) {
-                        document()
-                    } else {
-                        document(remoteId)
-                    }.apply {
-                        // Retrieve the document id (new or existing)
-                        remoteId = id
-                    }
+                    remoteId(entry)
+                            .let { currentRemoteId ->
+                                when (currentRemoteId) {
+                                    null -> document()
+                                    else -> document(currentRemoteId)
+                                }
+                            }
+                            .apply {
+                                // Retrieve the document id (new or existing)
+                                remoteId = id
+                            }
                 }
                 .set(convert(remoteId, entry))
                 .addOnCompleteListener { task ->
