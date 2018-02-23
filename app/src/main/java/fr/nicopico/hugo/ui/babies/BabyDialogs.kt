@@ -8,6 +8,7 @@ import android.view.View
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.Baby
 import fr.nicopico.hugo.redux.*
+import fr.nicopico.hugo.service.babyService
 import fr.nicopico.hugo.ui.shared.*
 import fr.nicopico.hugo.utils.loadSuspend
 import fr.nicopico.hugo.utils.then
@@ -59,7 +60,7 @@ class EditBabyDialogFragment : AddBabyDialogFragment() {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
             deferredBaby = loadSuspend {
-                babyService.getEntry(babyKey)
+                babyService.get(babyKey)
             }
         }
     }

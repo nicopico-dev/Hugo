@@ -22,7 +22,7 @@ internal abstract class FirebaseFetcherService<T> : FetcherService<T>, HugoLogge
     // Fetcher that should be used once the service is ready
     private var shouldFetcher: Fetcher<T>? = null
 
-    override suspend fun getEntry(remoteId: String): T = suspendCoroutine { cont ->
+    override suspend fun get(remoteId: String): T = suspendCoroutine { cont ->
         db.collection(collectionPath)
                 .document(remoteId)
                 .get()
