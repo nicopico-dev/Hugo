@@ -6,11 +6,13 @@ import android.arch.lifecycle.OnLifecycleEvent
 import fr.nicopico.hugo.model.AppState
 import redux.api.Store
 
+typealias StateChangeDetector = (AppState, AppState) -> Boolean
+
 class ReduxLifecycleListener(
         private val observer: (AppState) -> Unit,
         private val startAction: Any? = null,
         private val stopAction: Any? = null,
-        private val changeDetector: (AppState, AppState) -> Boolean = { _, _ -> true }
+        private val changeDetector: StateChangeDetector = { _, _ -> true }
 ) : LifecycleObserver {
 
     private var subscription: Store.Subscription? = null

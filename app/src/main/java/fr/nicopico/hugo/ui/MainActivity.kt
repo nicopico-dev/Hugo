@@ -2,16 +2,14 @@ package fr.nicopico.hugo.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.AppState
 import fr.nicopico.hugo.model.Screen
-import fr.nicopico.hugo.redux.EXIT_APP
-import fr.nicopico.hugo.redux.GO_BACK
-import fr.nicopico.hugo.redux.ReduxLifecycleListener
-import fr.nicopico.hugo.redux.ReduxView
+import fr.nicopico.hugo.redux.*
 import fr.nicopico.hugo.ui.babies.BabySelectionFragment
 import fr.nicopico.hugo.ui.login.LoginFragment
 import fr.nicopico.hugo.ui.timeline.TimelineFragment
@@ -20,14 +18,14 @@ import fr.nicopico.hugo.utils.debug
 import fr.nicopico.hugo.utils.info
 
 
-class MainActivity : BaseActivity(), HugoLogger, ReduxView {
+class MainActivity : AppCompatActivity(), HugoLogger, ReduxView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        lifecycle.addObserver(ReduxLifecycleListener(::updateScreen) { s1, s2 ->
-            s1.screen != s2.screen
-        })
+
+        val stateChangeDetector: StateChangeDetector = { s1, s2 -> s1.screen != s2.screen }
+        lifecycle.addObserver(ReduxLifecycleListener(::updateScreen, stateChangeDetector))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
