@@ -1,8 +1,29 @@
 package fr.nicopico.hugo.redux
 
 import fr.nicopico.hugo.model.AppState
+import fr.nicopico.hugo.model.Screen
 import fr.nicopico.hugo.model.Timeline
 import redux.api.Reducer
+
+val navigationReducer = Reducer<AppState> { state, action ->
+    when (action) {
+        is AUTHENTICATED -> state.copy(
+                // Go directly to the timeline if a baby is selected
+                screen = state.selectedBaby?.let { Screen.Timeline } ?: Screen.BabySelection
+        )
+        is SELECT_BABY -> state.copy(screen = Screen.Timeline)
+        UNSELECT_BABY -> state.copy(screen = Screen.BabySelection)
+        GO_BACK -> state.copy(
+                screen = when (state.screen) {
+                    Screen.Timeline -> Screen.BabySelection
+                    else -> Screen.Exit
+                }
+        )
+        // Allows to re-start the application
+        EXIT_APP -> state.copy(screen = Screen.Login)
+        else -> state
+    }
+}
 
 val babyReducer = Reducer<AppState> { state, action ->
     when (action) {

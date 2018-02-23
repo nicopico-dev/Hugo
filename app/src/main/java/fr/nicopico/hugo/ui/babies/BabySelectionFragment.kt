@@ -16,12 +16,6 @@ import kotlinx.android.synthetic.main.fragment_baby_selection.*
 
 class BabySelectionFragment : BaseFragment(), ReduxView {
 
-    companion object {
-        const val SCREEN = "SCREEN_BABY_SELECTION"
-    }
-
-    override val screen: String = SCREEN
-
     private val babyAdapter by lazy {
         BabyAdapter(context!!, appStore.state.babies)
     }

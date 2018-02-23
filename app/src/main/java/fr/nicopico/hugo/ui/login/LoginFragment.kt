@@ -11,12 +11,6 @@ import fr.nicopico.hugo.ui.BaseFragment
 
 class LoginFragment : BaseFragment() {
 
-    companion object {
-        const val SCREEN = "SCREEN_LOGIN"
-    }
-
-    override val screen: String = SCREEN
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_login, container, false)
     }

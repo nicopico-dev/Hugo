@@ -7,20 +7,27 @@ import android.view.MenuItem
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.AppState
+import fr.nicopico.hugo.model.Screen
+import fr.nicopico.hugo.redux.EXIT_APP
+import fr.nicopico.hugo.redux.GO_BACK
 import fr.nicopico.hugo.redux.ReduxLifecycleListener
+import fr.nicopico.hugo.redux.ReduxView
 import fr.nicopico.hugo.ui.babies.BabySelectionFragment
 import fr.nicopico.hugo.ui.login.LoginFragment
 import fr.nicopico.hugo.ui.timeline.TimelineFragment
 import fr.nicopico.hugo.utils.HugoLogger
 import fr.nicopico.hugo.utils.debug
+import fr.nicopico.hugo.utils.info
 
 
-class MainActivity : BaseActivity(), HugoLogger {
+class MainActivity : BaseActivity(), HugoLogger, ReduxView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        lifecycle.addObserver(ReduxLifecycleListener(::updateScreen))
+        lifecycle.addObserver(ReduxLifecycleListener(::updateScreen) { s1, s2 ->
+            s1.screen != s2.screen
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -37,24 +44,26 @@ class MainActivity : BaseActivity(), HugoLogger {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun updateScreen(state: AppState) {
-        val screen = when {
-            state.user == null -> LoginFragment.SCREEN
-            state.selectedBaby == null -> BabySelectionFragment.SCREEN
-            else -> TimelineFragment.SCREEN
-        }
+    override fun onBackPressed() {
+        // DO NOT CALL super.onBackPressed()
+        dispatch(GO_BACK)
+    }
 
-        val currentScreen = supportFragmentManager.findFragmentById(R.id.formContainer).let {
-            (it as? BaseFragment)?.screen
+    private fun updateScreen(state: AppState) {
+        val screen = state.screen
+        if (screen == Screen.Exit) {
+            info("Exiting the application")
+            dispatch(EXIT_APP)
+            finish()
+            return
         }
-        if (screen == currentScreen) return
 
         debug { "Switch screen to $screen" }
         val fragment = when(screen) {
-            LoginFragment.SCREEN -> LoginFragment()
-            BabySelectionFragment.SCREEN -> BabySelectionFragment()
-            TimelineFragment.SCREEN -> TimelineFragment()
-            else -> throw UnsupportedOperationException("Unknown screen $screen")
+            Screen.Exit -> throw IllegalStateException("EXIT")
+            Screen.Login -> LoginFragment()
+            Screen.BabySelection -> BabySelectionFragment()
+            Screen.Timeline -> TimelineFragment()
         }
 
         supportFragmentManager.beginTransaction()

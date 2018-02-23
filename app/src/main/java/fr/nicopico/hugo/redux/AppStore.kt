@@ -3,6 +3,7 @@
 package fr.nicopico.hugo.redux
 
 import fr.nicopico.hugo.model.AppState
+import fr.nicopico.hugo.model.Screen
 import fr.nicopico.hugo.model.Timeline
 import fr.nicopico.hugo.service.authService
 import fr.nicopico.hugo.service.babyService
@@ -18,6 +19,7 @@ import redux.logger.createLoggerMiddleware
 private val initialState = AppState(
         user = null,
         timeline = Timeline(),
+        screen = Screen.Login,
         babies = emptyList(),
         selectedBaby = null
 )
@@ -35,6 +37,6 @@ private val enhancer = applyMiddleware(
         AuthMiddleware(authService),
         RemoteMiddleware(babyService, timelineService)
 )
-private val reducer = combineReducers(babyReducer, timelineReducer, remoteReducer)
+private val reducer = combineReducers(babyReducer, timelineReducer, remoteReducer, navigationReducer)
 
 val appStore = createStore(reducer, initialState, enhancer)

@@ -14,12 +14,6 @@ import kotlinx.android.synthetic.main.fragment_timeline.*
 
 class TimelineFragment : BaseFragment(), ReduxView {
 
-    companion object {
-        const val SCREEN = "SCREEN_TIMELINE"
-    }
-
-    override val screen: String = SCREEN
-
     private val timelineAdapter by lazy {
         TimelineAdapter(context!!, appStore.state.timeline)
     }

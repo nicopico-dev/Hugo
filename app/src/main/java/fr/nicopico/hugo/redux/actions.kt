@@ -9,6 +9,8 @@ import fr.nicopico.hugo.model.User
 
 object SIGN_IN
 data class AUTHENTICATED(val user: User)
+object GO_BACK
+object EXIT_APP
 
 object FETCH_BABIES
 object STOP_FETCHING_BABIES
