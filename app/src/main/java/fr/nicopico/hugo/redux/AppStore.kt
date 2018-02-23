@@ -4,9 +4,9 @@ package fr.nicopico.hugo.redux
 
 import fr.nicopico.hugo.model.AppState
 import fr.nicopico.hugo.model.Timeline
-import fr.nicopico.hugo.service.AuthService
-import fr.nicopico.hugo.service.BabyService
-import fr.nicopico.hugo.service.TimelineService
+import fr.nicopico.hugo.service.authService
+import fr.nicopico.hugo.service.babyService
+import fr.nicopico.hugo.service.timelineService
 import fr.nicopico.hugo.utils.HugoLogger
 import fr.nicopico.hugo.utils.debug
 import redux.applyMiddleware
@@ -28,10 +28,6 @@ private val reduxLogger = object : Logger<AppState> {
         logger.debug { "${entry.action} -> ${entry.newState}" }
     }
 }
-
-val authService = AuthService.create()
-val babyService = BabyService.create()
-val timelineService = TimelineService.create()
 
 private val enhancer = applyMiddleware(
         createLoggerMiddleware(reduxLogger),
