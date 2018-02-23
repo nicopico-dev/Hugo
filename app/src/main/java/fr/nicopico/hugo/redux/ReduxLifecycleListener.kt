@@ -9,15 +9,23 @@ import redux.api.Store
 class ReduxLifecycleListener(
         private val observer: (AppState) -> Unit,
         private val startAction: Any? = null,
-        private val stopAction: Any? = null
+        private val stopAction: Any? = null,
+        private val changeDetector: (AppState, AppState) -> Boolean = { _, _ -> true }
 ) : LifecycleObserver {
 
     private var subscription: Store.Subscription? = null
+    private var latestState: AppState? = null
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() {
         observer(appStore.state)
-        subscription = appStore.subscribe { observer(appStore.state) }
+        subscription = appStore.subscribe {
+            val changed = latestState?.let { changeDetector.invoke(it, appStore.state) } ?: true
+            if (changed) {
+                observer(appStore.state)
+                latestState = appStore.state
+            }
+        }
         startAction?.let { appStore.dispatch(it) }
     }
 
