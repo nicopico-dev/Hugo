@@ -11,14 +11,14 @@ import android.widget.TextView
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.*
 import fr.nicopico.hugo.redux.ADD_ENTRY
-import fr.nicopico.hugo.redux.StateHelper
+import fr.nicopico.hugo.redux.ReduxView
 import fr.nicopico.hugo.ui.shared.click
 import fr.nicopico.hugo.ui.shared.hide
 import fr.nicopico.hugo.ui.shared.show
 import kotlinx.android.synthetic.main.dialog_add_food.*
 import java.util.*
 
-class AddFoodDialogFragment : AddTimelineEntryDialogFragment(), StateHelper {
+class AddFoodDialogFragment : AddTimelineEntryDialogFragment(), ReduxView {
 
     companion object {
         fun create() = AddFoodDialogFragment()

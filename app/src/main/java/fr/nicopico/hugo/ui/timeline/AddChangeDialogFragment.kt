@@ -5,11 +5,11 @@ import android.widget.TextView
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.*
 import fr.nicopico.hugo.redux.ADD_ENTRY
-import fr.nicopico.hugo.redux.StateHelper
+import fr.nicopico.hugo.redux.ReduxView
 import fr.nicopico.hugo.ui.shared.confirm
 import kotlinx.android.synthetic.main.dialog_add_change.*
 
-class AddChangeDialogFragment : AddTimelineEntryDialogFragment(), StateHelper {
+class AddChangeDialogFragment : AddTimelineEntryDialogFragment(), ReduxView {
 
     companion object {
         fun create() = AddChangeDialogFragment()

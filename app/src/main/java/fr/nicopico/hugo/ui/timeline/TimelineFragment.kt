@@ -12,7 +12,7 @@ import fr.nicopico.hugo.ui.BaseFragment
 import fr.nicopico.hugo.ui.shared.*
 import kotlinx.android.synthetic.main.fragment_timeline.*
 
-class TimelineFragment : BaseFragment(), StateHelper {
+class TimelineFragment : BaseFragment(), ReduxView {
 
     companion object {
         const val SCREEN = "SCREEN_TIMELINE"

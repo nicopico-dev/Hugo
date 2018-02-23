@@ -3,7 +3,7 @@ package fr.nicopico.hugo.redux
 import fr.nicopico.hugo.model.AppState
 import redux.api.Store
 
-interface StateHelper {
+interface ReduxView {
 
     fun dispatch(action: Any) {
         appStore.dispatch(action)

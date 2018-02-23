@@ -6,11 +6,11 @@ import android.widget.TextView
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.*
 import fr.nicopico.hugo.redux.ADD_ENTRY
-import fr.nicopico.hugo.redux.StateHelper
+import fr.nicopico.hugo.redux.ReduxView
 import fr.nicopico.hugo.redux.appStore
 import kotlinx.android.synthetic.main.dialog_add_health_and_hygiene.*
 
-class AddHealthAndHygieneDialogFragment : AddTimelineEntryDialogFragment(), StateHelper {
+class AddHealthAndHygieneDialogFragment : AddTimelineEntryDialogFragment(), ReduxView {
 
     companion object {
         fun create() = AddHealthAndHygieneDialogFragment()

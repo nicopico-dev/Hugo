@@ -18,7 +18,7 @@ import kotlinx.coroutines.experimental.Deferred
 fun Fragment.addBabyDialog() = AddBabyDialogFragment.show(fragmentManager!!)
 fun Fragment.editBabyDialog(baby: Baby) = EditBabyDialogFragment.show(fragmentManager!!, baby)
 
-open class AddBabyDialogFragment : FormDialogFragment(), StateHelper {
+open class AddBabyDialogFragment : FormDialogFragment(), ReduxView {
 
     companion object {
         fun show(fm: FragmentManager) = AddBabyDialogFragment()

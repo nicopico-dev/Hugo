@@ -14,7 +14,7 @@ import fr.nicopico.hugo.ui.shared.click
 import fr.nicopico.hugo.ui.shared.dimensionForOffset
 import kotlinx.android.synthetic.main.fragment_baby_selection.*
 
-class BabySelectionFragment : BaseFragment(), StateHelper {
+class BabySelectionFragment : BaseFragment(), ReduxView {
 
     companion object {
         const val SCREEN = "SCREEN_BABY_SELECTION"
