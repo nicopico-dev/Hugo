@@ -22,7 +22,8 @@ class BabySelectionFragment : BaseFragment(), ReduxView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        lifecycle.addObserver(ReduxLifecycleListener(::updateScreen, FETCH_BABIES, STOP_FETCHING_BABIES))
+        ReduxLifecycleListener(::updateScreen, FETCH_BABIES, STOP_FETCHING_BABIES)
+                .subscribe(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

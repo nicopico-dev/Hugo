@@ -21,8 +21,10 @@ class TimelineFragment : BaseFragment(), ReduxView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        lifecycle.addObserver(ReduxLifecycleListener(::updateScreen, FETCH_TIMELINE, STOP_FETCHING_TIMELINE))
         setHasOptionsMenu(true)
+
+        ReduxLifecycleListener(::updateScreen, FETCH_TIMELINE, STOP_FETCHING_TIMELINE)
+                .subscribe(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

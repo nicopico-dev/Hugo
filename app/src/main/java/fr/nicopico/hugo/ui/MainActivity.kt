@@ -9,7 +9,10 @@ import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.AppState
 import fr.nicopico.hugo.model.Screen
-import fr.nicopico.hugo.redux.*
+import fr.nicopico.hugo.redux.EXIT_APP
+import fr.nicopico.hugo.redux.GO_BACK
+import fr.nicopico.hugo.redux.ReduxLifecycleListener
+import fr.nicopico.hugo.redux.ReduxView
 import fr.nicopico.hugo.ui.babies.BabySelectionFragment
 import fr.nicopico.hugo.ui.login.LoginFragment
 import fr.nicopico.hugo.ui.timeline.TimelineFragment
@@ -24,8 +27,11 @@ class MainActivity : AppCompatActivity(), HugoLogger, ReduxView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val stateChangeDetector: StateChangeDetector = { s1, s2 -> s1.screen != s2.screen }
-        lifecycle.addObserver(ReduxLifecycleListener(::updateScreen, stateChangeDetector))
+        ReduxLifecycleListener(::updateScreen)
+                .restrictOn { s1, s2 ->
+                    s1.screen != s2.screen
+                }
+                .subscribe(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
