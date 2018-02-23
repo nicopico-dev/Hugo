@@ -14,7 +14,7 @@ import fr.nicopico.hugo.ui.shared.click
 import fr.nicopico.hugo.ui.shared.dimensionForOffset
 import kotlinx.android.synthetic.main.fragment_baby_selection.*
 
-class BabySelectionFragment : BaseFragment() {
+class BabySelectionFragment : BaseFragment(), StateHelper {
 
     companion object {
         const val SCREEN = "SCREEN_BABY_SELECTION"
@@ -47,10 +47,11 @@ class BabySelectionFragment : BaseFragment() {
         }
 
         // Interactions
-        fabAdd.click { AddBabyDialogFragment.show(fm) }
-        babyAdapter.clickListener = { baby -> appStore.dispatch(SELECT_BABY(baby)) }
-        babyAdapter.longClickListener = { baby -> EditBabyDialogFragment.show(fm, baby) }
+        fabAdd.click { addBabyDialog() }
+        babyAdapter.clickListener = { baby -> dispatch(SELECT_BABY(baby)) }
+        babyAdapter.longClickListener = { baby -> editBabyDialog(baby) }
     }
+
     private fun updateScreen(state: AppState) {
         babyAdapter.data = state.babies
     }

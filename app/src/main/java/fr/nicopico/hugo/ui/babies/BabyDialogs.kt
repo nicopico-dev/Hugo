@@ -2,6 +2,7 @@ package fr.nicopico.hugo.ui.babies
 
 import android.os.Bundle
 import android.support.annotation.CallSuper
+import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.view.View
 import fr.nicopico.hugo.R
@@ -13,6 +14,9 @@ import fr.nicopico.hugo.utils.then
 import kotlinx.android.synthetic.main.dialog_form.*
 import kotlinx.android.synthetic.main.form_baby.*
 import kotlinx.coroutines.experimental.Deferred
+
+fun Fragment.addBabyDialog() = AddBabyDialogFragment.show(fragmentManager!!)
+fun Fragment.editBabyDialog(baby: Baby) = EditBabyDialogFragment.show(fragmentManager!!, baby)
 
 open class AddBabyDialogFragment : FormDialogFragment(), StateHelper {
 
