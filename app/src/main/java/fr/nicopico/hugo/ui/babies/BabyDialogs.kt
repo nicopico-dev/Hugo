@@ -7,7 +7,10 @@ import android.support.v4.app.FragmentManager
 import android.view.View
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.Baby
-import fr.nicopico.hugo.redux.*
+import fr.nicopico.hugo.redux.ADD_BABY
+import fr.nicopico.hugo.redux.REMOVE_BABY
+import fr.nicopico.hugo.redux.ReduxView
+import fr.nicopico.hugo.redux.UPDATE_BABY
 import fr.nicopico.hugo.service.babyService
 import fr.nicopico.hugo.ui.shared.*
 import fr.nicopico.hugo.utils.loadSuspend
@@ -31,7 +34,10 @@ open class AddBabyDialogFragment : FormDialogFragment(), ReduxView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        edtName.editorAction { onSubmit(it) }
+        edtName.apply {
+            textChanged { submittable = edtName.isNotEmpty() }
+            editorAction { onSubmit(it) }
+        }
     }
 
     @CallSuper
@@ -77,6 +83,7 @@ class EditBabyDialogFragment : AddBabyDialogFragment() {
 
         deferredBaby?.then {
             edtName.setText(it.name)
+            edtName.selectAll()
         }
     }
 

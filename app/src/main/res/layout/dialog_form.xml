@@ -37,7 +37,7 @@
             android:src="@drawable/ic_delete"
             android:padding="@dimen/space_small"
             android:contentDescription="@string/desc_delete"
-            android:visibility="gone"
+            android:visibility="invisible"
             tools:visibility="visible"/>
 
     </LinearLayout>

@@ -4,7 +4,6 @@
     android:id="@+id/edtName"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/space_small"
+    android:inputType="textPersonName"
     android:imeOptions="actionDone"
-    android:maxLines="1"
     android:hint="@string/baby_name"/>
