@@ -10,6 +10,7 @@ import fr.nicopico.hugo.service.timelineService
 import fr.nicopico.hugo.ui.shared.click
 import fr.nicopico.hugo.ui.shared.show
 import fr.nicopico.hugo.utils.loadSuspend
+import fr.nicopico.hugo.utils.then
 import kotlinx.coroutines.experimental.Deferred
 
 interface EditTimelineEntryDialogTrait : LifecycleOwner, ReduxView {
@@ -20,7 +21,7 @@ interface EditTimelineEntryDialogTrait : LifecycleOwner, ReduxView {
 
     val entryKey: String
     var deferredEntry: Deferred<Timeline.Entry>?
-    val imgDelete: View
+    val deleteView: View
 
     fun onCreate(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
@@ -31,15 +32,18 @@ interface EditTimelineEntryDialogTrait : LifecycleOwner, ReduxView {
     }
 
     fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        imgDelete.apply {
+        deleteView.apply {
             show()
             click {
                 dispatch(REMOVE_ENTRY(buildEntry()))
                 dismiss()
             }
         }
+
+        deferredEntry?.then { displayEntry(it) }
     }
 
     fun buildEntry(): Timeline.Entry
+    fun displayEntry(entry: Timeline.Entry)
     fun dismiss()
 }

@@ -13,14 +13,16 @@ import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.*
 import fr.nicopico.hugo.redux.ADD_ENTRY
 import fr.nicopico.hugo.redux.ReduxView
-import fr.nicopico.hugo.ui.shared.click
-import fr.nicopico.hugo.ui.shared.hide
-import fr.nicopico.hugo.ui.shared.show
+import fr.nicopico.hugo.redux.UPDATE_ENTRY
+import fr.nicopico.hugo.ui.shared.*
+import fr.nicopico.hugo.ui.timeline.EditTimelineEntryDialogTrait.Companion.ARG_ENTRY_KEY
 import kotlinx.android.synthetic.main.dialog_add_food.*
+import kotlinx.android.synthetic.main.dialog_form.*
+import kotlinx.coroutines.experimental.Deferred
 import java.util.*
 
 fun Fragment.addFoodDialog() = AddFoodDialogFragment.create().show(fragmentManager!!, null)
-fun Fragment.editFoodDialog(entry: Timeline.Entry): Unit = TODO()
+fun Fragment.editFoodDialog(entry: Timeline.Entry): Unit = EditFoodDialogFragment.create(entry).show(fragmentManager!!, null)
 
 open class AddFoodDialogFragment : TimelineEntryDialogFragment(), ReduxView {
 
@@ -132,6 +134,39 @@ open class AddFoodDialogFragment : TimelineEntryDialogFragment(), ReduxView {
     }
 }
 
-class EditFoodDialogFragment : AddFoodDialogFragment() {
+class EditFoodDialogFragment : AddFoodDialogFragment(), EditTimelineEntryDialogTrait {
 
+    companion object {
+        fun create(entry: Timeline.Entry) = EditFoodDialogFragment()
+                .withArguments(ARG_ENTRY_KEY to entry.remoteId)
+    }
+
+    override val entryKey by argument<String>(ARG_ENTRY_KEY)
+    override var deferredEntry: Deferred<Timeline.Entry>? = null
+    override val deleteView: View
+        get() = imgDelete
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super<AddFoodDialogFragment>.onCreate(savedInstanceState)
+        super<EditTimelineEntryDialogTrait>.onCreate(savedInstanceState)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super<AddFoodDialogFragment>.onViewCreated(view, savedInstanceState)
+        super<EditTimelineEntryDialogTrait>.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun buildEntry(): Timeline.Entry {
+        return super.buildEntry().copy(remoteId = entryKey)
+    }
+
+    override fun displayEntry(entry: Timeline.Entry) {
+        entryTime = entry.time
+        // TODO
+    }
+
+    override fun onSubmit(view: View) {
+        val updatedEntry = buildEntry()
+        UPDATE_ENTRY(updatedEntry)
+    }
 }

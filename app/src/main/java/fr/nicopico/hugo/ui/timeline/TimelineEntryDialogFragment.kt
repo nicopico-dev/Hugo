@@ -10,7 +10,6 @@ import fr.nicopico.hugo.ui.shared.FormDialogFragment
 import fr.nicopico.hugo.ui.shared.TimeAndDatePickerDialogFragment
 import fr.nicopico.hugo.ui.shared.click
 import fr.nicopico.hugo.utils.round
-import kotlinx.android.synthetic.main.dialog_add_change.*
 import java.util.*
 import kotlin.properties.Delegates
 
@@ -27,11 +26,11 @@ abstract class TimelineEntryDialogFragment : FormDialogFragment() {
     }
 
     protected abstract val dateOrTimeTextView: TextView
-    protected abstract fun buildEntry(): Timeline.Entry
+    abstract fun buildEntry(): Timeline.Entry
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        txtDateOrTime.click { timeAndDateDialog() }
+        dateOrTimeTextView.click { timeAndDateDialog() }
         displayDate(entryTime)
     }
 
@@ -49,7 +48,7 @@ abstract class TimelineEntryDialogFragment : FormDialogFragment() {
     }
 
     private fun displayDate(date: Date) {
-        txtDateOrTime.text = getString(
+        dateOrTimeTextView.text = getString(
                 R.string.date_time_format,
                 dateFormat.format(date),
                 timeFormat.format(date)
