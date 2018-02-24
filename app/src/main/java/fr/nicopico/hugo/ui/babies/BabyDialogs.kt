@@ -79,7 +79,7 @@ class EditBabyDialogFragment : AddBabyDialogFragment() {
         }
 
         deferredBaby?.then {
-            edtName.setText(it.name)
+            edtName.textS = it.name
             edtName.selectAll()
         }
     }

@@ -31,28 +31,28 @@
             android:showDividers="middle">
 
             <TextView
-                android:id="@+id/addArtificialBottleFeeding"
+                android:id="@+id/btnAddArtificialBottleFeeding"
                 style="@style/FoodCare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/care_food_artificial_bottle_feeding"/>
 
             <TextView
-                android:id="@+id/addMaternalBottleFeeding"
+                android:id="@+id/btnAddMaternalBottleFeeding"
                 style="@style/FoodCare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/care_food_maternal_bottle_feeding"/>
 
             <TextView
-                android:id="@+id/addBreastFeeding"
+                android:id="@+id/btnAddBreastFeeding"
                 style="@style/FoodCare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/care_food_breast_feeding"/>
 
             <TextView
-                android:id="@+id/addBreastExtraction"
+                android:id="@+id/btnAddBreastExtraction"
                 style="@style/FoodCare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -4,6 +4,7 @@ import android.support.annotation.DrawableRes
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.widget.EditText
 import android.widget.TextView
 
 typealias ViewListener = (View) -> Unit
@@ -45,6 +46,10 @@ fun TextView.drawables(
 ) = setCompoundDrawablesRelativeWithIntrinsicBounds(start, top, end, bottom)
 
 fun TextView.isNotEmpty() = length() > 0
+
+var EditText.textS: CharSequence
+    get() = text.toString()
+    set(value) = setText(value)
 
 inline fun TextView.editorAction(crossinline listener: ViewListener) {
     setOnEditorActionListener { _, _, _ ->

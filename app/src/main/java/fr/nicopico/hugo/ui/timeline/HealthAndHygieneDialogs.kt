@@ -111,5 +111,6 @@ class EditHealthAndHygieneDialogFragment : AddHealthAndHygieneDialogFragment(), 
     override fun onSubmit(view: View) {
         val updatedEntry = buildEntry()
         dispatch(UPDATE_ENTRY(updatedEntry))
+        dismiss()
     }
 }

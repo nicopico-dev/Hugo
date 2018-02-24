@@ -5,12 +5,12 @@ import android.support.annotation.LayoutRes
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.*
+import fr.nicopico.hugo.model.CareType.FOOD
 import fr.nicopico.hugo.redux.ADD_ENTRY
 import fr.nicopico.hugo.redux.ReduxView
 import fr.nicopico.hugo.redux.UPDATE_ENTRY
@@ -30,6 +30,7 @@ open class AddFoodDialogFragment : TimelineEntryDialogFragment(), ReduxView {
         fun create() = AddFoodDialogFragment()
     }
 
+    // TODO Use a list of FeedingViews
     private var bottleMaternalFeedingView: View? = null
     private var bottleArtificialFeedingView: View? = null
     private var breastFeedingView: View? = null
@@ -46,19 +47,10 @@ open class AddFoodDialogFragment : TimelineEntryDialogFragment(), ReduxView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // TODO Animate layout changes
-        addMaternalBottleFeeding.click {
-            it.toggle(R.layout.include_maternal_bottle_feeding) { v -> bottleMaternalFeedingView = v }
-        }
-        addArtificialBottleFeeding.click {
-            it.toggle(R.layout.include_artificial_bottle_feeding) { v -> bottleArtificialFeedingView = v }
-        }
-        addBreastFeeding.click {
-            it.toggle(R.layout.include_breast_feeding) { v -> breastFeedingView = v }
-        }
-        addBreastExtraction.click {
-            it.toggle(R.layout.include_breast_extraction) { v -> breastExtractionView = v }
-        }
+        btnAddMaternalBottleFeeding.click { addMaternalBottleFeedingCare() }
+        btnAddArtificialBottleFeeding.click { addArtificialBottleFeedingCare() }
+        btnAddBreastFeeding.click { addBreastFeedingCare() }
+        btnAddBreastExtraction.click { addBreastExtractionCare() }
     }
 
     override fun buildEntry(): Timeline.Entry {
@@ -70,7 +62,7 @@ open class AddFoodDialogFragment : TimelineEntryDialogFragment(), ReduxView {
                 getBreastExtraction()
         )
 
-        return Timeline.Entry(CareType.FOOD, entryTime, cares)
+        return Timeline.Entry(FOOD, entryTime, cares)
     }
 
     override fun onSubmit(view: View) {
@@ -79,17 +71,9 @@ open class AddFoodDialogFragment : TimelineEntryDialogFragment(), ReduxView {
         dismiss()
     }
 
-    private fun View.toggle(@LayoutRes layout: Int, propertySetter: (View) -> Unit) {
-        this.hide()
-        val detailsView = inflater.inflate(layout, foodContainer, false) as ViewGroup
-        foodContainer.addView(detailsView)
-        propertySetter.invoke(detailsView)
-
-        // Remove button behavior
-        detailsView.findViewById<View>(R.id.imgRemove).click {
-            foodContainer.removeView(detailsView)
-            this.show()
-        }
+    protected fun addMaternalBottleFeedingCare(): View {
+        return createFeedingView(btnAddMaternalBottleFeeding, R.layout.include_maternal_bottle_feeding)
+                .also { bottleMaternalFeedingView = it }
     }
 
     private fun getMaternalBottleFeedingCare(): Care? {
@@ -99,6 +83,11 @@ open class AddFoodDialogFragment : TimelineEntryDialogFragment(), ReduxView {
         }
     }
 
+    protected fun addArtificialBottleFeedingCare(): View {
+        return createFeedingView(btnAddArtificialBottleFeeding, R.layout.include_artificial_bottle_feeding)
+                .also { bottleArtificialFeedingView = it }
+    }
+
     private fun getArtificialBottleFeedingCare(): Care? {
         return bottleArtificialFeedingView?.let {
             val volumeText = it.findViewById<EditText>(R.id.edtBottle).text.toString()
@@ -106,8 +95,13 @@ open class AddFoodDialogFragment : TimelineEntryDialogFragment(), ReduxView {
         }
     }
 
+    protected fun addBreastFeedingCare(): View {
+        return createFeedingView(btnAddBreastFeeding, R.layout.include_breast_feeding)
+                .also { breastFeedingView = it }
+    }
+
     private fun getBreastFeedingCare(breast: Breast): Care? {
-        val editId = when(breast) {
+        val editId = when (breast) {
             Breast.LEFT -> R.id.edtLeftBreastDuration
             Breast.RIGHT -> R.id.edtRightBreastDuration
         }
@@ -115,6 +109,11 @@ open class AddFoodDialogFragment : TimelineEntryDialogFragment(), ReduxView {
             val volumeText = it.findViewById<EditText>(editId).text.toString()
             BreastFeeding(breast, Integer.parseInt(volumeText))
         }
+    }
+
+    protected fun addBreastExtractionCare(): View {
+        return createFeedingView(btnAddBreastExtraction, R.layout.include_breast_extraction)
+                .also { breastExtractionView = it }
     }
 
     private fun getBreastExtraction(): Care? {
@@ -131,6 +130,21 @@ open class AddFoodDialogFragment : TimelineEntryDialogFragment(), ReduxView {
 
             BreastExtraction(Integer.parseInt(volumeText), breasts)
         }
+    }
+
+    private fun createFeedingView(toggleView: View, @LayoutRes layout: Int): View {
+        toggleView.hide()
+        val detailsView = inflater.inflate(layout, foodContainer, false).also {
+            foodContainer.addView(it)
+        }
+
+        // Remove button behavior
+        detailsView.findViewById<View>(R.id.imgRemove).click {
+            foodContainer.removeView(detailsView)
+            toggleView.show()
+        }
+
+        return detailsView
     }
 }
 
@@ -162,11 +176,47 @@ class EditFoodDialogFragment : AddFoodDialogFragment(), EditTimelineEntryDialogT
 
     override fun displayEntry(entry: Timeline.Entry) {
         entryTime = entry.time
-        // TODO
+
+        // We need *one* view for *both* breastFeeding care
+        val breastFeedingView by lazy { addBreastFeedingCare() }
+
+        for (care in entry.cares) {
+            when (care) {
+                is BreastFeeding -> breastFeedingView.also {
+                    val edtDuration: EditText = when(care.breast) {
+                        Breast.LEFT -> it.findViewById(R.id.edtLeftBreastDuration)
+                        Breast.RIGHT -> it.findViewById(R.id.edtRightBreastDuration)
+                    }
+                    edtDuration.textS = care.duration.toString()
+                }
+
+                is BreastExtraction -> addBreastExtractionCare().also {
+                    val edtExtraction = it.findViewById<EditText>(R.id.edtExtraction)
+                    val chkLeftBreast = it.findViewById<CheckBox>(R.id.chkLeftBreast)
+                    val chkRightBreast = it.findViewById<CheckBox>(R.id.chkRightBreast)
+
+                    edtExtraction.textS = care.volume.toString()
+                    chkLeftBreast.isChecked = Breast.LEFT in care.breasts
+                    chkRightBreast.isChecked = Breast.RIGHT in care.breasts
+                }
+
+                is BottleFeeding -> {
+                    when (care.content) {
+                        BottleFeeding.ARTIFICIAL_MILK -> addArtificialBottleFeedingCare()
+                        BottleFeeding.MATERNAL_MILK -> addMaternalBottleFeedingCare()
+                        else -> TODO("Not implemented")
+                    }.also {
+                        val edtBottle = it.findViewById<EditText>(R.id.edtBottle)
+                        edtBottle.textS = care.volume.toString()
+                    }
+                }
+            }
+        }
     }
 
     override fun onSubmit(view: View) {
         val updatedEntry = buildEntry()
-        UPDATE_ENTRY(updatedEntry)
+        dispatch(UPDATE_ENTRY(updatedEntry))
+        dismiss()
     }
 }
