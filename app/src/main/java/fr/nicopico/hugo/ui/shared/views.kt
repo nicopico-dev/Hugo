@@ -16,15 +16,15 @@ fun View.hide() {
     visibility = View.GONE
 }
 
-fun View.visible(visible: Boolean) {
-    visibility = if (visible) {
-        View.VISIBLE
-    } else {
-        View.GONE
+var View.visible: Boolean
+    get() = visibility == View.VISIBLE
+    set(value) {
+        visibility = if (value) { View.VISIBLE } else { View.GONE }
     }
-}
 
-fun View.isVisible() = visibility == View.VISIBLE
+fun View.toggle() {
+    visible = !visible
+}
 
 inline fun View.click(crossinline listener: ViewListener) {
     setOnClickListener { listener.invoke(this) }

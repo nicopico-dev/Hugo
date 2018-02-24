@@ -1,15 +1,18 @@
 package fr.nicopico.hugo.ui.timeline
 
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.AppState
-import fr.nicopico.hugo.model.CareType
+import fr.nicopico.hugo.model.CareType.*
+import fr.nicopico.hugo.model.Timeline
 import fr.nicopico.hugo.redux.*
 import fr.nicopico.hugo.ui.BaseFragment
-import fr.nicopico.hugo.ui.shared.*
+import fr.nicopico.hugo.ui.shared.SpaceItemDecoration
+import fr.nicopico.hugo.ui.shared.click
+import fr.nicopico.hugo.ui.shared.dimensionForOffset
+import fr.nicopico.hugo.ui.shared.toggle
 import kotlinx.android.synthetic.main.fragment_timeline.*
 
 class TimelineFragment : BaseFragment(), ReduxView {
@@ -43,10 +46,18 @@ class TimelineFragment : BaseFragment(), ReduxView {
             addItemDecoration(DateSectionDecoration(context, timelineAdapter))
         }
 
-        fabAdd.click { toggleFabMenu() }
-        fabAddChange.click(onAddEntryFactory(CareType.CHANGE))
-        fabAddFood.click(onAddEntryFactory(CareType.FOOD))
-        fabAddHealthHygiene.click(onAddEntryFactory(CareType.HEALTH_HYGIENE))
+        fabAdd.click { groupFabs.toggle() }
+        fabAddChange.click { addChangeDialog(); groupFabs.toggle() }
+        fabAddFood.click { addFoodDialog(); groupFabs.toggle() }
+        fabAddHealthHygiene.click { addHealthAndHygieneDialog(); groupFabs.toggle() }
+
+        timelineAdapter.longClickListener = { entry: Timeline.Entry ->
+            when(entry.type) {
+                CHANGE -> editChangeDialog(entry)
+                FOOD -> editFoodDialog(entry)
+                HEALTH_HYGIENE -> editHealthAndHygieneDialog(entry)
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -65,27 +76,6 @@ class TimelineFragment : BaseFragment(), ReduxView {
         if (previousTimelineCount < timelineAdapter.itemCount) {
             previousTimelineCount = timelineAdapter.itemCount
             rcvTimeline.scrollToPosition(previousTimelineCount - 1)
-        }
-    }
-
-    private fun toggleFabMenu() {
-        // TODO Animate
-        if (groupFabs.visibility == View.VISIBLE) {
-            groupFabs.hide()
-        } else {
-            groupFabs.show()
-        }
-    }
-
-    private fun onAddEntryFactory(careType: CareType): (View) -> Unit {
-        return {
-            toggleFabMenu()
-            val dialogFragment: DialogFragment = when (careType) {
-                CareType.CHANGE -> AddChangeDialogFragment.create()
-                CareType.FOOD -> AddFoodDialogFragment.create()
-                CareType.HEALTH_HYGIENE -> AddHealthAndHygieneDialogFragment.create()
-            }
-            dialogFragment.show(fragmentManager, "ADD_ENTRY")
         }
     }
 }

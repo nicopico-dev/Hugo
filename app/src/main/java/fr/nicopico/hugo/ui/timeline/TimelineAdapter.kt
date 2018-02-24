@@ -13,10 +13,13 @@ import android.widget.TextView
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.*
 import fr.nicopico.hugo.ui.shared.dimensionForOffset
+import fr.nicopico.hugo.ui.shared.longClick
 import fr.nicopico.hugo.utils.getTimeFormat
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_timeline.*
 import kotlin.properties.Delegates
+
+typealias TimelineListener = (Timeline.Entry) -> Unit
 
 class TimelineAdapter(
         context: Context,
@@ -30,6 +33,8 @@ class TimelineAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 
+    var longClickListener: TimelineListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         val itemView = inflater.inflate(R.layout.item_timeline, parent, false)
         return ViewHolder(itemView)
@@ -41,13 +46,20 @@ class TimelineAdapter(
 
     override fun getItemCount(): Int = data.size
 
-    class ViewHolder(
+    inner class ViewHolder(
             override val containerView: View
     ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
         private val timeFormat = getTimeFormat(itemView.context)
+        private lateinit var entry: Timeline.Entry
+
+        init {
+            itemView.longClick { longClickListener?.invoke(entry) }
+        }
 
         fun bind(entry: Timeline.Entry) {
+            this.entry = entry
+
             txtType.setText(when (entry.type) {
                 CareType.CHANGE -> R.string.care_type_change
                 CareType.FOOD -> R.string.care_type_food

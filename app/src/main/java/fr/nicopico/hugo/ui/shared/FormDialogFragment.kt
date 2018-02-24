@@ -44,7 +44,7 @@ abstract class FormDialogFragment : BottomSheetDialogFragment() {
 
         btnSubmit.click(::onSubmit)
         btnCancel.apply {
-            visible(isCancelable)
+            visible = isCancelable
             click(::onCancel)
         }
     }

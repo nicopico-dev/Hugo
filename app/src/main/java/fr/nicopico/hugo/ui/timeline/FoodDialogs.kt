@@ -2,6 +2,7 @@ package fr.nicopico.hugo.ui.timeline
 
 import android.os.Bundle
 import android.support.annotation.LayoutRes
+import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,10 @@ import fr.nicopico.hugo.ui.shared.show
 import kotlinx.android.synthetic.main.dialog_add_food.*
 import java.util.*
 
-class AddFoodDialogFragment : AddTimelineEntryDialogFragment(), ReduxView {
+fun Fragment.addFoodDialog() = AddFoodDialogFragment.create().show(fragmentManager!!, null)
+fun Fragment.editFoodDialog(entry: Timeline.Entry): Unit = TODO()
+
+open class AddFoodDialogFragment : TimelineEntryDialogFragment(), ReduxView {
 
     companion object {
         fun create() = AddFoodDialogFragment()
@@ -55,8 +59,7 @@ class AddFoodDialogFragment : AddTimelineEntryDialogFragment(), ReduxView {
         }
     }
 
-    override fun onSubmit(view: View) {
-        val time = getEntryTime()
+    override fun buildEntry(): Timeline.Entry {
         val cares = listOfNotNull(
                 getMaternalBottleFeedingCare(),
                 getArtificialBottleFeedingCare(),
@@ -65,9 +68,12 @@ class AddFoodDialogFragment : AddTimelineEntryDialogFragment(), ReduxView {
                 getBreastExtraction()
         )
 
-        val entry = Timeline.Entry(CareType.FOOD, time, cares)
-        dispatch(ADD_ENTRY(entry))
+        return Timeline.Entry(CareType.FOOD, entryTime, cares)
+    }
 
+    override fun onSubmit(view: View) {
+        val entry = buildEntry()
+        dispatch(ADD_ENTRY(entry))
         dismiss()
     }
 
@@ -124,4 +130,8 @@ class AddFoodDialogFragment : AddTimelineEntryDialogFragment(), ReduxView {
             BreastExtraction(Integer.parseInt(volumeText), breasts)
         }
     }
+}
+
+class EditFoodDialogFragment : AddFoodDialogFragment() {
+
 }

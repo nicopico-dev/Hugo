@@ -1,4 +1,4 @@
-package fr.nicopico.hugo.ui.timeline
+package fr.nicopico.hugo.ui.shared
 
 import android.app.Activity
 import android.content.Intent
@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TimePicker
 import fr.nicopico.hugo.R
-import fr.nicopico.hugo.ui.shared.*
 import fr.nicopico.hugo.utils.getDateFormat
 import fr.nicopico.hugo.utils.getTimeFormat
 import fr.nicopico.hugo.utils.withHourMinute
@@ -78,7 +77,7 @@ class TimeAndDatePickerDialogFragment : DialogFragment() {
 
     private fun toggleDateOrTime() {
         // TODO Animate
-        if (timePicker.isVisible()) {
+        if (timePicker.visible) {
             timePicker.hide()
             datePicker.show()
             txtDateOrTime.text = timeFormat.format(date)

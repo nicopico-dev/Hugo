@@ -3,7 +3,6 @@ package fr.nicopico.hugo.ui.babies
 import android.os.Bundle
 import android.support.annotation.CallSuper
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
 import android.view.View
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.Baby
@@ -19,14 +18,13 @@ import kotlinx.android.synthetic.main.dialog_form.*
 import kotlinx.android.synthetic.main.form_baby.*
 import kotlinx.coroutines.experimental.Deferred
 
-fun Fragment.addBabyDialog() = AddBabyDialogFragment.show(fragmentManager!!)
-fun Fragment.editBabyDialog(baby: Baby) = EditBabyDialogFragment.show(fragmentManager!!, baby)
+fun Fragment.addBabyDialog() = AddBabyDialogFragment.create().show(fragmentManager!!, null)
+fun Fragment.editBabyDialog(baby: Baby) = EditBabyDialogFragment.create(baby).show(fragmentManager!!, null)
 
 open class AddBabyDialogFragment : FormDialogFragment(), ReduxView {
 
     companion object {
-        fun show(fm: FragmentManager) = AddBabyDialogFragment()
-                .show(fm, AddBabyDialogFragment.toString())
+        fun create() = AddBabyDialogFragment()
     }
 
     override val dialogTitleId: Int = R.string.baby
@@ -54,9 +52,8 @@ class EditBabyDialogFragment : AddBabyDialogFragment() {
     companion object {
         private const val ARG_BABY_KEY = "ARG_BABY_KEY"
 
-        fun show(fm: FragmentManager, baby: Baby) = EditBabyDialogFragment()
+        fun create(baby: Baby) = EditBabyDialogFragment()
                 .withArguments(ARG_BABY_KEY to baby.key)
-                .show(fm, AddBabyDialogFragment.toString())
     }
 
     private val babyKey by argument<String>(ARG_BABY_KEY)
