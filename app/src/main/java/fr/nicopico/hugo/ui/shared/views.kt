@@ -47,7 +47,7 @@ fun TextView.drawables(
 
 fun TextView.isNotEmpty() = length() > 0
 
-var EditText.textS: CharSequence
+var EditText.textS: CharSequence?
     get() = text.toString()
     set(value) = setText(value)
 

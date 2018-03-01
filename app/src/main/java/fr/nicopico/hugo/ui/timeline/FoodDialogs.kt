@@ -57,8 +57,7 @@ open class AddFoodDialogFragment : TimelineEntryDialogFragment(), ReduxView {
         val cares = listOfNotNull(
                 getMaternalBottleFeedingCare(),
                 getArtificialBottleFeedingCare(),
-                getBreastFeedingCare(Breast.LEFT),
-                getBreastFeedingCare(Breast.RIGHT),
+                getBreastFeedingCare(),
                 getBreastExtraction()
         )
 
@@ -100,14 +99,11 @@ open class AddFoodDialogFragment : TimelineEntryDialogFragment(), ReduxView {
                 .also { breastFeedingView = it }
     }
 
-    private fun getBreastFeedingCare(breast: Breast): Care? {
-        val editId = when (breast) {
-            Breast.LEFT -> R.id.edtLeftBreastDuration
-            Breast.RIGHT -> R.id.edtRightBreastDuration
-        }
+    private fun getBreastFeedingCare(): Care? {
         return breastFeedingView?.let {
-            val volumeText = it.findViewById<EditText>(editId).text.toString()
-            BreastFeeding(breast, Integer.parseInt(volumeText))
+            val leftDurationText = it.findViewById<EditText>(R.id.edtLeftBreastDuration).text.toString()
+            val rightDurationText = it.findViewById<EditText>(R.id.edtRightBreastDuration).text.toString()
+            BreastFeeding(leftDurationText.toIntOrNull(), rightDurationText.toIntOrNull())
         }
     }
 
@@ -183,11 +179,10 @@ class EditFoodDialogFragment : AddFoodDialogFragment(), EditTimelineEntryDialogT
         for (care in entry.cares) {
             when (care) {
                 is BreastFeeding -> breastFeedingView.also {
-                    val edtDuration: EditText = when(care.breast) {
-                        Breast.LEFT -> it.findViewById(R.id.edtLeftBreastDuration)
-                        Breast.RIGHT -> it.findViewById(R.id.edtRightBreastDuration)
-                    }
-                    edtDuration.textS = care.duration.toString()
+                    val edtLeftDuration = it.findViewById<EditText>(R.id.edtLeftBreastDuration)
+                    val edtRightDuration = it.findViewById<EditText>(R.id.edtRightBreastDuration)
+                    edtLeftDuration.textS = care.leftDuration?.toString()
+                    edtRightDuration.textS = care.rightDuration?.toString()
                 }
 
                 is BreastExtraction -> addBreastExtractionCare().also {

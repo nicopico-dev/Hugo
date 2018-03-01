@@ -95,11 +95,11 @@ class TimelineAdapter(
                 Pee -> textView(R.string.care_change_pee)
                 Poo -> textView(R.string.care_change_poo)
                 is BreastFeeding -> textView(
-                        when (care.breast) {
-                            Breast.LEFT -> R.string.care_breast_feeding_left
-                            Breast.RIGHT -> R.string.care_breast_feeding_right
-                        },
-                        care.duration
+                        if (care.leftDuration != null && care.rightDuration != null) R.string.care_breast_feeding_both
+                        else if (care.leftDuration != null) R.string.care_breast_feeding_left
+                        else if (care.rightDuration != null) R.string.care_breast_feeding_right
+                        else throw IllegalStateException("Breast feeding without any duration"),
+                        care.leftDuration, care.rightDuration
                 )
                 is BreastExtraction -> textView(R.string.care_breast_extraction, care.volume)
                 is BottleFeeding -> textView(

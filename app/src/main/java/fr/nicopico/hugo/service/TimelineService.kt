@@ -49,10 +49,10 @@ private object TimelineEntrySerializer : HugoLogger {
     private const val FOOD_TYPE_BREAST_EXTRACTION = "BreastExtraction"
     private const val FOOD_TYPE_BOTTLE_FEEDING = "BottleFeeding"
 
-    private const val KEY_BREAST = "breast"
     private const val KEY_BREASTS = "breasts"
     private const val KEY_VOLUME = "volume"
-    private const val KEY_DURATION = "duration"
+    private const val KEY_LEFT_DURATION = "leftDuration"
+    private const val KEY_RIGHT_DURATION = "rightDuration"
     private const val KEY_CONTENT = "content"
 
     private const val CARE_UMBILICAL_CORD = "UmbilicalCord"
@@ -84,8 +84,8 @@ private object TimelineEntrySerializer : HugoLogger {
                                 Poo -> CARE_POO
                                 is BreastFeeding -> mapOf(
                                         KEY_FOOD_TYPE to FOOD_TYPE_BREAST_FEEDING,
-                                        KEY_BREAST to care.breast.name,
-                                        KEY_DURATION to care.duration
+                                        KEY_LEFT_DURATION to care.leftDuration,
+                                        KEY_RIGHT_DURATION to care.rightDuration
                                 )
                                 is BreastExtraction -> mapOf(
                                         KEY_FOOD_TYPE to FOOD_TYPE_BREAST_EXTRACTION,
@@ -126,8 +126,8 @@ private object TimelineEntrySerializer : HugoLogger {
                             CARE_POO -> Poo
                             is Map<*, *> -> when (it[KEY_FOOD_TYPE]) {
                                 FOOD_TYPE_BREAST_FEEDING -> BreastFeeding(
-                                        breast = it[KEY_BREAST].asEnum(),
-                                        duration = it[KEY_DURATION].asInt()
+                                        leftDuration = it[KEY_LEFT_DURATION].asIntOrNull(),
+                                        rightDuration = it[KEY_RIGHT_DURATION].asIntOrNull()
                                 )
                                 FOOD_TYPE_BREAST_EXTRACTION -> BreastExtraction(
                                         volume = it[KEY_VOLUME].asInt(),

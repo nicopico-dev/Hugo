@@ -35,9 +35,10 @@ object Poo : Care(CareType.CHANGE) {
 }
 
 data class BreastFeeding(
-        val breast: Breast,
         /** duration in minutes */
-        val duration: Int
+        val leftDuration: Int?,
+        /** duration in minutes */
+        val rightDuration: Int?
 ) : Care(CareType.FOOD)
 
 data class BreastExtraction(
