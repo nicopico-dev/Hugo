@@ -1,12 +1,10 @@
 package fr.nicopico.hugo.ui.timeline
 
+import android.content.Context
 import android.os.Bundle
-import android.support.annotation.LayoutRes
+import android.support.constraint.ConstraintLayout
 import android.support.v4.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.CheckBox
-import android.widget.EditText
 import android.widget.TextView
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.*
@@ -18,6 +16,9 @@ import fr.nicopico.hugo.ui.shared.*
 import fr.nicopico.hugo.ui.timeline.EditTimelineEntryDialogTrait.Companion.ARG_ENTRY_KEY
 import kotlinx.android.synthetic.main.dialog_add_food.*
 import kotlinx.android.synthetic.main.dialog_form.*
+import kotlinx.android.synthetic.main.view_bottle_feeding.view.*
+import kotlinx.android.synthetic.main.view_breast_extraction.view.*
+import kotlinx.android.synthetic.main.view_breast_feeding.view.*
 import kotlinx.coroutines.experimental.Deferred
 import java.util.*
 
@@ -30,37 +31,23 @@ open class AddFoodDialogFragment : TimelineEntryDialogFragment(), ReduxView {
         fun create() = AddFoodDialogFragment()
     }
 
-    // TODO Use a list of FeedingViews
-    private var bottleMaternalFeedingView: View? = null
-    private var bottleArtificialFeedingView: View? = null
-    private var breastFeedingView: View? = null
-    private var breastExtractionView: View? = null
-
-    private val inflater by lazy { LayoutInflater.from(context) }
-
     override val dialogTitleId = R.string.care_type_food
     override val formLayoutId: Int? = R.layout.dialog_add_food
     override val dateOrTimeTextView: TextView
         get() = txtDateOrTime
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btnAddMaternalBottleFeeding.click { addMaternalBottleFeedingCare() }
-        btnAddArtificialBottleFeeding.click { addArtificialBottleFeedingCare() }
-        btnAddBreastFeeding.click { addBreastFeedingCare() }
-        btnAddBreastExtraction.click { addBreastExtractionCare() }
+        val context = context!!
+        btnAddMaternalBottleFeeding.click { addFoodView(BottleFeedingView(context, BottleFeeding.MATERNAL_MILK)) }
+        btnAddArtificialBottleFeeding.click { addFoodView(BottleFeedingView(context, BottleFeeding.ARTIFICIAL_MILK)) }
+        btnAddBreastFeeding.click { addFoodView(BreastFeedingView(context)) }
+        btnAddBreastExtraction.click { addFoodView(BreastExtractionView(context)) }
     }
 
     override fun buildEntry(): Timeline.Entry {
-        val cares = listOfNotNull(
-                getMaternalBottleFeedingCare(),
-                getArtificialBottleFeedingCare(),
-                getBreastFeedingCare(),
-                getBreastExtraction()
-        )
-
+        val cares = foodContainer.children.map { (it as FoodView<Care>).retrieve() }
         return Timeline.Entry(FOOD, entryTime, cares)
     }
 
@@ -70,77 +57,26 @@ open class AddFoodDialogFragment : TimelineEntryDialogFragment(), ReduxView {
         dismiss()
     }
 
-    protected fun addMaternalBottleFeedingCare(): View {
-        return createFeedingView(btnAddMaternalBottleFeeding, R.layout.include_maternal_bottle_feeding)
-                .also { bottleMaternalFeedingView = it }
-    }
-
-    private fun getMaternalBottleFeedingCare(): Care? {
-        return bottleMaternalFeedingView?.let {
-            val volumeText = it.findViewById<EditText>(R.id.edtBottle).text.toString()
-            BottleFeeding(Integer.parseInt(volumeText), BottleFeeding.MATERNAL_MILK)
-        }
-    }
-
-    protected fun addArtificialBottleFeedingCare(): View {
-        return createFeedingView(btnAddArtificialBottleFeeding, R.layout.include_artificial_bottle_feeding)
-                .also { bottleArtificialFeedingView = it }
-    }
-
-    private fun getArtificialBottleFeedingCare(): Care? {
-        return bottleArtificialFeedingView?.let {
-            val volumeText = it.findViewById<EditText>(R.id.edtBottle).text.toString()
-            BottleFeeding(Integer.parseInt(volumeText), BottleFeeding.ARTIFICIAL_MILK)
-        }
-    }
-
-    protected fun addBreastFeedingCare(): View {
-        return createFeedingView(btnAddBreastFeeding, R.layout.include_breast_feeding)
-                .also { breastFeedingView = it }
-    }
-
-    private fun getBreastFeedingCare(): Care? {
-        return breastFeedingView?.let {
-            val leftDurationText = it.findViewById<EditText>(R.id.edtLeftBreastDuration).text.toString()
-            val rightDurationText = it.findViewById<EditText>(R.id.edtRightBreastDuration).text.toString()
-            BreastFeeding(leftDurationText.toIntOrNull(), rightDurationText.toIntOrNull())
-        }
-    }
-
-    protected fun addBreastExtractionCare(): View {
-        return createFeedingView(btnAddBreastExtraction, R.layout.include_breast_extraction)
-                .also { breastExtractionView = it }
-    }
-
-    private fun getBreastExtraction(): Care? {
-        return breastExtractionView?.let {
-            val volumeText = it.findViewById<EditText>(R.id.edtExtraction).text.toString()
-            val leftBreast = it.findViewById<CheckBox>(R.id.chkLeftBreast).isChecked
-            val rightBreast = it.findViewById<CheckBox>(R.id.chkRightBreast).isChecked
-            val breasts = when {
-                leftBreast && rightBreast -> EnumSet.allOf(Breast::class.java)
-                leftBreast -> EnumSet.of(Breast.LEFT)
-                rightBreast -> EnumSet.of(Breast.RIGHT)
-                else -> EnumSet.noneOf(Breast::class.java)
+    protected fun addFoodView(foodView: FoodView<Care>) {
+        val toggleView = when(foodView) {
+            is BreastFeedingView -> btnAddBreastFeeding
+            is BreastExtractionView -> btnAddBreastExtraction
+            is BottleFeedingView -> when(foodView.content) {
+                BottleFeeding.MATERNAL_MILK -> btnAddMaternalBottleFeeding
+                BottleFeeding.ARTIFICIAL_MILK -> btnAddArtificialBottleFeeding
+                else -> null
             }
-
-            BreastExtraction(Integer.parseInt(volumeText), breasts)
+            else -> null
         }
-    }
 
-    private fun createFeedingView(toggleView: View, @LayoutRes layout: Int): View {
-        toggleView.hide()
-        val detailsView = inflater.inflate(layout, foodContainer, false).also {
-            foodContainer.addView(it)
-        }
+        foodContainer.addView(foodView as View)
+        toggleView?.hide()
 
         // Remove button behavior
-        detailsView.findViewById<View>(R.id.imgRemove).click {
-            foodContainer.removeView(detailsView)
-            toggleView.show()
+        foodView.findViewById<View>(R.id.imgRemove).click {
+            foodContainer.removeView(foodView)
+            toggleView?.show()
         }
-
-        return detailsView
     }
 }
 
@@ -173,40 +109,21 @@ class EditFoodDialogFragment : AddFoodDialogFragment(), EditTimelineEntryDialogT
     override fun displayEntry(entry: Timeline.Entry) {
         entryTime = entry.time
 
-        // We need *one* view for *both* breastFeeding care
-        val breastFeedingView by lazy { addBreastFeedingCare() }
-
-        for (care in entry.cares) {
-            when (care) {
-                is BreastFeeding -> breastFeedingView.also {
-                    val edtLeftDuration = it.findViewById<EditText>(R.id.edtLeftBreastDuration)
-                    val edtRightDuration = it.findViewById<EditText>(R.id.edtRightBreastDuration)
-                    edtLeftDuration.textS = care.leftDuration?.toString()
-                    edtRightDuration.textS = care.rightDuration?.toString()
-                }
-
-                is BreastExtraction -> addBreastExtractionCare().also {
-                    val edtExtraction = it.findViewById<EditText>(R.id.edtExtraction)
-                    val chkLeftBreast = it.findViewById<CheckBox>(R.id.chkLeftBreast)
-                    val chkRightBreast = it.findViewById<CheckBox>(R.id.chkRightBreast)
-
-                    edtExtraction.textS = care.volume.toString()
-                    chkLeftBreast.isChecked = Breast.LEFT in care.breasts
-                    chkRightBreast.isChecked = Breast.RIGHT in care.breasts
-                }
-
-                is BottleFeeding -> {
-                    when (care.content) {
-                        BottleFeeding.ARTIFICIAL_MILK -> addArtificialBottleFeedingCare()
-                        BottleFeeding.MATERNAL_MILK -> addMaternalBottleFeedingCare()
-                        else -> TODO("Not implemented")
-                    }.also {
-                        val edtBottle = it.findViewById<EditText>(R.id.edtBottle)
-                        edtBottle.textS = care.volume.toString()
+        val context = context!!
+        entry.cares
+                .map {
+                    // The `when` is cast to Any without an explicit cast... (kotlin 1.2.21)
+                    @Suppress("USELESS_CAST")
+                    when (it) {
+                        is BreastFeeding -> BreastFeedingView(context).bindTo(it) as FoodView<Care>
+                        is BottleFeeding -> BottleFeedingView(context).bindTo(it)
+                        is BreastExtraction -> BreastExtractionView(context).bindTo(it)
+                        else -> throw UnsupportedOperationException("Care $it")
                     }
                 }
-            }
-        }
+                .forEach {
+                    addFoodView(it)
+                }
     }
 
     override fun onSubmit(view: View) {
@@ -214,4 +131,98 @@ class EditFoodDialogFragment : AddFoodDialogFragment(), EditTimelineEntryDialogT
         dispatch(UPDATE_ENTRY(updatedEntry))
         dismiss()
     }
+}
+
+interface FoodView<out T : Care> {
+    fun retrieve(): T
+}
+
+private class BottleFeedingView(
+        context: Context,
+        val content: String? = null
+) : ConstraintLayout(context), FoodView<BottleFeeding> {
+
+    constructor(context: Context): this(context, null)
+
+    private lateinit var _content: String
+
+    init {
+        inflate(context, R.layout.view_bottle_feeding, this)
+        if (content != null) {
+            updateBottleContent(content)
+        }
+    }
+
+    fun bindTo(care: BottleFeeding): BottleFeedingView {
+        edtBottle.textS = care.volume.toString()
+        updateBottleContent(care.content)
+        return this
+    }
+
+    override fun retrieve(): BottleFeeding {
+        val volume = edtBottle.asInt()
+        return BottleFeeding(volume = volume, content = _content)
+    }
+
+    private fun updateBottleContent(content: String) {
+        _content = content
+        txtBottleContent.textI = when (content) {
+            BottleFeeding.MATERNAL_MILK -> R.string.maternal_milk
+            BottleFeeding.ARTIFICIAL_MILK -> R.string.artificial_milk
+            else -> TODO("not implemented")
+        }
+    }
+}
+
+private class BreastFeedingView(context: Context) : ConstraintLayout(context), FoodView<BreastFeeding> {
+
+    init {
+        inflate(context, R.layout.view_breast_feeding, this)
+    }
+
+    fun bindTo(care: BreastFeeding): BreastFeedingView {
+        edtLeftBreastDuration.textS = care.leftDuration?.toString()
+        edtRightBreastDuration.textS = care.rightDuration?.toString()
+        return this
+    }
+
+    override fun retrieve(): BreastFeeding {
+        return BreastFeeding(
+                leftDuration = edtLeftBreastDuration.asIntOrNull(),
+                rightDuration = edtRightBreastDuration.asIntOrNull()
+        )
+    }
+}
+
+private class BreastExtractionView(context: Context) : ConstraintLayout(context), FoodView<BreastExtraction> {
+
+    init {
+        inflate(context, R.layout.view_breast_extraction, this)
+    }
+
+    fun bindTo(care: BreastExtraction): BreastExtractionView {
+        edtExtraction.textS = care.volume.toString()
+        chkLeftBreast.isChecked = Breast.LEFT in care.breasts
+        chkRightBreast.isChecked = Breast.RIGHT in care.breasts
+        return this
+    }
+
+    override fun retrieve(): BreastExtraction {
+        val volume = edtExtraction.asInt()
+        val leftBreast = chkLeftBreast.isChecked
+        val rightBreast = chkRightBreast.isChecked
+        val breasts = when {
+            leftBreast && rightBreast -> EnumSet.allOf(Breast::class.java)
+            leftBreast -> EnumSet.of(Breast.LEFT)
+            rightBreast -> EnumSet.of(Breast.RIGHT)
+            else -> EnumSet.noneOf(Breast::class.java)
+        }
+        return BreastExtraction(volume = volume, breasts = breasts)
+    }
+}
+
+private fun TextView.asInt(): Int = asIntOrNull()!!
+private fun TextView.asIntOrNull(): Int? = when {
+    text.isNullOrEmpty() -> null
+    else -> Integer.parseInt(text.toString())
 }

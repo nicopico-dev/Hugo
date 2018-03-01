@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<merge
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    tools:parentTag="android.support.constraint.ConstraintLayout">
 
     <ImageView
         android:id="@+id/imgRemove"
@@ -46,6 +48,7 @@
         app:layout_constraintStart_toEndOf="@id/edtBottle"/>
 
     <TextView
+        android:id="@+id/txtBottleContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space_small"
@@ -55,4 +58,4 @@
         android:text="@string/maternal_milk"
         style="@style/Text.Light"/>
 
-</android.support.constraint.ConstraintLayout>
+</merge>

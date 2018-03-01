@@ -4,6 +4,7 @@ import android.support.annotation.DrawableRes
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 
@@ -51,6 +52,10 @@ var EditText.textS: CharSequence?
     get() = text.toString()
     set(value) = setText(value)
 
+var TextView.textI: Int
+    get() = throw NotImplementedError()
+    set(value) = setText(value)
+
 inline fun TextView.editorAction(crossinline listener: ViewListener) {
     setOnEditorActionListener { _, _, _ ->
         listener.invoke(this)
@@ -75,3 +80,6 @@ inline fun TextView.textChanged(crossinline listener: ViewListener) {
 
     })
 }
+
+val ViewGroup.children: Iterable<View>
+    get() = (0 until childCount).map { getChildAt(it) }
