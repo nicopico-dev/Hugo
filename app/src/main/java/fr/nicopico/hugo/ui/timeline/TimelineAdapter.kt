@@ -35,7 +35,7 @@ class TimelineAdapter(
 
     var longClickListener: TimelineListener? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = inflater.inflate(R.layout.item_timeline, parent, false)
         return ViewHolder(itemView)
     }

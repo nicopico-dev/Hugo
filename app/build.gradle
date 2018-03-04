@@ -37,7 +37,7 @@ androidExtensions {
 }
 
 dependencies {
-    ext.support_version = '27.0.2'
+    ext.support_version = '27.1.0'
     ext.coroutines_version = '0.20'
     ext.firebase_version = '11.8.0'
 
@@ -50,8 +50,8 @@ dependencies {
     implementation "com.android.support:customtabs:$support_version"
     implementation "com.android.support:design:$support_version"
     implementation "com.android.support:recyclerview-v7:$support_version"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta4'
-    implementation 'androidx.core:core-ktx:0.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta5'
+    implementation 'androidx.core:core-ktx:0.2'
 
     implementation "com.google.android.gms:play-services-oss-licenses:$firebase_version"
     implementation "com.google.firebase:firebase-firestore:$firebase_version"

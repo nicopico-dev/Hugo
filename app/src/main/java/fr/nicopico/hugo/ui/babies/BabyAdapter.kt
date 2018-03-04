@@ -30,7 +30,7 @@ class BabyAdapter(
     var clickListener: BabyListener? = null
     var longClickListener: BabyListener? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
             inflater.inflate(R.layout.item_baby, parent, false)
                     .let(::ViewHolder)
 
