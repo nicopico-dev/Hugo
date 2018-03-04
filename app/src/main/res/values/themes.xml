@@ -8,6 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="buttonStyle">@style/Button</item>
+        <item name="cardViewStyle">@style/CardView.Light</item>
+        <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
     </style>
 
 </resources>

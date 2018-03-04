@@ -45,7 +45,8 @@
             app:layout_constraintEnd_toEndOf="@id/fabAdd"
             app:layout_constraintBottom_toTopOf="@id/fabAdd"
             android:layout_marginEnd="@dimen/space_small"
-            android:layout_marginBottom="@dimen/space_small">
+            android:layout_marginBottom="@dimen/space_small"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/txtFabAddFood"
