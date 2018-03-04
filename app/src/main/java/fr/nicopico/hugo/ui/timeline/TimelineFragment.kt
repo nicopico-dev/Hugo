@@ -46,10 +46,10 @@ class TimelineFragment : BaseFragment(), ReduxView {
             addItemDecoration(DateSectionDecoration(context, timelineAdapter))
         }
 
-        fabAdd.click { groupFabs.toggle() }
-        fabAddChange.click { addChangeDialog(); groupFabs.toggle() }
-        fabAddFood.click { addFoodDialog(); groupFabs.toggle() }
-        fabAddHealthHygiene.click { addHealthAndHygieneDialog(); groupFabs.toggle() }
+        fabAdd.click { toggleFabMenu() }
+        txtFabAddChange.click { addChangeDialog(); toggleFabMenu() }
+        txtFabAddFood.click { addFoodDialog(); toggleFabMenu() }
+        txtFabAddHealthHygiene.click { addHealthAndHygieneDialog(); toggleFabMenu() }
 
         timelineAdapter.longClickListener = { entry: Timeline.Entry ->
             when(entry.type) {
@@ -77,5 +77,10 @@ class TimelineFragment : BaseFragment(), ReduxView {
             previousTimelineCount = timelineAdapter.itemCount
             rcvTimeline.scrollToPosition(0)
         }
+    }
+
+    private fun toggleFabMenu() {
+        // TODO Animate
+        fabAddMenu.toggle()
     }
 }

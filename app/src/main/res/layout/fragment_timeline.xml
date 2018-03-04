@@ -37,71 +37,41 @@
         app:layout_anchor="@id/rcvTimeline"
         app:layout_anchorGravity="bottom|end">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fabAddChange"
+        <LinearLayout
+            android:id="@+id/fabAddMenu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/space_medium"
-            android:src="@drawable/ic_change"
-            app:fabSize="mini"
-            app:layout_constraintBottom_toTopOf="@+id/fabAddFood"
-            app:layout_constraintEnd_toEndOf="@id/fabAddFood"
-            app:layout_constraintStart_toStartOf="@id/fabAddFood"/>
-
-        <TextView
-            android:id="@+id/_txtFabAddChange"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@id/fabAddChange"
-            app:layout_constraintTop_toTopOf="@id/fabAddChange"
-            app:layout_constraintBottom_toBottomOf="@id/fabAddChange"
-            android:layout_margin="@dimen/space_small"
-            android:text="@string/care_type_change"
-            style="@style/FabLabel"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fabAddFood"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/space_medium"
-            android:src="@drawable/ic_food"
-            app:fabSize="mini"
-            app:layout_constraintBottom_toTopOf="@+id/fabAddHealthHygiene"
-            app:layout_constraintEnd_toEndOf="@id/fabAddHealthHygiene"
-            app:layout_constraintStart_toStartOf="@id/fabAddHealthHygiene"/>
-
-        <TextView
-            android:id="@+id/_txtFabAddFood"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@id/fabAddFood"
-            app:layout_constraintTop_toTopOf="@id/fabAddFood"
-            app:layout_constraintBottom_toBottomOf="@id/fabAddFood"
-            android:layout_margin="@dimen/space_small"
-            android:text="@string/care_type_food"
-            style="@style/FabLabel"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fabAddHealthHygiene"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/space_medium"
-            android:src="@drawable/ic_health_hygiene"
-            app:fabSize="mini"
-            app:layout_constraintBottom_toTopOf="@+id/fabAdd"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="@id/fabAdd"
-            app:layout_constraintStart_toStartOf="@id/fabAdd"/>
+            app:layout_constraintBottom_toTopOf="@id/fabAdd"
+            android:layout_marginEnd="@dimen/space_small"
+            android:layout_marginBottom="@dimen/space_small">
 
-        <TextView
-            android:id="@+id/_txtFabAddHealthHygiene"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@id/fabAddHealthHygiene"
-            app:layout_constraintTop_toTopOf="@id/fabAddHealthHygiene"
-            app:layout_constraintBottom_toBottomOf="@id/fabAddHealthHygiene"
-            android:layout_margin="@dimen/space_small"
-            android:text="@string/care_type_health_hygiene"
-            style="@style/FabLabel"/>
+            <TextView
+                android:id="@+id/txtFabAddFood"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/care_type_food"
+                android:drawableEnd="@drawable/ic_food"
+                style="@style/FoodLabel"/>
+
+            <TextView
+                android:id="@+id/txtFabAddChange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/care_type_change"
+                android:drawableEnd="@drawable/ic_change"
+                style="@style/FoodLabel"/>
+
+            <TextView
+                android:id="@+id/txtFabAddHealthHygiene"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/care_type_health_hygiene"
+                android:drawableEnd="@drawable/ic_health_hygiene"
+                style="@style/FoodLabel"/>
+
+        </LinearLayout>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabAdd"
@@ -111,14 +81,6 @@
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
-
-        <android.support.constraint.Group
-            android:id="@+id/groupFabs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="fabAddChange,_txtFabAddChange,fabAddFood,_txtFabAddFood,fabAddHealthHygiene,_txtFabAddHealthHygiene"
-            android:visibility="gone"
-            tools:visibility="visible"/>
 
     </android.support.constraint.ConstraintLayout>
 
