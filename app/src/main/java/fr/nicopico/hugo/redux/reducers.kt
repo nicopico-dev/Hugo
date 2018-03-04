@@ -47,8 +47,8 @@ val timelineReducer = Reducer<AppState> { state, action ->
     when (action) {
         is ENTRY_ADDED -> state.copy(timeline = state.timeline + action.entry)
         is ENTRY_MODIFIED -> {
-            val index = state.timeline.indexOfFirst { it.remoteId == action.entry.remoteId }
-            val updatedTimeline = state.timeline.toMutableList().apply {
+            val index = state.timeline.entries.indexOfFirst { it.remoteId == action.entry.remoteId }
+            val updatedTimeline = state.timeline.entries.toMutableList().apply {
                 removeAt(index)
                 add(index, action.entry)
             }

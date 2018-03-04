@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.fragment_timeline.*
 class TimelineFragment : BaseFragment(), ReduxView {
 
     private val timelineAdapter by lazy {
-        TimelineAdapter(context!!, appStore.state.timeline)
+        TimelineAdapter(context!!, appStore.state.timeline.entries)
     }
     private var previousTimelineCount = 0
 
@@ -38,7 +38,7 @@ class TimelineFragment : BaseFragment(), ReduxView {
         super.onViewCreated(view, savedInstanceState)
 
         rcvTimeline.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
+            layoutManager = LinearLayoutManager(context)
             adapter = timelineAdapter
 
             // Decorations
@@ -72,10 +72,10 @@ class TimelineFragment : BaseFragment(), ReduxView {
     }
 
     private fun updateScreen(state: AppState) {
-        timelineAdapter.data = state.timeline
-        if (previousTimelineCount < timelineAdapter.itemCount) {
+        timelineAdapter.data = state.timeline.entries
+        if (previousTimelineCount > timelineAdapter.itemCount) {
             previousTimelineCount = timelineAdapter.itemCount
-            rcvTimeline.scrollToPosition(previousTimelineCount - 1)
+            rcvTimeline.scrollToPosition(0)
         }
     }
 }

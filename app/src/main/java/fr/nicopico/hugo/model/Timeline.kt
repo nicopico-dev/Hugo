@@ -2,9 +2,9 @@ package fr.nicopico.hugo.model
 
 import java.util.*
 
-class Timeline(
-        private val entries: List<Entry> = emptyList()
-) : List<Timeline.Entry> by entries {
+class Timeline(entries: List<Entry> = emptyList()) {
+
+    val entries = entries.sortedByDescending { it.time }
 
     data class Entry(
             val remoteId: String?,

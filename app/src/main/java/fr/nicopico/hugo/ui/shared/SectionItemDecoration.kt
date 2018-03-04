@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import kotlin.properties.Delegates
 
-// TODO Handle reverse layout
 abstract class SectionItemDecoration<T>(
         adapter: RecyclerView.Adapter<*>
 ) : RecyclerView.ItemDecoration() {
@@ -82,13 +81,8 @@ abstract class SectionItemDecoration<T>(
     }
 
     protected open fun hasHeader(parent: RecyclerView, position: Int): Boolean {
-        return if (parent.reverseLayout()) {
-            position == parent.adapter.itemCount - 1
-                    || !sameHeader(getItem(parent, position), getItem(parent, position + 1))
-        } else {
-            position == 0
+        return position == 0
                     || !sameHeader(getItem(parent, position), getItem(parent, position - 1))
-        }
     }
 
     private fun clear() {
