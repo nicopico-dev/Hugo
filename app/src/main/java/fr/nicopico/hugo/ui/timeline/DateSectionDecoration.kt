@@ -20,6 +20,7 @@ class DateSectionDecoration(
 
     private val inflater = LayoutInflater.from(context)
     private val dateFormat = getDateFormat(context)
+    @Suppress("MagicNumber")
     private val headerHeight = 24.dp(context)
 
     override fun sameHeader(itemA: Timeline.Entry, itemB: Timeline.Entry): Boolean {
@@ -40,7 +41,7 @@ class DateSectionDecoration(
         return (adapter as TimelineAdapter).data[position]
     }
 
-    @Suppress("DEPRECATION")
+    @Suppress("DEPRECATION", "MagicNumber")
     private fun Date.toInt(): Int {
         return year * 1000 + month * 100 + date
     }

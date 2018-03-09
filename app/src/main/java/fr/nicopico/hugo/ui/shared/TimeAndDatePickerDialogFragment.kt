@@ -24,6 +24,7 @@ class TimeAndDatePickerDialogFragment : DialogFragment() {
     companion object {
         private const val ARG_DATE = "ARG_DATE"
         private const val RESULT_DATE_TIME = "RESULT_DATE_TIME"
+        private const val EPOCH_YEAR = 1900
 
         fun show(date: Date, targetFragment: Fragment, requestCode: Int = 0) {
             val dialogFragment = TimeAndDatePickerDialogFragment()
@@ -96,6 +97,6 @@ class TimeAndDatePickerDialogFragment : DialogFragment() {
 
     @Suppress("DEPRECATION")
     private fun DatePicker.init(date: Date, onDateChangedListener: (DatePicker, Int, Int, Int) -> Unit) {
-        init(date.year + 1900, date.month, date.date, onDateChangedListener)
+        init(date.year + EPOCH_YEAR, date.month, date.date, onDateChangedListener)
     }
 }

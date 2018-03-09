@@ -22,8 +22,10 @@ import kotlinx.android.synthetic.main.view_breast_feeding.view.*
 import kotlinx.coroutines.experimental.Deferred
 import java.util.*
 
-fun Fragment.addFoodDialog() = AddFoodDialogFragment.create().show(fragmentManager!!, null)
-fun Fragment.editFoodDialog(entry: Timeline.Entry): Unit = EditFoodDialogFragment.create(entry).show(fragmentManager!!, null)
+fun Fragment.addFoodDialog() = AddFoodDialogFragment.create()
+        .show(fragmentManager!!, null)
+fun Fragment.editFoodDialog(entry: Timeline.Entry): Unit = EditFoodDialogFragment.create(entry)
+        .show(fragmentManager!!, null)
 
 open class AddFoodDialogFragment : TimelineEntryDialogFragment(), ReduxView {
 

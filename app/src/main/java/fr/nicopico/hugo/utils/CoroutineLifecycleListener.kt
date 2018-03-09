@@ -20,7 +20,7 @@ class CoroutineLifecycleListener(private val deferred: Deferred<*>) : LifecycleO
     }
 }
 
-@Suppress("PropertyName")
+@Suppress("PropertyName", "TopLevelPropertyNaming")
 internal val Background = newFixedThreadPoolContext(2, "bg")
 
 fun <T> LifecycleOwner.load(loader: () -> T): Deferred<T> {

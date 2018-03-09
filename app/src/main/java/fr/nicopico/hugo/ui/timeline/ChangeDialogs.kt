@@ -17,8 +17,10 @@ import kotlinx.android.synthetic.main.dialog_add_change.*
 import kotlinx.android.synthetic.main.dialog_form.*
 import kotlinx.coroutines.experimental.Deferred
 
-fun Fragment.addChangeDialog() = AddChangeDialogFragment.create().show(fragmentManager!!, null)
-fun Fragment.editChangeDialog(entry: Timeline.Entry) = EditChangeDialogFragment.create(entry).show(fragmentManager!!, null)
+fun Fragment.addChangeDialog() = AddChangeDialogFragment.create()
+        .show(fragmentManager!!, null)
+fun Fragment.editChangeDialog(entry: Timeline.Entry) = EditChangeDialogFragment.create(entry)
+        .show(fragmentManager!!, null)
 
 open class AddChangeDialogFragment : TimelineEntryDialogFragment(), ReduxView {
 

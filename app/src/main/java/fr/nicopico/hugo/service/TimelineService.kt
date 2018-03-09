@@ -137,7 +137,8 @@ private object TimelineEntrySerializer : HugoLogger {
                                         volume = it[KEY_VOLUME].asInt(),
                                         content = it[KEY_CONTENT] as String
                                 )
-                                else -> throw UnsupportedOperationException("Unable to deserialize care data $it (food type)")
+                                else -> throw UnsupportedOperationException("Unable to deserialize care data $it " +
+                                        "(food type)")
                             }
                             else -> throw UnsupportedOperationException("Unable to deserialize care data $it")
                         }

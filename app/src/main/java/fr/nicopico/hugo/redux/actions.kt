@@ -1,4 +1,4 @@
-@file:Suppress("ClassName")
+@file:Suppress("ClassName", "ClassNaming")
 
 package fr.nicopico.hugo.redux
 

@@ -17,8 +17,10 @@ import kotlinx.android.synthetic.main.dialog_add_health_and_hygiene.*
 import kotlinx.android.synthetic.main.dialog_form.*
 import kotlinx.coroutines.experimental.Deferred
 
-fun Fragment.addHealthAndHygieneDialog() = AddHealthAndHygieneDialogFragment.create().show(fragmentManager!!, null)
-fun Fragment.editHealthAndHygieneDialog(entry: Timeline.Entry): Unit = EditHealthAndHygieneDialogFragment.create(entry).show(fragmentManager!!, null)
+fun Fragment.addHealthAndHygieneDialog() = AddHealthAndHygieneDialogFragment.create()
+        .show(fragmentManager!!, null)
+fun Fragment.editHealthAndHygieneDialog(entry: Timeline.Entry): Unit = EditHealthAndHygieneDialogFragment.create(entry)
+        .show(fragmentManager!!, null)
 
 open class AddHealthAndHygieneDialogFragment : TimelineEntryDialogFragment(), ReduxView {
 

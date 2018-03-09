@@ -243,7 +243,9 @@ performance:
   ForEachOnRange:
     active: true
   SpreadOperator:
-    active: true
+    # Spread operator hidden cost has been fixed in 1.2
+    # https://youtrack.jetbrains.com/issue/KT-20462
+    active: false
   UnnecessaryTemporaryInstantiation:
     active: true
 
@@ -324,7 +326,7 @@ style:
   NestedClassesVisibility:
     active: false
   NewLineAtEndOfFile:
-    active: true
+    active: false
   OptionalAbstractKeyword:
     active: true
   OptionalReturnKeyword:

@@ -1,4 +1,8 @@
-@file:Suppress("unused", "NOTHING_TO_INLINE", "FunctionName", "NAME_SHADOWING")
+@file:Suppress(
+        "unused",
+        "NOTHING_TO_INLINE", "NAME_SHADOWING",
+        "FunctionName", "FunctionNaming", "TooManyFunctions"
+)
 
 package fr.nicopico.hugo.utils
 
@@ -14,13 +18,15 @@ interface HugoLogger {
         get() = getTag(javaClass)
 }
 
+private const val MAX_TAG_LENGTH = 23
+
 fun HugoLogger(clazz: Class<*>): HugoLogger = object : HugoLogger {
     override val loggerTag = getTag(clazz)
 }
 
 fun HugoLogger(tag: String): HugoLogger = object : HugoLogger {
     init {
-        assert(tag.length <= 23) { "The maximum tag length is 23, got $tag" }
+        assert(tag.length <= MAX_TAG_LENGTH) { "The maximum tag length is $MAX_TAG_LENGTH, got $tag" }
     }
 
     override val loggerTag = tag
@@ -105,9 +111,9 @@ fun doLog(logger: HugoLogger, level: Int, message: String, error: Throwable? = n
 
 private fun getTag(clazz: Class<*>): String {
     val tag = clazz.simpleName
-    return if (tag.length <= 23) {
+    return if (tag.length <= MAX_TAG_LENGTH) {
         tag
     } else {
-        tag.substring(0, 23)
+        tag.substring(0, MAX_TAG_LENGTH)
     }
 }
