@@ -11,7 +11,15 @@ import fr.nicopico.hugo.redux.REMOVE_BABY
 import fr.nicopico.hugo.redux.ReduxView
 import fr.nicopico.hugo.redux.UPDATE_BABY
 import fr.nicopico.hugo.service.babyService
-import fr.nicopico.hugo.ui.shared.*
+import fr.nicopico.hugo.ui.shared.FormDialogFragment
+import fr.nicopico.hugo.ui.shared.argument
+import fr.nicopico.hugo.ui.shared.click
+import fr.nicopico.hugo.ui.shared.editorAction
+import fr.nicopico.hugo.ui.shared.isNotEmpty
+import fr.nicopico.hugo.ui.shared.show
+import fr.nicopico.hugo.ui.shared.textChanged
+import fr.nicopico.hugo.ui.shared.textS
+import fr.nicopico.hugo.ui.shared.withArguments
 import fr.nicopico.hugo.utils.loadSuspend
 import fr.nicopico.hugo.utils.then
 import kotlinx.android.synthetic.main.dialog_form.*

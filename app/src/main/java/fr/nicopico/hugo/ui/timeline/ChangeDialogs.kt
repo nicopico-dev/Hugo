@@ -5,7 +5,11 @@ import android.support.v4.app.Fragment
 import android.view.View
 import android.widget.TextView
 import fr.nicopico.hugo.R
-import fr.nicopico.hugo.model.*
+import fr.nicopico.hugo.model.Care
+import fr.nicopico.hugo.model.CareType
+import fr.nicopico.hugo.model.Pee
+import fr.nicopico.hugo.model.Poo
+import fr.nicopico.hugo.model.Timeline
 import fr.nicopico.hugo.redux.ADD_ENTRY
 import fr.nicopico.hugo.redux.ReduxView
 import fr.nicopico.hugo.redux.UPDATE_ENTRY

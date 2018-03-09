@@ -5,7 +5,13 @@ import android.support.v4.app.Fragment
 import android.view.View
 import android.widget.TextView
 import fr.nicopico.hugo.R
-import fr.nicopico.hugo.model.*
+import fr.nicopico.hugo.model.Bath
+import fr.nicopico.hugo.model.Care
+import fr.nicopico.hugo.model.CareType
+import fr.nicopico.hugo.model.Face
+import fr.nicopico.hugo.model.Timeline
+import fr.nicopico.hugo.model.UmbilicalCord
+import fr.nicopico.hugo.model.Vitamins
 import fr.nicopico.hugo.redux.ADD_ENTRY
 import fr.nicopico.hugo.redux.ReduxView
 import fr.nicopico.hugo.redux.UPDATE_ENTRY

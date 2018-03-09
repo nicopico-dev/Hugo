@@ -1,6 +1,19 @@
 package fr.nicopico.hugo.service
 
-import fr.nicopico.hugo.model.*
+import fr.nicopico.hugo.model.Baby
+import fr.nicopico.hugo.model.Bath
+import fr.nicopico.hugo.model.BottleFeeding
+import fr.nicopico.hugo.model.Breast
+import fr.nicopico.hugo.model.BreastExtraction
+import fr.nicopico.hugo.model.BreastFeeding
+import fr.nicopico.hugo.model.Care
+import fr.nicopico.hugo.model.Face
+import fr.nicopico.hugo.model.Pee
+import fr.nicopico.hugo.model.Poo
+import fr.nicopico.hugo.model.Timeline
+import fr.nicopico.hugo.model.UmbilicalCord
+import fr.nicopico.hugo.model.User
+import fr.nicopico.hugo.model.Vitamins
 import fr.nicopico.hugo.utils.HugoLogger
 import fr.nicopico.hugo.utils.verbose
 import java.util.*

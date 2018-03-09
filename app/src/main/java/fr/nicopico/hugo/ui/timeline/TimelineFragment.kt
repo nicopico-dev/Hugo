@@ -2,12 +2,24 @@ package fr.nicopico.hugo.ui.timeline
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.AppState
-import fr.nicopico.hugo.model.CareType.*
+import fr.nicopico.hugo.model.CareType.CHANGE
+import fr.nicopico.hugo.model.CareType.FOOD
+import fr.nicopico.hugo.model.CareType.HEALTH_HYGIENE
 import fr.nicopico.hugo.model.Timeline
-import fr.nicopico.hugo.redux.*
+import fr.nicopico.hugo.redux.FETCH_TIMELINE
+import fr.nicopico.hugo.redux.ReduxLifecycleListener
+import fr.nicopico.hugo.redux.ReduxView
+import fr.nicopico.hugo.redux.STOP_FETCHING_TIMELINE
+import fr.nicopico.hugo.redux.UNSELECT_BABY
+import fr.nicopico.hugo.redux.appStore
 import fr.nicopico.hugo.ui.BaseFragment
 import fr.nicopico.hugo.ui.shared.SpaceItemDecoration
 import fr.nicopico.hugo.ui.shared.click

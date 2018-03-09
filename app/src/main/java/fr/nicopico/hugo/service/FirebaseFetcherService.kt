@@ -3,7 +3,11 @@ package fr.nicopico.hugo.service
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
-import fr.nicopico.hugo.utils.*
+import fr.nicopico.hugo.utils.HugoLogger
+import fr.nicopico.hugo.utils.error
+import fr.nicopico.hugo.utils.info
+import fr.nicopico.hugo.utils.verbose
+import fr.nicopico.hugo.utils.warn
 import kotlin.coroutines.experimental.suspendCoroutine
 import kotlin.properties.Delegates
 

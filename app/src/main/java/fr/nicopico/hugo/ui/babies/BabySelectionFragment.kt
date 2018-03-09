@@ -7,7 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.model.AppState
-import fr.nicopico.hugo.redux.*
+import fr.nicopico.hugo.redux.FETCH_BABIES
+import fr.nicopico.hugo.redux.ReduxLifecycleListener
+import fr.nicopico.hugo.redux.ReduxView
+import fr.nicopico.hugo.redux.SELECT_BABY
+import fr.nicopico.hugo.redux.STOP_FETCHING_BABIES
+import fr.nicopico.hugo.redux.appStore
 import fr.nicopico.hugo.ui.BaseFragment
 import fr.nicopico.hugo.ui.shared.SpaceItemDecoration
 import fr.nicopico.hugo.ui.shared.click
