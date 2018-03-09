@@ -5,10 +5,12 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven { url 'https://plugins.gradle.org/m2/' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'gradle.plugin.io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.0.0.RC6-3'
         classpath 'com.google.gms:oss-licenses:0.9.1'
         classpath 'com.google.gms:google-services:3.1.0'
 
@@ -16,6 +18,8 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
+
+apply plugin: 'io.gitlab.arturbosch.detekt'
 
 allprojects {
     repositories {
@@ -27,4 +31,13 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+detekt {
+    profile('main') {
+        input = "$projectDir/app"
+        output = "$projectDir/app/build/outputs/reports"
+        config = "$projectDir/detekt.yml"
+        filters = ".*test.*,.*/resources/.*,.*/tmp/.*"
+    }
 }
