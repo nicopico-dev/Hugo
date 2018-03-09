@@ -16,6 +16,7 @@ class RemoteMiddleware(
         private val timelineService: TimelineService
 ) : Middleware<AppState>, HugoLogger {
 
+    @Suppress("ComplexMethod")
     override fun dispatch(store: Store<AppState>, next: Dispatcher, action: Any): Any {
         if (action is AUTHENTICATED) {
             babyService.user = action.user

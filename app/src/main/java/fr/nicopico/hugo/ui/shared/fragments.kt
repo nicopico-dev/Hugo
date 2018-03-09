@@ -7,6 +7,7 @@ import java.io.Serializable
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
+@Suppress("ComplexMethod")
 fun bundle(vararg args: Pair<String, Any?>) = Bundle().apply {
     args.forEach { (key, value) ->
         when (value) {

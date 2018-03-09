@@ -92,12 +92,12 @@ class TimelineAdapter(
                 details.addView(txtNothing)
             } else {
                 entry.cares
-                        .map { careView(it) }
+                        .map { createCareView(it) }
                         .forEach { details.addView(it) }
             }
         }
 
-        private fun careView(care: Care): View {
+        private fun createCareView(care: Care): View {
             return when (care) {
                 UmbilicalCord -> textView(R.string.care_umbilical_cord)
                 Face -> textView(R.string.care_face)
@@ -105,24 +105,32 @@ class TimelineAdapter(
                 Vitamins -> textView(R.string.care_vitamins)
                 Pee -> textView(R.string.care_change_pee)
                 Poo -> textView(R.string.care_change_poo)
-                is BreastFeeding -> textView(
-                        if (care.leftDuration != null && care.rightDuration != null) R.string.care_breast_feeding_both
-                        else if (care.leftDuration != null) R.string.care_breast_feeding_left
-                        else if (care.rightDuration != null) R.string.care_breast_feeding_right
-                        else throw IllegalStateException("Breast feeding without any duration"),
-                        care.leftDuration, care.rightDuration
-                )
+                is BreastFeeding -> createBreastFeedingView(care)
                 is BreastExtraction -> textView(R.string.care_breast_extraction, care.volume)
-                is BottleFeeding -> textView(
-                        when(care.content) {
-                            BottleFeeding.MATERNAL_MILK -> R.string.care_bottle_feeding_maternal
-                            BottleFeeding.ARTIFICIAL_MILK -> R.string.care_bottle_feeding_artificial
-                            BottleFeeding.WATER -> R.string.care_bottle_feeding_water
-                            else -> R.string.care_bottle_feeding_other
-                        },
-                        care.volume
-                )
+                is BottleFeeding -> createBottleFeedingView(care)
             }
+        }
+
+        private fun createBreastFeedingView(care: BreastFeeding): TextView {
+            return textView(
+                    if (care.leftDuration != null && care.rightDuration != null) R.string.care_breast_feeding_both
+                    else if (care.leftDuration != null) R.string.care_breast_feeding_left
+                    else if (care.rightDuration != null) R.string.care_breast_feeding_right
+                    else throw IllegalStateException("Breast feeding without any duration"),
+                    care.leftDuration, care.rightDuration
+            )
+        }
+
+        private fun createBottleFeedingView(care: BottleFeeding): TextView {
+            return textView(
+                    when (care.content) {
+                        BottleFeeding.MATERNAL_MILK -> R.string.care_bottle_feeding_maternal
+                        BottleFeeding.ARTIFICIAL_MILK -> R.string.care_bottle_feeding_artificial
+                        BottleFeeding.WATER -> R.string.care_bottle_feeding_water
+                        else -> R.string.care_bottle_feeding_other
+                    },
+                    care.volume
+            )
         }
 
         private fun textView(@StringRes text: Int, vararg params: Any?, icon: Int? = null): TextView {

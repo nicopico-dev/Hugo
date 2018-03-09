@@ -88,6 +88,7 @@ inline fun HugoLogger.error(error: Throwable? = null, m: String) {
 }
 //endregion
 
+@Suppress("ComplexMethod")
 fun doLog(logger: HugoLogger, level: Int, message: String, error: Throwable? = null) {
     val tag = logger.loggerTag
     if (error != null) {
