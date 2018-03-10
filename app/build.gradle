@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'org.jetbrains.kotlin.android.extensions'
 apply plugin: 'com.google.gms.oss.licenses.plugin'
+apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'io.fabric'
 
 android {
@@ -59,6 +60,7 @@ dependencies {
     implementation "com.google.firebase:firebase-core:$firebase_version"
     implementation "com.google.firebase:firebase-firestore:$firebase_version"
     implementation "com.google.firebase:firebase-auth:$firebase_version"
+    implementation "com.google.firebase:firebase-perf:$firebase_version"
     implementation "com.google.android.gms:play-services-auth:$firebase_version"
     implementation "com.google.android.gms:play-services-oss-licenses:$firebase_version"
     implementation 'com.firebaseui:firebase-ui-auth:3.2.2'
