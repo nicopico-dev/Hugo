@@ -11,3 +11,4 @@
 .DS_Store
 *.iml
 .externalNativeBuild
+.idea/misc.xml
