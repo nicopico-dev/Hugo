@@ -13,57 +13,69 @@
 564:47 firebase-core
 612:47 firebase-firestore
 660:47 firebase-auth
-708:47 play-services-auth
-756:47 play-services-oss-licenses
-804:53 crashlytics
-858:42 redux-kotlin
-901:46 kotlin-stdlib
-948:46 animated-vector-drawable
-995:47 firebase-analytics
-1043:47 firebase-analytics-impl
-1091:47 firebase-iid
-1139:47 firebase-common
-1187:47 play-services-auth-api-phone
-1235:47 play-services-auth-base
-1283:47 play-services-base
-1331:47 play-services-tasks
-1379:47 play-services-basement
-1427:46 support-v4
-1474:46 extensions
-1521:46 support-fragment
-1568:46 support-core-ui
-1615:46 support-core-utils
-1662:46 support-vector-drawable
-1709:46 transition
-1756:46 support-media-compat
-1803:46 support-compat
-1850:46 viewmodel
-2038:46 runtime
-1944:46 livedata
-1991:46 livedata-core
-2132:46 common
-2179:46 support-annotations
-2226:46 constraint-layout-solver
-2273:680 STL
-2954:1602 JSR 305
-4557:2500 zlib
-7058:19442 ICU4C
-26501:1558 RE2
-28060:11342 flatbuffers
-39403:1481 darts_clone
-40885:1732 Protobuf Nano
-42618:243 tz database
-42862:11358 CCTZ
-54221:731 UTF
-54953:11358 safeparcel
-66312:3182 PCRE
-69495:53 beta
-69549:53 crashlytics-core
-69603:24 answers
-69628:23 fabric
-69652:35 api
-69688:46 annotations
-69735:46 kotlin-annotation-processing-gradle
-69782:46 kotlin-compiler-embeddable
-69829:46 kotlin-reflect
-69876:46 kotlin-script-runtime
+708:47 firebase-perf
+756:47 play-services-auth
+804:47 play-services-oss-licenses
+852:53 crashlytics
+906:42 redux-kotlin
+949:46 kotlin-stdlib
+996:46 animated-vector-drawable
+1043:47 firebase-analytics
+1091:47 firebase-analytics-impl
+1139:47 firebase-iid
+1187:47 firebase-common
+1235:47 play-services-auth-api-phone
+1283:47 play-services-auth-base
+1331:47 play-services-base
+1379:47 play-services-tasks
+1427:47 play-services-basement
+1475:46 support-v4
+1522:46 extensions
+1569:46 support-fragment
+1616:46 support-core-ui
+1663:46 support-core-utils
+1710:46 support-vector-drawable
+1757:46 transition
+1804:46 support-media-compat
+1851:46 support-compat
+1898:46 viewmodel
+2086:46 runtime
+1992:46 livedata
+2039:46 livedata-core
+2180:46 common
+2227:46 support-annotations
+2274:46 constraint-layout-solver
+2321:680 STL
+3002:1602 JSR 305
+4605:2500 zlib
+7106:19442 ICU4C
+26549:1558 RE2
+28108:11342 flatbuffers
+39451:1481 darts_clone
+40933:1732 Protobuf Nano
+42666:243 tz database
+42910:11358 CCTZ
+54269:731 UTF
+55001:11358 safeparcel
+66360:3182 PCRE
+69543:11358 v2964546_google
+80902:16013 Android SDK
+96916:10691 Android Core Utils Support Library
+107608:10691 Android Media Compat Support Library
+118300:10695 Android Core UI Support Library
+128996:10695 Android Fragments Support Library
+139692:10695 Android Annotations Support Library
+150388:10695 Android Compat Support Library
+161084:11358 okhttp3
+172443:11358 Okio
+183802:10695 Android Compatibility Library v4
+194498:53 beta
+194552:53 crashlytics-core
+194606:24 answers
+194631:23 fabric
+194655:35 api
+194691:46 annotations
+194738:46 kotlin-annotation-processing-gradle
+194785:46 kotlin-compiler-embeddable
+194832:46 kotlin-reflect
+194879:46 kotlin-script-runtime
