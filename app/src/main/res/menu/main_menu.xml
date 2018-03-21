@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/menu_sign_out"
+        android:title="@string/menu_disconnect"
+        android:visible="false"/>
+
+    <item
         android:id="@+id/menu_licenses"
         android:title="@string/menu_licenses"
         android:orderInCategory="999"/>

@@ -56,6 +56,8 @@
     <string name="desc_remove_breast_extraction">Supprimer le tire-lait</string>
 
     <string name="menu_licenses">Licenses</string>
+    <string name="menu_connect">Connexion</string>
+    <string name="menu_disconnect">Déconnexion</string>
     <string name="desc_delete">Supprimer</string>
 
 </resources>

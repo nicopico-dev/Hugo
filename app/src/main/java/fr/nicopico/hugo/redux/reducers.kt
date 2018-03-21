@@ -19,8 +19,9 @@ val navigationReducer = Reducer<AppState> { state, action ->
                     else -> Screen.Exit
                 }
         )
+        EXIT_APP -> state.copy(screen = Screen.Exit)
         // Allows to re-start the application
-        EXIT_APP -> state.copy(screen = Screen.Login)
+        ON_EXIT_APP -> state.copy(screen = Screen.Login)
         else -> state
     }
 }
@@ -62,6 +63,7 @@ val timelineReducer = Reducer<AppState> { state, action ->
 val remoteReducer = Reducer<AppState> { state, action ->
     when (action) {
         is AUTHENTICATED -> state.copy(user = action.user)
+        DISCONNECTED -> INITIAL_STATE
         FETCH_BABIES -> state.copy(babies = emptyList())
         FETCH_TIMELINE -> state.copy(timeline = Timeline())
         else -> state

@@ -7,10 +7,11 @@ import fr.nicopico.hugo.model.Message
 import fr.nicopico.hugo.model.Timeline
 import fr.nicopico.hugo.model.User
 
-object SIGN_IN
 data class AUTHENTICATED(val user: User)
+object DISCONNECTED
 object GO_BACK
 object EXIT_APP
+object ON_EXIT_APP
 
 object FETCH_BABIES
 object STOP_FETCHING_BABIES

@@ -1,6 +1,7 @@
 package fr.nicopico.hugo.model
 
 sealed class User(val uid: String)
+
 class AnonymousUser(uid: String) : User(uid) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -14,5 +15,11 @@ class AnonymousUser(uid: String) : User(uid) {
 
     override fun hashCode(): Int {
         return uid.hashCode()
+    }
+}
+
+class RealUser(uid: String, val displayName: String?) : User(uid) {
+    override fun toString(): String {
+        return "RealUser(displayName=$displayName)"
     }
 }

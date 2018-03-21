@@ -16,7 +16,7 @@ import redux.createStore
 import redux.logger.Logger
 import redux.logger.createLoggerMiddleware
 
-private val initialState = AppState(
+val INITIAL_STATE = AppState(
         user = null,
         timeline = Timeline(),
         screen = Screen.Login,
@@ -39,4 +39,4 @@ private val enhancer = applyMiddleware(
 )
 private val reducer = combineReducers(babyReducer, timelineReducer, remoteReducer, navigationReducer)
 
-val appStore = createStore(reducer, initialState, enhancer)
+val appStore = createStore(reducer, INITIAL_STATE, enhancer)
