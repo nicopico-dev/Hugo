@@ -11,7 +11,7 @@ data class AUTHENTICATED(val user: User)
 object DISCONNECTED
 object GO_BACK
 object EXIT_APP
-object ON_EXIT_APP
+object ON_APP_EXIT
 
 object FETCH_BABIES
 object STOP_FETCHING_BABIES

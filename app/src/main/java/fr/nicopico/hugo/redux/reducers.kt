@@ -5,12 +5,21 @@ import fr.nicopico.hugo.model.Screen
 import fr.nicopico.hugo.model.Timeline
 import redux.api.Reducer
 
+private fun AppState.withDefaultScreen(): AppState {
+    val defaultScreen: Screen = when {
+        user == null -> Screen.Loading
+        // Go directly to the timeline if a baby is selected
+        selectedBaby != null -> Screen.Timeline
+        else -> Screen.BabySelection
+    }
+
+    return if (screen == defaultScreen) this
+    else return copy(screen = defaultScreen)
+}
+
 val navigationReducer = Reducer<AppState> { state, action ->
     when (action) {
-        is AUTHENTICATED -> state.copy(
-                // Go directly to the timeline if a baby is selected
-                screen = state.selectedBaby?.let { Screen.Timeline } ?: Screen.BabySelection
-        )
+        is AUTHENTICATED -> state.withDefaultScreen()
         is SELECT_BABY -> state.copy(screen = Screen.Timeline)
         UNSELECT_BABY -> state.copy(screen = Screen.BabySelection)
         GO_BACK -> state.copy(
@@ -20,8 +29,11 @@ val navigationReducer = Reducer<AppState> { state, action ->
                 }
         )
         EXIT_APP -> state.copy(screen = Screen.Exit)
-        // Allows to re-start the application
-        ON_EXIT_APP -> state.copy(screen = Screen.Login)
+        ON_APP_EXIT -> {
+            // Allow returning to the application
+            if (state.screen != Screen.Exit) state
+            else state.withDefaultScreen()
+        }
         else -> state
     }
 }

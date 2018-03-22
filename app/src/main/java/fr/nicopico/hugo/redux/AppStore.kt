@@ -19,7 +19,7 @@ import redux.logger.createLoggerMiddleware
 val INITIAL_STATE = AppState(
         user = null,
         timeline = Timeline(),
-        screen = Screen.Login,
+        screen = Screen.Loading,
         babies = emptyList(),
         selectedBaby = null
 )
@@ -32,10 +32,10 @@ private val reduxLogger = object : Logger<AppState> {
 }
 
 private val enhancer = applyMiddleware(
-        createLoggerMiddleware(reduxLogger),
-        MessageMiddleware(),
         AuthMiddleware(authService),
-        RemoteMiddleware(babyService, timelineService)
+        MessageMiddleware(),
+        RemoteMiddleware(babyService, timelineService),
+        createLoggerMiddleware(reduxLogger)
 )
 private val reducer = combineReducers(babyReducer, timelineReducer, remoteReducer, navigationReducer)
 

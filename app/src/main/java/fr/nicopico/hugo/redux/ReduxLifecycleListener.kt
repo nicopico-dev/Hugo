@@ -5,6 +5,8 @@ import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.OnLifecycleEvent
 import fr.nicopico.hugo.model.AppState
+import fr.nicopico.hugo.utils.HugoLogger
+import fr.nicopico.hugo.utils.debug
 import redux.api.Store
 
 typealias StateChangeDetector = (AppState, AppState) -> Boolean
@@ -13,7 +15,7 @@ class ReduxLifecycleListener(
         private val observer: (AppState) -> Unit,
         private val startAction: Any? = null,
         private val stopAction: Any? = null
-) : LifecycleObserver {
+) : LifecycleObserver, HugoLogger {
 
     private var subscription: Store.Subscription? = null
     private var latestState: AppState? = null
@@ -31,6 +33,7 @@ class ReduxLifecycleListener(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() {
+        debug { "Initial state: ${appStore.state}"}
         observer(appStore.state)
         subscription = appStore.subscribe {
             val changed = latestState?.let { changeDetector.invoke(it, appStore.state) } ?: true
