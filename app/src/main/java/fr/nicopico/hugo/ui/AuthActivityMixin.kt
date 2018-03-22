@@ -15,6 +15,7 @@ import fr.nicopico.hugo.redux.ReduxView
 import fr.nicopico.hugo.service.authService
 import fr.nicopico.hugo.service.convert
 import fr.nicopico.hugo.utils.HugoLogger
+import fr.nicopico.hugo.utils.debug
 import fr.nicopico.hugo.utils.warn
 
 private const val RC_SIGN_IN = 42
@@ -32,6 +33,7 @@ interface AuthActivityMixin : HugoLogger, ReduxView {
 
     fun Activity.signInIfNeeded() {
         if (!connected) {
+            debug("Not connected -> signIn")
             signIn()
         }
     }
