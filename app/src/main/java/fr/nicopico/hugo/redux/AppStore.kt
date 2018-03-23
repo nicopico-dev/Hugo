@@ -37,6 +37,6 @@ private val enhancer = applyMiddleware(
         RemoteMiddleware(babyService, timelineService),
         createLoggerMiddleware(reduxLogger)
 )
-private val reducer = combineReducers(babyReducer, timelineReducer, remoteReducer, navigationReducer)
+private val reducer = combineReducers(babyReducer, timelineReducer, remoteReducer, navigationReducer, goBackReducer)
 
 val appStore = createStore(reducer, INITIAL_STATE, enhancer)

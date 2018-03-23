@@ -76,18 +76,11 @@ class MainActivity : AppCompatActivity(), AuthActivityMixin, HugoLogger, ReduxVi
 
     private fun updateScreen(state: AppState) {
         val screen = state.screen
-        // Special cases
-        when (screen) {
-            Screen.Exit -> {
-                info("Exiting the application")
-                finish()
-                return
-            }
-            Screen.Loading -> {
-                // Screen.Loading needs a special case cause we use startActivityForResult with FirebaseUI
-                val fragment = supportFragmentManager.findFragmentById(R.id.formContainer)
-                if (fragment is LoadingFragment) return
-            }
+        // Special case for Screen.Exit
+        if (screen == Screen.Exit) {
+            info("Exiting the application")
+            finish()
+            return
         }
 
         debug { "Switch screen to $screen" }
@@ -105,7 +98,9 @@ class MainActivity : AppCompatActivity(), AuthActivityMixin, HugoLogger, ReduxVi
                 .replace(R.id.formContainer, fragment)
                 .commit()
 
-        signInIfNeeded()
+        if (screen == Screen.Loading) {
+            signInIfNeeded()
+        }
     }
 }
 

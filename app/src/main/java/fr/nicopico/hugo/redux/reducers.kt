@@ -20,21 +20,20 @@ private fun AppState.withDefaultScreen(): AppState {
 val navigationReducer = Reducer<AppState> { state, action ->
     when (action) {
         is AUTHENTICATED -> state.withDefaultScreen()
-        is SELECT_BABY -> state.copy(screen = Screen.Timeline)
-        UNSELECT_BABY -> state.copy(screen = Screen.BabySelection)
-        GO_BACK -> state.copy(
-                screen = when (state.screen) {
-                    Screen.Timeline -> Screen.BabySelection
-                    else -> Screen.Exit
-                }
-        )
+        is SELECT_BABY -> state.copy(screen = Screen.Timeline, selectedBaby = action.baby)
+        UNSELECT_BABY -> state.copy(screen = Screen.BabySelection, selectedBaby = null)
         EXIT_APP -> state.copy(screen = Screen.Exit)
-        ON_APP_EXIT -> {
-            // Allow returning to the application
-            if (state.screen != Screen.Exit) state
-            else state.withDefaultScreen()
-        }
+        // Allow returning to the application
+        ON_APP_EXIT -> state.withDefaultScreen()
         else -> state
+    }
+}
+
+val goBackReducer = Reducer<AppState> { state, action ->
+    if (action != GO_BACK) state
+    else when (state.screen) {
+        Screen.Timeline -> navigationReducer.reduce(state, UNSELECT_BABY)
+        else -> navigationReducer.reduce(state, EXIT_APP)
     }
 }
 
@@ -50,8 +49,6 @@ val babyReducer = Reducer<AppState> { state, action ->
             state.copy(babies = updatedBabies)
         }
         is BABY_REMOVED -> state.copy(babies = state.babies - action.baby)
-        is SELECT_BABY -> state.copy(selectedBaby = action.baby)
-        UNSELECT_BABY -> state.copy(selectedBaby = null)
         else -> state
     }
 }
