@@ -3,6 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application>
+        <!-- Disable crash reporting -->
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="false" />
         <!-- Disable performance tracking -->
         <meta-data
             android:name="firebase_performance_collection_enabled"
