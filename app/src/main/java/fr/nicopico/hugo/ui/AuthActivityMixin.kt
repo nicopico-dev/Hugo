@@ -31,6 +31,9 @@ interface AuthActivityMixin : HugoLogger, ReduxView {
     val connected: Boolean
         get() = authService.currentUser?.let { it !is AnonymousUser } ?: false
 
+    // Dirty fix for onActivityResult is never being called when the signIn activity is closed...
+    var waitingForSignInResult: Boolean
+
     fun Activity.signInIfNeeded() {
         if (!connected) {
             debug("Not connected -> signIn")
@@ -44,6 +47,7 @@ interface AuthActivityMixin : HugoLogger, ReduxView {
                 .setAvailableProviders(AUTH_PROVIDERS)
                 .setIsSmartLockEnabled(BuildConfig.DEBUG.not(), true)
                 .build()
+        waitingForSignInResult = true
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
@@ -59,6 +63,7 @@ interface AuthActivityMixin : HugoLogger, ReduxView {
     // This isn't really an issue since we do not need the Activity instance anyway :)
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == RC_SIGN_IN) {
+            waitingForSignInResult = false
             val response = IdpResponse.fromResultIntent(data)
 
             // Successfully signed in

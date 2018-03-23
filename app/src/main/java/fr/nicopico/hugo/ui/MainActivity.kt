@@ -25,6 +25,8 @@ import fr.nicopico.hugo.utils.info
 
 class MainActivity : AppCompatActivity(), AuthActivityMixin, HugoLogger, ReduxView {
 
+    override var waitingForSignInResult: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -77,7 +79,8 @@ class MainActivity : AppCompatActivity(), AuthActivityMixin, HugoLogger, ReduxVi
     private fun updateScreen(state: AppState) {
         val screen = state.screen
         // Special case for Screen.Exit
-        if (screen == Screen.Exit) {
+        if (screen == Screen.Exit
+                || (waitingForSignInResult && !connected)) {
             info("Exiting the application")
             finish()
             return
