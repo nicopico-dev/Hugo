@@ -1,5 +1,5 @@
 0:46 kotlin-android-extensions-runtime
-196686:46 kotlin-stdlib-jre7
+208061:46 kotlin-stdlib-jre7
 94:46 kotlinx-coroutines-android
 141:46 kotlinx-coroutines-core
 188:46 firebase-ui-auth
@@ -18,7 +18,7 @@
 804:47 play-services-oss-licenses
 852:53 crashlytics
 906:42 redux-kotlin
-196733:46 kotlin-stdlib
+208108:46 kotlin-stdlib
 996:46 animated-vector-drawable
 1043:47 firebase-analytics
 1091:47 firebase-analytics-impl
@@ -42,77 +42,78 @@
 2086:46 runtime
 1992:46 livedata
 2039:46 livedata-core
-196183:46 common
+207558:46 common
 2227:46 support-annotations
 2274:46 constraint-layout-solver
-2321:680 STL
-3002:1602 JSR 305
-4605:2500 zlib
-7106:19442 ICU4C
-26549:1558 RE2
-28108:11342 flatbuffers
-39451:1481 darts_clone
-40933:1732 Protobuf Nano
-42666:243 tz database
-42910:11358 CCTZ
-54269:731 UTF
-55001:11358 safeparcel
-66360:3182 PCRE
-69543:11358 v2964546_google
-80902:16013 Android SDK
-96916:10691 Android Core Utils Support Library
-107608:10691 Android Media Compat Support Library
-118300:10695 Android Core UI Support Library
-128996:10695 Android Fragments Support Library
-139692:10695 Android Annotations Support Library
-150388:10695 Android Compat Support Library
-161084:11358 okhttp3
-172443:11358 Okio
-183802:10695 Android Compatibility Library v4
-194498:53 beta
-194552:53 crashlytics-core
-194606:24 answers
-194631:23 fabric
-194655:35 api
-196470:46 annotations
-194738:46 kotlin-annotation-processing-gradle
-194785:46 kotlin-compiler-embeddable
-195584:46 kotlin-reflect
-194879:46 kotlin-script-runtime
-194926:46 lint-gradle
-194973:46 builder
-195020:46 lint
-195067:46 lint-checks
-195114:46 lint-api
-195161:46 manifest-merger
-195208:46 sdk-common
-195255:46 lint-gradle-api
-195302:46 gradle-api
-195349:46 builder-model
-195396:46 lint-kotlin
-195443:46 intellij-core
-195490:46 uast
-195537:46 groovy-all
-195631:46 sdklib
-195678:46 repository
-195725:46 kotlin-stdlib-jre8
-195772:46 builder-test-api
-195819:46 ddmlib
-195866:40 bcpkix-jdk15on
-195907:40 bcprov-jdk15on
-195948:46 tracker
-195995:46 shared
-196042:46 protos
-196089:46 layoutlib-api
-196136:46 dvlib
-196230:46 apksig
-196277:46 javawriter
-196324:47 fastutil
-196372:50 jopt-simple
-196423:46 json-simple
-196517:121 kxml2
-196639:46 kotlin-compiler
-196780:46 jsr305
-196827:46 j2objc-annotations
-196874:55 stax-ex
-196930:102 jaxb-api
+2321:11358 safeparcel
+13680:680 STL
+14361:3182 PCRE
+17544:1602 JSR 305
+19147:252 tz database
+19400:1481 darts_clone
+20882:1732 Protobuf Nano
+22615:2500 zlib
+25116:19442 ICU4C
+44559:11342 flatbuffers
+55902:1558 RE2
+57461:11358 CCTZ
+68820:731 UTF
+69552:16013 Android SDK
+85566:10695 Android Core UI Support Library
+96262:10695 Android Compatibility Library v4
+106958:10695 Android Fragments Support Library
+117654:10695 Android Compat Support Library
+128350:11358 Okio
+139709:11358 v2964546_google
+151068:10691 Android Media Compat Support Library
+161760:11358 okhttp3
+173119:10691 Android Core Utils Support Library
+183811:10695 Android Annotations Support Library
+194507:11365 absl
+205873:53 beta
+205927:53 crashlytics-core
+205981:24 answers
+206006:23 fabric
+206030:35 api
+207845:46 annotations
+206113:46 kotlin-annotation-processing-gradle
+206160:46 kotlin-compiler-embeddable
+206959:46 kotlin-reflect
+206254:46 kotlin-script-runtime
+206301:46 lint-gradle
+206348:46 builder
+206395:46 lint
+206442:46 lint-checks
+206489:46 lint-api
+206536:46 manifest-merger
+206583:46 sdk-common
+206630:46 lint-gradle-api
+206677:46 gradle-api
+206724:46 builder-model
+206771:46 lint-kotlin
+206818:46 intellij-core
+206865:46 uast
+206912:46 groovy-all
+207006:46 sdklib
+207053:46 repository
+207100:46 kotlin-stdlib-jre8
+207147:46 builder-test-api
+207194:46 ddmlib
+207241:40 bcpkix-jdk15on
+207282:40 bcprov-jdk15on
+207323:46 tracker
+207370:46 shared
+207417:46 protos
+207464:46 layoutlib-api
+207511:46 dvlib
+207605:46 apksig
+207652:46 javawriter
+207699:47 fastutil
+207747:50 jopt-simple
+207798:46 json-simple
+207892:121 kxml2
+208014:46 kotlin-compiler
+208155:46 jsr305
+208202:46 j2objc-annotations
+208249:55 stax-ex
+208305:102 jaxb-api
