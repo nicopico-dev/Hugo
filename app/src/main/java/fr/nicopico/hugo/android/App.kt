@@ -1,11 +1,13 @@
 package fr.nicopico.hugo.android
 
 import android.app.Application
+import fr.nicopico.hugo.android.service.FirebaseAnalyticsService
 import fr.nicopico.hugo.android.services.FirebaseAuthService
 import fr.nicopico.hugo.android.services.FirebaseBabyService
 import fr.nicopico.hugo.android.services.FirebaseTimelineService
 import fr.nicopico.hugo.domain.model.AppState
 import fr.nicopico.hugo.domain.redux.createStore
+import fr.nicopico.hugo.domain.services.AnalyticsService
 import fr.nicopico.hugo.domain.services.AuthService
 import fr.nicopico.hugo.domain.services.BabyService
 import fr.nicopico.hugo.domain.services.TimelineService
@@ -19,6 +21,7 @@ class App : Application() {
                 authService = authService,
                 babyService = babyService,
                 timelineService = timelineService,
+                analyticsService = analyticsService,
                 logger = reduxLogger
         )
     }
@@ -26,6 +29,7 @@ class App : Application() {
     val authService: AuthService by lazy { FirebaseAuthService() }
     val babyService: BabyService by lazy { FirebaseBabyService() }
     val timelineService: TimelineService by lazy { FirebaseTimelineService() }
+    private val analyticsService: AnalyticsService by lazy { FirebaseAnalyticsService(this) }
 
     private val reduxLogger = object : Logger<AppState> {
         private val logger = HugoLogger("REDUX")

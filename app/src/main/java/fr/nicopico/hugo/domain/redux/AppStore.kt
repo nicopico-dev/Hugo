@@ -3,6 +3,7 @@ package fr.nicopico.hugo.domain.redux
 import fr.nicopico.hugo.domain.model.AppState
 import fr.nicopico.hugo.domain.model.Screen
 import fr.nicopico.hugo.domain.model.Timeline
+import fr.nicopico.hugo.domain.services.AnalyticsService
 import fr.nicopico.hugo.domain.services.AuthService
 import fr.nicopico.hugo.domain.services.BabyService
 import fr.nicopico.hugo.domain.services.TimelineService
@@ -17,6 +18,7 @@ fun createStore(
         authService: AuthService,
         babyService: BabyService,
         timelineService: TimelineService,
+        analyticsService: AnalyticsService,
         logger: Logger<AppState>
 ): Store<AppState> {
 
@@ -32,8 +34,10 @@ fun createStore(
             AuthMiddleware(authService),
             MessageMiddleware(),
             RemoteMiddleware(babyService, timelineService),
+            AnalyticsMiddleware(analyticsService),
             createLoggerMiddleware(logger)
     )
+
     val reducer = combineReducers(
             babyReducer,
             timelineReducer,
