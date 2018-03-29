@@ -1,4 +1,4 @@
-package fr.nicopico.hugo.android.service
+package fr.nicopico.hugo.android.services
 
 import android.content.Context
 import androidx.os.bundleOf

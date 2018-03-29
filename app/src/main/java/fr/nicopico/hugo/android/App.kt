@@ -1,7 +1,7 @@
 package fr.nicopico.hugo.android
 
 import android.app.Application
-import fr.nicopico.hugo.android.service.FirebaseAnalyticsService
+import fr.nicopico.hugo.android.services.FirebaseAnalyticsService
 import fr.nicopico.hugo.android.services.FirebaseAuthService
 import fr.nicopico.hugo.android.services.FirebaseBabyService
 import fr.nicopico.hugo.android.services.FirebaseTimelineService
