@@ -7,6 +7,7 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import fr.nicopico.hugo.BuildConfig
 import fr.nicopico.hugo.android.HugoLogger
+import fr.nicopico.hugo.android.ReduxDispatcher
 import fr.nicopico.hugo.android.debug
 import fr.nicopico.hugo.android.services.convert
 import fr.nicopico.hugo.android.warn
@@ -25,7 +26,7 @@ private val AUTH_PROVIDERS = listOf(
 
 // TODO Restore support for anonymous login + account conversion (not supported by FirebaseUI yet :'( )
 // see https://github.com/firebase/FirebaseUI-Android/issues/123
-interface AuthActivityMixin : HugoLogger, ReduxViewMixin {
+interface AuthActivityMixin : HugoLogger, ReduxDispatcher {
 
     val authService: AuthService
     val connected: Boolean

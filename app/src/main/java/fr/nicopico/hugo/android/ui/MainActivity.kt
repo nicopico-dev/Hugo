@@ -2,6 +2,7 @@ package fr.nicopico.hugo.android.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.Menu
@@ -10,37 +11,43 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import fr.nicopico.hugo.R
-import fr.nicopico.hugo.android.App
-import fr.nicopico.hugo.android.HugoLogger
-import fr.nicopico.hugo.android.debug
-import fr.nicopico.hugo.android.info
+import fr.nicopico.hugo.android.*
 import fr.nicopico.hugo.android.ui.babies.BabySelectionFragment
 import fr.nicopico.hugo.android.ui.timeline.TimelineFragment
 import fr.nicopico.hugo.domain.model.AppState
 import fr.nicopico.hugo.domain.model.Screen
-import fr.nicopico.hugo.domain.services.AuthService
 import fr.nicopico.hugo.domain.redux.GO_BACK
 import fr.nicopico.hugo.domain.redux.ON_APP_EXIT
-import redux.api.Store
+import fr.nicopico.hugo.domain.services.AuthService
 
 
-class MainActivity : AppCompatActivity(), AuthActivityMixin, HugoLogger {
+class MainActivity : AppCompatActivity(),
+        ReduxView, ReduxDispatcher, StateProvider,
+        AuthActivityMixin, HugoLogger {
 
+    //region AuthActivityMixin
     override var waitingForSignInResult: Boolean = false
-    override val appStore: Store<AppState>
-        get() = getAppStore()
     override val authService: AuthService
         get() = (application as App).authService
+    //endregion
+
+    //region Redux
+    override fun dispatch(action: Any) = _dispatch(action)
+    override fun subscribe(subscriber: () -> Unit) = _subscribe(subscriber)
+    override val state: AppState
+        get() = _state
+    //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        ReduxLifecycleListener(appStore, ::updateScreen)
+        ReduxLifecycleListener
+                .create(this)
                 .restrictOn { s1, s2 ->
                     s1.screen != s2.screen
                 }
-                .subscribe(this)
+                .observe()
     }
 
     override fun onDestroy() {
@@ -81,7 +88,7 @@ class MainActivity : AppCompatActivity(), AuthActivityMixin, HugoLogger {
         dispatch(GO_BACK)
     }
 
-    private fun updateScreen(state: AppState) {
+    override fun render(state: AppState) {
         val screen = state.screen
         // Special case for Screen.Exit
         if (screen == Screen.Exit
@@ -92,7 +99,7 @@ class MainActivity : AppCompatActivity(), AuthActivityMixin, HugoLogger {
         }
 
         debug { "Switch screen to $screen" }
-        val fragment: BaseFragment = when(screen) {
+        val fragment: Fragment = when(screen) {
             Screen.Exit -> {
                 // Screen.Exit is a special case
                 throw IllegalStateException("EXIT")
@@ -112,7 +119,7 @@ class MainActivity : AppCompatActivity(), AuthActivityMixin, HugoLogger {
     }
 }
 
-class LoadingFragment : BaseFragment() {
+class LoadingFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_loading, container, false)
     }

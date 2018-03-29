@@ -5,10 +5,10 @@ import android.support.annotation.CallSuper
 import android.support.v4.app.Fragment
 import android.view.View
 import fr.nicopico.hugo.R
+import fr.nicopico.hugo.android.App
 import fr.nicopico.hugo.android.loadSuspend
 import fr.nicopico.hugo.android.then
 import fr.nicopico.hugo.android.ui.shared.FormDialogFragment
-import fr.nicopico.hugo.android.utils.application
 import fr.nicopico.hugo.android.utils.argument
 import fr.nicopico.hugo.android.utils.click
 import fr.nicopico.hugo.android.utils.editorAction
@@ -70,7 +70,7 @@ class EditBabyDialogFragment : AddBabyDialogFragment() {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
             deferredBaby = loadSuspend {
-                application.babyService.get(babyKey)
+                (activity!!.application as App).babyService.get(babyKey)
             }
         }
     }

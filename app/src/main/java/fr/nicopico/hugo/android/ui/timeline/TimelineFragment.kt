@@ -2,12 +2,7 @@ package fr.nicopico.hugo.android.ui.timeline
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.android.ui.BaseFragment
 import fr.nicopico.hugo.android.ui.ReduxLifecycleListener
@@ -16,9 +11,7 @@ import fr.nicopico.hugo.android.utils.click
 import fr.nicopico.hugo.android.utils.dimensionForOffset
 import fr.nicopico.hugo.android.utils.toggle
 import fr.nicopico.hugo.domain.model.AppState
-import fr.nicopico.hugo.domain.model.CareType.CHANGE
-import fr.nicopico.hugo.domain.model.CareType.FOOD
-import fr.nicopico.hugo.domain.model.CareType.HEALTH_HYGIENE
+import fr.nicopico.hugo.domain.model.CareType.*
 import fr.nicopico.hugo.domain.model.Timeline
 import fr.nicopico.hugo.domain.redux.FETCH_TIMELINE
 import fr.nicopico.hugo.domain.redux.STOP_FETCHING_TIMELINE
@@ -28,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_timeline.*
 class TimelineFragment : BaseFragment() {
 
     private val timelineAdapter by lazy {
-        TimelineAdapter(context!!, appStore.state.timeline.entries)
+        TimelineAdapter(context!!)
     }
     private var previousTimelineCount = 0
 
@@ -36,8 +29,9 @@ class TimelineFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
 
-        ReduxLifecycleListener(appStore, ::updateScreen, FETCH_TIMELINE, STOP_FETCHING_TIMELINE)
-                .subscribe(this)
+        ReduxLifecycleListener
+                .create(this, FETCH_TIMELINE, STOP_FETCHING_TIMELINE)
+                .observe()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -81,7 +75,7 @@ class TimelineFragment : BaseFragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun updateScreen(state: AppState) {
+    override fun render(state: AppState) {
         timelineAdapter.data = state.timeline.entries
         if (previousTimelineCount > timelineAdapter.itemCount) {
             previousTimelineCount = timelineAdapter.itemCount

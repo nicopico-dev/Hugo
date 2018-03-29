@@ -20,13 +20,14 @@ import kotlinx.android.synthetic.main.fragment_baby_selection.*
 class BabySelectionFragment : BaseFragment() {
 
     private val babyAdapter by lazy {
-        BabyAdapter(context!!, appStore.state.babies)
+        BabyAdapter(context!!)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ReduxLifecycleListener(appStore, ::updateScreen, FETCH_BABIES, STOP_FETCHING_BABIES)
-                .subscribe(this)
+        ReduxLifecycleListener
+                .create(this, FETCH_BABIES, STOP_FETCHING_BABIES)
+                .observe()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -50,7 +51,7 @@ class BabySelectionFragment : BaseFragment() {
         babyAdapter.longClickListener = { baby -> editBabyDialog(baby) }
     }
 
-    private fun updateScreen(state: AppState) {
+    override fun render(state: AppState) {
         babyAdapter.data = state.babies
     }
 }

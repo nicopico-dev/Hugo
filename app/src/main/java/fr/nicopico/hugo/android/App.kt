@@ -26,6 +26,7 @@ class App : Application() {
         )
     }
 
+    // FIXME These services should be private
     val authService: AuthService by lazy { FirebaseAuthService() }
     val babyService: BabyService by lazy { FirebaseBabyService() }
     val timelineService: TimelineService by lazy { FirebaseTimelineService() }

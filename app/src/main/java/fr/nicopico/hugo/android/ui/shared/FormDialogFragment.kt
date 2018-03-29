@@ -8,24 +8,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.view.plusAssign
 import fr.nicopico.hugo.R
-import fr.nicopico.hugo.android.ui.ReduxViewMixin
+import fr.nicopico.hugo.android.ReduxDispatcher
 import fr.nicopico.hugo.android.utils.click
 import fr.nicopico.hugo.android.utils.drawables
 import fr.nicopico.hugo.android.utils.visible
-import fr.nicopico.hugo.domain.model.AppState
 import kotlinx.android.synthetic.main.dialog_form.*
-import redux.api.Store
 import kotlin.properties.Delegates
 
-abstract class FormDialogFragment : BottomSheetDialogFragment(), ReduxViewMixin {
+abstract class FormDialogFragment : BottomSheetDialogFragment(),
+        ReduxDispatcher {
 
     protected abstract val dialogTitleId: Int
     protected open val dialogIconId: Int = 0
     protected open val formLayoutId: Int? = null
     protected open val formLayout: View? = null
 
-    override val appStore: Store<AppState>
-        get() = getAppStore()
+    override fun dispatch(action: Any) = _dispatch(action)
 
     protected var submittable by Delegates.observable(true) { _, _, value ->
         btnSubmit.isEnabled = value

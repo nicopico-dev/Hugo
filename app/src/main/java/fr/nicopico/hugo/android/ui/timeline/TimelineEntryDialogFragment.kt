@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import fr.nicopico.hugo.R
+import fr.nicopico.hugo.android.App
 import fr.nicopico.hugo.android.ui.shared.FormDialogFragment
 import fr.nicopico.hugo.android.ui.shared.TimeAndDatePickerDialogFragment
-import fr.nicopico.hugo.android.utils.application
 import fr.nicopico.hugo.android.utils.click
 import fr.nicopico.hugo.domain.model.Timeline
 import fr.nicopico.hugo.domain.services.TimelineService
@@ -24,7 +24,7 @@ abstract class TimelineEntryDialogFragment : FormDialogFragment() {
     }
 
     val timelineService: TimelineService
-        get() = application.timelineService
+        get() = (activity!!.application as App).timelineService
 
     private val dateFormat by lazy { getDateFormat(context!!) }
     private val timeFormat by lazy { getTimeFormat(context!!) }

@@ -2,7 +2,6 @@ package fr.nicopico.hugo.android.utils
 
 import android.support.v4.app.Fragment
 import androidx.os.bundleOf
-import fr.nicopico.hugo.android.App
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -18,6 +17,3 @@ fun <T> Fragment.argument(argumentName: String) = object: ReadOnlyProperty<Fragm
         return arguments!![argumentName] as T
     }
 }
-
-val Fragment.application: App
-    get() = activity!!.application as App
