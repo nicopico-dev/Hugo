@@ -5,14 +5,16 @@ apply plugin: 'com.google.gms.oss.licenses.plugin'
 apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'io.fabric'
 
+version = loadProperties('version.properties')
+
 android {
     compileSdkVersion 27
     defaultConfig {
         applicationId 'fr.nicopico.hugo'
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 1
-        versionName '1.0'
+        versionCode Integer.parseInt(version.code)
+        versionName "${version.major}.${version.minor}.${version.patch}"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
 
         resConfigs 'fr'

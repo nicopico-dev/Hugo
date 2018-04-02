@@ -44,3 +44,10 @@ detekt {
         filters = ".*test.*,.*/resources/.*,.*/tmp/.*"
     }
 }
+
+def loadProperties(filePath) {
+    def propertiesFile = rootProject.file(filePath)
+    def properties = new Properties()
+    properties.load(new FileInputStream(propertiesFile))
+    return properties
+}
