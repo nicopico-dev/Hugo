@@ -13,3 +13,4 @@
 *.iml
 .externalNativeBuild
 .idea/misc.xml
+fastlane/report.xml

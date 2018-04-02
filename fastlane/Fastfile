@@ -12,23 +12,75 @@
 default_platform(:android)
 
 platform :android do
-  desc "Runs all the tests"
-  lane :test do
-    gradle(task: "test")
-  end
-
-  desc "Submit a new Beta Build to Crashlytics Beta"
-  lane :beta do
-    gradle(task: "clean assembleRelease")
-    crashlytics
-  
-    # sh "your_script.sh"
-    # You can also use other beta testing services here
-  end
-
-  desc "Deploy a new version to the Google Play"
+  desc "Deploy a new version to Google Play"
   lane :deploy do
     gradle(task: "clean assembleRelease")
     upload_to_play_store
+  end
+
+  desc "Bump the major version of the application"
+  lane :bump_major do
+    major, minor, patch = read_version_name()
+    write_version_name(major + 1, 0, 0)
+    create_version_commit
+  end
+
+  desc "Bump the minor version of the application"
+  lane :bump_minor do
+    major, minor, patch = read_version_name()
+    write_version_name(major, minor + 1, 0)
+    create_version_commit
+  end
+
+  desc "Bump the patch version of the application"
+  lane :bump_patch do
+    major, minor, patch = read_version_name()
+    write_version_name(major, minor, patch + 1)
+    create_version_commit
+  end
+
+  private_lane :create_version_commit do
+    current_version = read_version_name().join('.')
+    git_commit(path: 'gradle.properties', message: "Bump version to #{current_version}")
+  end
+
+end
+
+$version_file = '../version.properties'
+
+def read_version_name()
+  content = File.read($version_file)
+  major = /major=(\d+)/.match(content).captures[0].to_i
+  minor = /minor=(\d+)/.match(content).captures[0].to_i
+  patch = /patch=(\d+)/.match(content).captures[0].to_i
+  return major, minor, patch
+end
+
+def write_version_name(major, minor, patch)
+  lines = IO.readlines($version_file).map do |line|
+    if line.start_with?('major')
+      "major=#{major}"
+    elsif line.start_with?('minor')
+      "minor=#{minor}"
+    elsif line.start_with?('VERSION_PATCH')
+      "patch=#{patch}"
+    else
+      line
+    end
+  end
+  File.open($version_file, 'w') do |file|
+    file.puts lines
+  end
+end
+
+def bump_version_code()
+  lines = IO.readlines($version_file).map do |line|
+    if line.start_with?('code')
+      code = /code=(\d+)/.match(line).captures[0].to_i
+      "code=#{code}"
+    end
+  end
+  File.open($version_file, 'w') do |file|
+    file.puts lines
   end
 end
