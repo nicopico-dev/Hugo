@@ -5,7 +5,9 @@ apply plugin: 'com.google.gms.oss.licenses.plugin'
 apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'io.fabric'
 
-version = loadProperties('version.properties')
+def version = loadProperties('version.properties')
+def userHome = System.getProperty('user.home')
+def keystore = loadProperties("$userHome/.secure/hugo_keystore.properties")
 
 android {
     compileSdkVersion 27
@@ -20,8 +22,18 @@ android {
         resConfigs 'fr'
     }
 
+    signingConfigs {
+        release {
+            storeFile file('release.keystore')
+            storePassword keystore.storePassword
+            keyAlias keystore.keyAlias
+            keyPassword keystore.keyPassword
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
