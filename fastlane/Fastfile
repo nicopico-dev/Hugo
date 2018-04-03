@@ -12,12 +12,13 @@
 default_platform(:android)
 
 platform :android do
+
   desc "Deploy a new version to Google Play"
-  lane :deploy do
+  lane :deploy do |options|
     gradle(task: 'clean')
     gradle(task: 'assemble', build_type: 'release')
     upload_to_play_store(
-      track: 'intern', 
+      track: 'internal', 
       skip_upload_metadata: !options[:metadata],
       skip_upload_images: !options[:images],
       skip_upload_screenshots: !options[:images],
