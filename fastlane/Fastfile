@@ -14,8 +14,18 @@ default_platform(:android)
 platform :android do
   desc "Deploy a new version to Google Play"
   lane :deploy do
-    gradle(task: "clean assembleRelease")
-    upload_to_play_store
+    gradle(task: 'clean')
+    gradle(task: 'assemble', build_type: 'release')
+    upload_to_play_store(
+      track: 'intern', 
+      skip_upload_metadata: !options[:metadata],
+      skip_upload_images: !options[:images],
+      skip_upload_screenshots: !options[:images],
+      apk: 'app/build/outputs/apk/release/app-release.apk'
+    )
+    create_version_tag('play')
+    bump_version_code
+    push_changes
   end
 
   desc "Bump the major version of the application"
@@ -42,6 +52,16 @@ platform :android do
   private_lane :create_version_commit do
     current_version = read_version_name().join('.')
     git_commit(path: 'gradle.properties', message: "Bump version to #{current_version}")
+  end
+
+  private_lane :create_version_tag do |options|
+    tag_name = options[:env] + '/' + read_version_name().join('.')
+    add_git_tag(tag: tag_name)
+    push_git_tags(tag: tag_name)
+  end
+
+  private_lane :push_changes do |options|
+    push_to_git_remote(tags: false)
   end
 
 end
