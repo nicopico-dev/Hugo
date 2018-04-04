@@ -46,29 +46,29 @@
 2227:46 support-annotations
 2274:46 constraint-layout-solver
 2321:11358 safeparcel
-13680:680 STL
-14361:3182 PCRE
-17544:1602 JSR 305
-19147:252 tz database
-19400:1481 darts_clone
-20882:1732 Protobuf Nano
-22615:2500 zlib
-25116:19442 ICU4C
-44559:11342 flatbuffers
-55902:1558 RE2
-57461:11358 CCTZ
-68820:731 UTF
-69552:16013 Android SDK
-85566:10695 Android Core UI Support Library
-96262:10695 Android Compatibility Library v4
-106958:10695 Android Fragments Support Library
-117654:10695 Android Compat Support Library
-128350:11358 Okio
-139709:11358 v2964546_google
+13680:1732 Protobuf Nano
+15413:1558 RE2
+16972:252 tz database
+17225:1481 darts_clone
+18707:680 STL
+19388:11342 flatbuffers
+30731:11358 CCTZ
+42090:731 UTF
+42822:2500 zlib
+45323:3182 PCRE
+48506:1602 JSR 305
+50109:19442 ICU4C
+69552:11358 okhttp3
+80911:10695 Android Compatibility Library v4
+91607:16013 Android SDK
+107621:10695 Android Compat Support Library
+118317:11358 Okio
+129676:10695 Android Core UI Support Library
+140372:10695 Android Annotations Support Library
 151068:10691 Android Media Compat Support Library
-161760:11358 okhttp3
-173119:10691 Android Core Utils Support Library
-183811:10695 Android Annotations Support Library
+161760:11358 v2964546_google
+173119:10695 Android Fragments Support Library
+183815:10691 Android Core Utils Support Library
 194507:11365 absl
 205873:53 beta
 205927:53 crashlytics-core
