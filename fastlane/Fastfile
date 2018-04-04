@@ -56,9 +56,15 @@ platform :android do
     create_version_commit
   end
 
+  private_lane :bump_version_code do
+    version_code = read_version_code() + 1
+    write_version_code(version_code)
+    git_commit(path: 'version.properties', message: "Bump versionCode to #{version_code}")
+  end
+
   private_lane :create_version_commit do
     current_version = read_version_name().join('.')
-    git_commit(path: 'gradle.properties', message: "Bump version to #{current_version}")
+    git_commit(path: 'version.properties', message: "Bump version to #{current_version}")
   end
 
   private_lane :create_version_tag do |options|
@@ -85,11 +91,11 @@ end
 
 def write_version_name(major, minor, patch)
   lines = IO.readlines($version_file).map do |line|
-    if line.start_with?('major')
+    if line.start_with?('major=')
       "major=#{major}"
-    elsif line.start_with?('minor')
+    elsif line.start_with?('minor=')
       "minor=#{minor}"
-    elsif line.start_with?('VERSION_PATCH')
+    elsif line.start_with?('patch=')
       "patch=#{patch}"
     else
       line
@@ -100,11 +106,16 @@ def write_version_name(major, minor, patch)
   end
 end
 
-def bump_version_code()
+def read_version_code()
+  content = File.read($version_file)
+  version_code = /code=(\d+)/.match(content).captures[0].to_i
+  return version_code
+end
+
+def write_version_code(code)
   lines = IO.readlines($version_file).map do |line|
-    if line.start_with?('code')
-      code = /code=(\d+)/.match(line).captures[0].to_i
-      "code=#{code+1}"
+    if line.start_with?('code=')
+      "code=#{code}"
     else
       line
     end
