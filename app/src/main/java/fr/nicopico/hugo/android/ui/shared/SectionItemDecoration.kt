@@ -81,8 +81,11 @@ abstract class SectionItemDecoration<T>(
     }
 
     protected open fun hasHeader(parent: RecyclerView, position: Int): Boolean {
-        return position == 0
-                    || !sameHeader(getItem(parent, position), getItem(parent, position - 1))
+        return when(position) {
+            0 -> true
+            RecyclerView.NO_POSITION -> false
+            else -> !sameHeader(getItem(parent, position), getItem(parent, position - 1))
+        }
     }
 
     private fun clear() {
