@@ -7,7 +7,15 @@
 package fr.nicopico.hugo.android
 
 import android.util.Log
-import fr.nicopico.hugo.BuildConfig
+import fr.nicopico.hugo.android.HugoLogger.Companion.minLogLevel
+import fr.nicopico.hugo.android.HugoLogger.Companion.onLogEvent
+
+data class LogEvent(
+        val tag: String,
+        val level: Int,
+        val message: String,
+        val error: Throwable?
+)
 
 interface HugoLogger {
     /**
@@ -16,6 +24,11 @@ interface HugoLogger {
      */
     val loggerTag: String
         get() = getTag(javaClass)
+
+    companion object {
+        var minLogLevel: Int = Log.INFO
+        var onLogEvent: ((LogEvent) -> Unit)? = null
+    }
 }
 
 private const val MAX_TAG_LENGTH = 23
@@ -36,39 +49,27 @@ inline fun <reified T : Any> HugoLogger(): HugoLogger = HugoLogger(T::class.java
 
 //region Logger methods
 inline fun HugoLogger.verbose(m: () -> String) {
-    if (BuildConfig.DEBUG) {
-        doLog(this, Log.VERBOSE, m())
-    }
+    doLog(this, Log.VERBOSE, m())
 }
 
 inline fun HugoLogger.verbose(m: String) {
-    if (BuildConfig.DEBUG) {
-        doLog(this, Log.VERBOSE, m)
-    }
+    doLog(this, Log.VERBOSE, m)
 }
 
 inline fun HugoLogger.debug(m: () -> String) {
-    if (BuildConfig.DEBUG) {
-        doLog(this, Log.DEBUG, m())
-    }
+    doLog(this, Log.DEBUG, m())
 }
 
 inline fun HugoLogger.debug(m: String) {
-    if (BuildConfig.DEBUG) {
-        doLog(this, Log.DEBUG, m)
-    }
+    doLog(this, Log.DEBUG, m)
 }
 
 inline fun HugoLogger.info(m: () -> String) {
-    if (BuildConfig.DEBUG) {
-        doLog(this, Log.INFO, m())
-    }
+    doLog(this, Log.INFO, m())
 }
 
 inline fun HugoLogger.info(m: String) {
-    if (BuildConfig.DEBUG) {
-        doLog(this, Log.INFO, m)
-    }
+    doLog(this, Log.INFO, m)
 }
 
 inline fun HugoLogger.warn(error: Throwable? = null, m: () -> String) {
@@ -98,6 +99,8 @@ inline fun HugoLogger.error(m: String) {
 
 @Suppress("ComplexMethod")
 fun doLog(logger: HugoLogger, level: Int, message: String, error: Throwable? = null) {
+    if (level < minLogLevel) return
+
     val tag = logger.loggerTag
     if (error != null) {
         when (level) {
@@ -116,6 +119,8 @@ fun doLog(logger: HugoLogger, level: Int, message: String, error: Throwable? = n
             Log.ERROR -> Log.e(tag, message)
         }
     }
+
+    onLogEvent?.invoke(LogEvent(tag, level, message, error))
 }
 
 private fun getTag(clazz: Class<*>): String {
