@@ -42,8 +42,11 @@ abstract class FirebaseFetcherService<T> : FetcherService<T>, HugoLogger {
     }
 
     override fun fetch(fetcher: Fetcher<T>) {
-        if (!ready && shouldFetcher == null) {
+        if (!ready) {
             info("Defer fetching until the service is ready")
+            if (shouldFetcher != null && shouldFetcher != fetcher) {
+                warn("Previous fetcher $shouldFetcher will be dropped")
+            }
             shouldFetcher = fetcher
         }
 
