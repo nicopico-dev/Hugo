@@ -15,6 +15,7 @@ platform :android do
 
   # Make sure the work directory is clean
   before_all do |lane, options|
+    ensure_git_branch(branch: "master")
     ensure_git_status_clean
   end
 
