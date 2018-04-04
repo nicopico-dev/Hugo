@@ -1,6 +1,8 @@
 package fr.nicopico.hugo.android
 
 import android.app.Application
+import android.util.Log
+import com.crashlytics.android.Crashlytics
 import fr.nicopico.hugo.BuildConfig
 import fr.nicopico.hugo.android.services.FirebaseAnalyticsService
 import fr.nicopico.hugo.android.services.FirebaseAuthService
@@ -44,6 +46,27 @@ class App : Application() {
         private val logger = HugoLogger("REDUX")
         override fun log(entry: Logger.Entry<AppState>) {
             logger.debug { "${entry.action} -> ${entry.newState}" }
+        }
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+
+        if (BuildConfig.DEBUG) {
+            HugoLogger.minLogLevel = Log.VERBOSE
+        } else {
+            // Better Crashlytics integration
+            HugoLogger.onLogEvent = {
+                if (it.level >= Log.INFO) {
+                    with(it) {
+                        Crashlytics.log("$tag: $message")
+                    }
+                }
+
+                it.error?.let { nonFatalError ->
+                    Crashlytics.logException(nonFatalError)
+                }
+            }
         }
     }
 }
