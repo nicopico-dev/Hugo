@@ -1,7 +1,7 @@
 package fr.nicopico.hugo.android.services
 
 import android.content.Context
-import androidx.os.bundleOf
+import androidx.core.os.bundleOf
 import com.google.firebase.analytics.FirebaseAnalytics
 
 import fr.nicopico.hugo.domain.services.AnalyticEvent

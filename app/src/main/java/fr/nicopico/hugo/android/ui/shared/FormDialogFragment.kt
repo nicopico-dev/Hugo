@@ -6,7 +6,7 @@ import android.support.design.widget.BottomSheetDialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.view.plusAssign
+import androidx.core.view.plusAssign
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.android.ReduxDispatcher
 import fr.nicopico.hugo.android.utils.click

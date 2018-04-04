@@ -1,7 +1,7 @@
 package fr.nicopico.hugo.android.utils
 
 import android.support.v4.app.Fragment
-import androidx.os.bundleOf
+import androidx.core.os.bundleOf
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
