@@ -103,7 +103,9 @@ def bump_version_code()
   lines = IO.readlines($version_file).map do |line|
     if line.start_with?('code')
       code = /code=(\d+)/.match(line).captures[0].to_i
-      "code=#{code}"
+      "code=#{code+1}"
+    else
+      line
     end
   end
   File.open($version_file, 'w') do |file|
