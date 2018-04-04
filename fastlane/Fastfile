@@ -29,7 +29,7 @@ platform :android do
       skip_upload_screenshots: !options[:images],
       apk: 'app/build/outputs/apk/release/app-release.apk'
     )
-    create_version_tag('play')
+    create_version_tag(env: 'play')
     bump_version_code
     push_changes
   end
