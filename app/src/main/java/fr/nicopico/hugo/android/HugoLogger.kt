@@ -76,7 +76,7 @@ inline fun HugoLogger.warn(error: Throwable? = null, m: () -> String) {
     doLog(this, Log.WARN, m(), error)
 }
 
-inline fun HugoLogger.warn(error: Throwable, m: String) {
+inline fun HugoLogger.warn(error: Throwable, m: String = "") {
     doLog(this, Log.WARN, m, error)
 }
 
@@ -88,7 +88,7 @@ inline fun HugoLogger.error(error: Throwable? = null, m: () -> String) {
     doLog(this, Log.ERROR, m(), error)
 }
 
-inline fun HugoLogger.error(error: Throwable, m: String) {
+inline fun HugoLogger.error(error: Throwable, m: String = "") {
     doLog(this, Log.ERROR, m, error)
 }
 
