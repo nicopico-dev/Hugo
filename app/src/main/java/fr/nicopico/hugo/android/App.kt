@@ -9,6 +9,7 @@ import fr.nicopico.hugo.android.services.FirebaseAuthService
 import fr.nicopico.hugo.android.services.FirebaseBabyService
 import fr.nicopico.hugo.android.services.FirebaseTimelineService
 import fr.nicopico.hugo.domain.model.AppState
+import fr.nicopico.hugo.domain.redux.REMOTE_ERROR
 import fr.nicopico.hugo.domain.redux.createStore
 import fr.nicopico.hugo.domain.services.AnalyticsService
 import fr.nicopico.hugo.domain.services.AuthService
@@ -46,6 +47,13 @@ class App : Application() {
         private val logger = HugoLogger("REDUX")
         override fun log(entry: Logger.Entry<AppState>) {
             logger.debug { "${entry.action} -> ${entry.newState}" }
+
+            // Log REMOTE_ERROR as error too
+            entry.action.let {
+                if (it is REMOTE_ERROR) {
+                    logger.error(it.error)
+                }
+            }
         }
     }
 

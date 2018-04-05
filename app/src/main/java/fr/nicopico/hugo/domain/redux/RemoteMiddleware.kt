@@ -8,6 +8,7 @@ import fr.nicopico.hugo.domain.model.Timeline
 import fr.nicopico.hugo.domain.services.BabyService
 import fr.nicopico.hugo.domain.services.Fetcher
 import fr.nicopico.hugo.domain.services.TimelineService
+
 import redux.api.Dispatcher
 import redux.api.Store
 import redux.api.enhancer.Middleware
