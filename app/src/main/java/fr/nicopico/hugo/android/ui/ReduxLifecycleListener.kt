@@ -4,7 +4,11 @@ import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.OnLifecycleEvent
-import fr.nicopico.hugo.android.*
+import fr.nicopico.hugo.android.HugoLogger
+import fr.nicopico.hugo.android.ReduxDispatcher
+import fr.nicopico.hugo.android.ReduxView
+import fr.nicopico.hugo.android.StateProvider
+import fr.nicopico.hugo.android.debug
 import fr.nicopico.hugo.domain.model.AppState
 import redux.api.Store
 
@@ -26,6 +30,13 @@ class ReduxLifecycleListener private constructor(
                       T : ReduxView,
                       T : ReduxDispatcher {
             return ReduxLifecycleListener(observer, observer, observer, observer, startAction, stopAction)
+        }
+
+        fun <T> create(observer: T, reduxView: ReduxView, startAction: Any? = null, stopAction: Any? = null): ReduxLifecycleListener
+                where T : LifecycleOwner,
+                      T : StateProvider,
+                      T : ReduxDispatcher {
+            return ReduxLifecycleListener(observer, reduxView, observer, observer, startAction, stopAction)
         }
     }
 

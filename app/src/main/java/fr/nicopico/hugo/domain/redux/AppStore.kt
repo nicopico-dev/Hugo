@@ -43,7 +43,8 @@ fun createStore(
             timelineReducer,
             createRemoteReducer(initialState),
             navigationReducer,
-            goBackReducer
+            goBackReducer,
+            messageReducer
     )
 
     return createStore(reducer, initialState, enhancer)

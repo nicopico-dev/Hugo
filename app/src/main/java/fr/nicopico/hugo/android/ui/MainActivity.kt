@@ -11,9 +11,16 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import fr.nicopico.hugo.R
-import fr.nicopico.hugo.android.*
+import fr.nicopico.hugo.android.App
+import fr.nicopico.hugo.android.HugoLogger
+import fr.nicopico.hugo.android.ReduxDispatcher
+import fr.nicopico.hugo.android.ReduxView
+import fr.nicopico.hugo.android.StateProvider
+import fr.nicopico.hugo.android.debug
+import fr.nicopico.hugo.android.info
 import fr.nicopico.hugo.android.ui.babies.BabySelectionFragment
 import fr.nicopico.hugo.android.ui.timeline.TimelineFragment
+import fr.nicopico.hugo.android.utils.toast
 import fr.nicopico.hugo.domain.model.AppState
 import fr.nicopico.hugo.domain.model.Screen
 import fr.nicopico.hugo.domain.redux.GO_BACK
@@ -46,6 +53,13 @@ class MainActivity : AppCompatActivity(),
                 .create(this)
                 .restrictOn { s1, s2 ->
                     s1.screen != s2.screen
+                }
+                .observe()
+
+        ReduxLifecycleListener
+                .create(this, reduxView = Toaster(this))
+                .restrictOn { s1, s2 ->
+                    s1.message != s2.message
                 }
                 .observe()
     }
@@ -122,5 +136,13 @@ class MainActivity : AppCompatActivity(),
 class LoadingFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_loading, container, false)
+    }
+}
+
+private class Toaster(
+        private val activity: MainActivity
+) : ReduxView by activity {
+    override fun render(state: AppState) {
+        state.message?.let{ message -> activity.toast(message.content) }
     }
 }

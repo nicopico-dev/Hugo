@@ -8,7 +8,7 @@ import redux.api.Reducer
 private fun AppState.withDefaultScreen(): AppState {
     val defaultScreen: Screen = when {
         user == null -> Screen.Loading
-    // Go directly to the timeline if a baby is selected
+        // Go directly to the timeline if a baby is selected
         selectedBaby != null -> Screen.Timeline
         else -> Screen.BabySelection
     }
@@ -23,7 +23,7 @@ val navigationReducer = Reducer<AppState> { state, action ->
         is SELECT_BABY -> state.copy(screen = Screen.Timeline, selectedBaby = action.baby)
         UNSELECT_BABY -> state.copy(screen = Screen.BabySelection, selectedBaby = null)
         EXIT_APP -> state.copy(screen = Screen.Exit)
-    // Allow returning to the application
+        // Allow returning to the application
         ON_APP_EXIT -> state.withDefaultScreen()
         else -> state
     }
@@ -34,6 +34,14 @@ val goBackReducer = Reducer<AppState> { state, action ->
     else when (state.screen) {
         Screen.Timeline -> navigationReducer.reduce(state, UNSELECT_BABY)
         else -> navigationReducer.reduce(state, EXIT_APP)
+    }
+}
+
+val messageReducer = Reducer<AppState> { state, action ->
+    when (action) {
+        is DISPLAY_MESSAGE -> state.copy(message = action.message)
+        action is REMOVE_MESSAGE && state.message == action.message -> state.copy(message = null)
+        else -> state
     }
 }
 

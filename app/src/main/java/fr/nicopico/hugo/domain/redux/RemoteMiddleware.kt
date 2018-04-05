@@ -3,6 +3,7 @@ package fr.nicopico.hugo.domain.redux
 import fr.nicopico.hugo.android.HugoLogger
 import fr.nicopico.hugo.domain.model.AppState
 import fr.nicopico.hugo.domain.model.Baby
+import fr.nicopico.hugo.domain.model.Message
 import fr.nicopico.hugo.domain.model.Timeline
 import fr.nicopico.hugo.domain.services.BabyService
 import fr.nicopico.hugo.domain.services.Fetcher
@@ -37,6 +38,8 @@ class RemoteMiddleware(
             is ADD_ENTRY -> timelineService.addEntry(action.entry)
             is UPDATE_ENTRY -> timelineService.updateEntry(action.entry)
             is REMOVE_ENTRY -> timelineService.removeEntry(action.entry)
+
+            is REMOTE_ERROR -> store.dispatch(DISPLAY_MESSAGE(Message.error("RemoteError: ${action.error.message}")))
         }
 
         return next.dispatch(action)
