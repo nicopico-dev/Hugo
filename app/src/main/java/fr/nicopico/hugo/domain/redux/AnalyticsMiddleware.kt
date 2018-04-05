@@ -1,6 +1,7 @@
 package fr.nicopico.hugo.domain.redux
 
 import fr.nicopico.hugo.domain.model.AppState
+import fr.nicopico.hugo.domain.model.Screen
 import fr.nicopico.hugo.domain.services.AnalyticEvent
 import fr.nicopico.hugo.domain.services.AnalyticProperty
 import fr.nicopico.hugo.domain.services.AnalyticsService
@@ -22,10 +23,20 @@ class AnalyticsMiddleware(
             is REMOVE_ENTRY -> AnalyticEvent.RemoveEntry(action.entry.type).send()
         }
 
+        val previousScreen = store.state.screen
         return next.dispatch(action).also {
             // After the state has been updated
             when (action) {
                 is BABY_ADDED, is BABY_REMOVED -> AnalyticProperty.BabyCount(store.state.babies.size).send()
+            }
+
+            val currentScreen = store.state.screen
+            if (previousScreen != currentScreen) {
+                when (currentScreen) {
+                    Screen.Loading -> analyticsService.setCurrentScreen("Loading")
+                    Screen.BabySelection -> analyticsService.setCurrentScreen("BabySelection")
+                    Screen.Timeline -> analyticsService.setCurrentScreen("Timeline")
+                }
             }
         }
     }

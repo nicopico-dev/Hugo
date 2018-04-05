@@ -3,7 +3,6 @@ package fr.nicopico.hugo.android.services
 import android.content.Context
 import androidx.core.os.bundleOf
 import com.google.firebase.analytics.FirebaseAnalytics
-
 import fr.nicopico.hugo.domain.services.AnalyticEvent
 import fr.nicopico.hugo.domain.services.AnalyticProperty
 import fr.nicopico.hugo.domain.services.AnalyticsService
@@ -22,5 +21,9 @@ class FirebaseAnalyticsService(context: Context) : AnalyticsService {
 
     override fun setProperty(property: AnalyticProperty) {
         firebaseAnalytics.setUserProperty(property.propertyName, property.value)
+    }
+
+    override fun setCurrentScreen(screenName: String) {
+        // TODO firebaseAnalytics.setCurrentScreen(currentActivity, screenName, null)
     }
 }

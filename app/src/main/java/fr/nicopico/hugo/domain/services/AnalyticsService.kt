@@ -5,6 +5,7 @@ import fr.nicopico.hugo.domain.model.CareType
 interface AnalyticsService {
     fun sendEvent(event: AnalyticEvent)
     fun setProperty(property: AnalyticProperty)
+    fun setCurrentScreen(screenName: String)
 }
 
 sealed class AnalyticEvent(
