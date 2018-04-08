@@ -48,6 +48,7 @@ abstract class FirebaseFetcherService<T> : FetcherService<T>, HugoLogger {
                 warn("Previous fetcher $shouldFetcher will be dropped")
             }
             shouldFetcher = fetcher
+            return
         }
 
         if (registration != null) {
