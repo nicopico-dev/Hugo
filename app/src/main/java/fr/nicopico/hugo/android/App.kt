@@ -1,5 +1,6 @@
 package fr.nicopico.hugo.android
 
+import android.app.Activity
 import android.app.Application
 import android.util.Log
 import com.crashlytics.android.Crashlytics
@@ -8,6 +9,8 @@ import fr.nicopico.hugo.android.services.FirebaseAnalyticsService
 import fr.nicopico.hugo.android.services.FirebaseAuthService
 import fr.nicopico.hugo.android.services.FirebaseBabyService
 import fr.nicopico.hugo.android.services.FirebaseTimelineService
+import fr.nicopico.hugo.android.utils.ActivityProvider
+import fr.nicopico.hugo.android.utils.SimpleActivityLifecycleCallbacks
 import fr.nicopico.hugo.domain.model.AppState
 import fr.nicopico.hugo.domain.redux.REMOTE_ERROR
 import fr.nicopico.hugo.domain.redux.createStore
@@ -18,6 +21,7 @@ import fr.nicopico.hugo.domain.services.DisabledAnalyticsService
 import fr.nicopico.hugo.domain.services.TimelineService
 import redux.api.Store
 import redux.logger.Logger
+import java.lang.ref.WeakReference
 
 class App : Application() {
 
@@ -39,7 +43,8 @@ class App : Application() {
         if (BuildConfig.DEBUG) {
             DisabledAnalyticsService()
         } else {
-            FirebaseAnalyticsService(this)
+            val activityProvider = CurrentActivityProvider.createAndRegister(this)
+            FirebaseAnalyticsService(this, activityProvider)
         }
     }
 
@@ -75,6 +80,24 @@ class App : Application() {
                     Crashlytics.logException(nonFatalError)
                 }
             }
+        }
+    }
+
+    private class CurrentActivityProvider : SimpleActivityLifecycleCallbacks(), ActivityProvider {
+
+        companion object {
+            fun createAndRegister(application: Application) = CurrentActivityProvider()
+                    .apply {
+                        application.registerActivityLifecycleCallbacks(this)
+                    }
+        }
+
+        private var weakActivity: WeakReference<Activity>? = null
+        override val currentActivity: Activity?
+            get() = weakActivity?.get()
+
+        override fun onActivityStarted(activity: Activity) {
+            weakActivity = WeakReference(activity)
         }
     }
 }
