@@ -4,9 +4,9 @@
 141:46 kotlinx-coroutines-core
 188:46 firebase-ui-auth
 235:46 design
-282:46 customtabs
-329:46 appcompat-v7
-376:46 cardview-v7
+282:46 appcompat-v7
+329:46 cardview-v7
+376:46 customtabs
 423:46 recyclerview-v7
 470:46 constraint-layout
 517:46 core-ktx
@@ -35,10 +35,10 @@
 1616:46 support-core-ui
 1663:46 support-core-utils
 1710:46 support-vector-drawable
-1757:46 transition
-1804:46 support-media-compat
-1851:46 support-compat
-1898:46 viewmodel
+1757:46 viewmodel
+1804:46 transition
+1851:46 support-media-compat
+1898:46 support-compat
 2086:46 runtime
 1992:46 livedata
 2039:46 livedata-core

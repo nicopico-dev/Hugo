@@ -55,7 +55,7 @@ androidExtensions {
 }
 
 dependencies {
-    ext.support_version = '27.1.0'
+    ext.support_version = '27.1.1'
     ext.coroutines_version = '0.22.3'
     ext.firebase_version = '12.0.1'
 
