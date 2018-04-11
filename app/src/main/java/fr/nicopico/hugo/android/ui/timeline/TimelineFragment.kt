@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import fr.nicopico.hugo.R
+import fr.nicopico.hugo.android.HugoLogger
+import fr.nicopico.hugo.android.debug
 import fr.nicopico.hugo.android.ui.BaseFragment
 import fr.nicopico.hugo.android.ui.ReduxLifecycleListener
 import fr.nicopico.hugo.android.ui.shared.SpaceItemDecoration
 import fr.nicopico.hugo.android.utils.click
 import fr.nicopico.hugo.android.utils.dimensionForOffset
 import fr.nicopico.hugo.android.utils.toggle
+import fr.nicopico.hugo.android.verbose
 import fr.nicopico.hugo.domain.model.AppState
 import fr.nicopico.hugo.domain.model.CareType.*
 import fr.nicopico.hugo.domain.model.Timeline
@@ -18,7 +21,7 @@ import fr.nicopico.hugo.domain.redux.STOP_FETCHING_TIMELINE
 import fr.nicopico.hugo.domain.redux.UNSELECT_BABY
 import kotlinx.android.synthetic.main.fragment_timeline.*
 
-class TimelineFragment : BaseFragment() {
+class TimelineFragment : BaseFragment(), HugoLogger {
 
     private val timelineAdapter by lazy {
         TimelineAdapter(context!!)
@@ -76,11 +79,18 @@ class TimelineFragment : BaseFragment() {
     }
 
     override fun render(state: AppState) {
-        timelineAdapter.data = state.timeline.entries
-        if (previousTimelineCount > timelineAdapter.itemCount) {
-            previousTimelineCount = timelineAdapter.itemCount
-            rcvTimeline.scrollToPosition(0)
+        val entries = state.timeline.entries
+        timelineAdapter.data = entries
+
+        if (entries.size > previousTimelineCount) {
+            debug("New item added, scroll to top")
+            with(rcvTimeline) {
+                post { scrollToPosition(0) }
+                postInvalidate()
+            }
         }
+
+        previousTimelineCount = entries.size
     }
 
     private fun toggleFabMenu() {
