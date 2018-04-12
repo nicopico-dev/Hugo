@@ -2,30 +2,25 @@ package fr.nicopico.hugo.android.ui.shared
 
 import android.graphics.Canvas
 import android.graphics.Rect
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
-import kotlin.properties.Delegates
 
 abstract class SectionItemDecoration<T>(
-        adapter: RecyclerView.Adapter<*>
+        private val adapter: RecyclerView.Adapter<*>
 ) : RecyclerView.ItemDecoration() {
 
     private val headerViews: SparseArray<View> = SparseArray()
     private val bounds = Rect()
+    private val dataObserver = DataObserver()
 
-    var adapter by Delegates.observable(adapter) { _, previous, new ->
-        clear()
-        previous.unregisterAdapterDataObserver(adapterDataObserver)
-        new.registerAdapterDataObserver(adapterDataObserver)
+    init {
+        adapter.registerAdapterDataObserver(dataObserver)
     }
-    private val adapterDataObserver = object : RecyclerView.AdapterDataObserver() {
-        override fun onChanged() {
-            clear()
-        }
+
+    fun cleanUp() {
+        adapter.unregisterAdapterDataObserver(dataObserver)
     }
 
     protected abstract fun sameHeader(itemA: T, itemB: T): Boolean
@@ -52,12 +47,7 @@ abstract class SectionItemDecoration<T>(
         val left = parent.paddingLeft
         val right = parent.width - parent.paddingRight
 
-        var range: IntProgression = 0 until parent.childCount
-        if (parent.reverseLayout()) {
-            range = range.reversed()
-        }
-
-        for (i in range) {
+        for (i in 0 until parent.childCount) {
             val child = parent.getChildAt(i)
 
             val position = parent.getChildAdapterPosition(child)
@@ -81,23 +71,32 @@ abstract class SectionItemDecoration<T>(
     }
 
     protected open fun hasHeader(parent: RecyclerView, position: Int): Boolean {
-        return when(position) {
+        return when (position) {
             0 -> true
             RecyclerView.NO_POSITION -> false
             else -> !sameHeader(getItem(parent, position), getItem(parent, position - 1))
         }
     }
 
-    private fun clear() {
+    private fun refresh() {
         headerViews.clear()
     }
 
-    private fun RecyclerView.reverseLayout(): Boolean {
-        val lm = layoutManager
-        return when (lm) {
-            is LinearLayoutManager -> lm.reverseLayout
-            is GridLayoutManager -> lm.reverseLayout
-            else -> false
+    private inner class DataObserver : RecyclerView.AdapterDataObserver() {
+        override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
+            refresh()
+        }
+
+        override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+            refresh()
+        }
+
+        override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+            refresh()
+        }
+
+        override fun onChanged() {
+            refresh()
         }
     }
 }

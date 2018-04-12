@@ -15,7 +15,7 @@ import java.util.*
 
 class DateSectionDecoration(
         context: Context,
-        adapter: TimelineAdapter
+        private val adapter: TimelineAdapter
 ) : SectionItemDecoration<Timeline.Entry>(adapter), HugoLogger {
 
     private val inflater = LayoutInflater.from(context)
@@ -38,7 +38,7 @@ class DateSectionDecoration(
     }
 
     override fun getItem(parent: RecyclerView, position: Int): Timeline.Entry {
-        return (adapter as TimelineAdapter).data[position]
+        return adapter.data[position]
     }
 
     @Suppress("DEPRECATION", "MagicNumber")
