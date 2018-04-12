@@ -52,6 +52,6 @@ class BabySelectionFragment : BaseFragment() {
     }
 
     override fun render(state: AppState) {
-        babyAdapter.data = state.babies
+        babyAdapter.submitList(state.babies)
     }
 }

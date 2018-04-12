@@ -1,6 +1,7 @@
 package fr.nicopico.hugo.android.ui.babies
 
 import android.content.Context
+import android.support.v7.recyclerview.extensions.ListAdapter
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -12,21 +13,10 @@ import fr.nicopico.hugo.android.utils.longClick
 import fr.nicopico.hugo.domain.model.Baby
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_baby.*
-import kotlin.properties.Delegates
 
-private typealias BabyListener = (Baby) -> Unit
-
-class BabyAdapter(
-        context: Context,
-        data: List<Baby> = emptyList()
-) : RecyclerView.Adapter<BabyAdapter.ViewHolder>() {
+class BabyAdapter(context: Context) : ListAdapter<Baby, BabyAdapter.ViewHolder>(BabyDiffCallback) {
 
     private val inflater = LayoutInflater.from(context)
-    var data: List<Baby> by Delegates.observable(data) { _, old, new ->
-        val callback = BabyEntryDiffUtilCallback(old, new)
-        val diffResult = DiffUtil.calculateDiff(callback, false)
-        diffResult.dispatchUpdatesTo(this)
-    }
     var clickListener: BabyListener? = null
     var longClickListener: BabyListener? = null
 
@@ -34,10 +24,8 @@ class BabyAdapter(
             inflater.inflate(R.layout.item_baby, parent, false)
                     .let(::ViewHolder)
 
-    override fun getItemCount(): Int = data.size
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindTo(data[position])
+        holder.bindTo(getItem(position))
     }
 
     inner class ViewHolder(
@@ -56,21 +44,16 @@ class BabyAdapter(
             txtBabyName.text = baby.name
         }
     }
+}
 
-    private class BabyEntryDiffUtilCallback(
-            val old: List<Baby>,
-            val new: List<Baby>
-    ) : DiffUtil.Callback() {
+private typealias BabyListener = (Baby) -> Unit
 
-        override fun getOldListSize(): Int = old.size
+private val BabyDiffCallback = object : DiffUtil.ItemCallback<Baby>() {
+    override fun areItemsTheSame(oldItem: Baby, newItem: Baby): Boolean {
+        return oldItem.key == newItem.key
+    }
 
-        override fun getNewListSize(): Int = new.size
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                old[oldItemPosition].key == new[newItemPosition].key
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                old[oldItemPosition] == new[newItemPosition]
-
+    override fun areContentsTheSame(oldItem: Baby, newItem: Baby): Boolean {
+        return oldItem == newItem
     }
 }
