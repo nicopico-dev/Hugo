@@ -68,7 +68,7 @@ dependencies {
     implementation "com.android.support:customtabs:$support_version"
     implementation "com.android.support:design:$support_version"
     implementation "com.android.support:recyclerview-v7:$support_version"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta6'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation 'androidx.core:core-ktx:0.3'
 
     implementation "com.google.firebase:firebase-core:$firebase_version"
