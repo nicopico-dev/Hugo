@@ -1,4 +1,4 @@
-package fr.nicopico.hugo.android.ui.timeline
+package fr.nicopico.hugo.android.ui.timeline.entry
 
 import android.arch.lifecycle.LifecycleOwner
 import android.os.Bundle

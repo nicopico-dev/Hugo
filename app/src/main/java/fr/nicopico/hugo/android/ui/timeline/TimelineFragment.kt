@@ -14,6 +14,12 @@ import fr.nicopico.hugo.android.debug
 import fr.nicopico.hugo.android.ui.BaseFragment
 import fr.nicopico.hugo.android.ui.ReduxLifecycleListener
 import fr.nicopico.hugo.android.ui.shared.SpaceItemDecoration
+import fr.nicopico.hugo.android.ui.timeline.entry.addChangeDialog
+import fr.nicopico.hugo.android.ui.timeline.entry.addFoodDialog
+import fr.nicopico.hugo.android.ui.timeline.entry.addHealthAndHygieneDialog
+import fr.nicopico.hugo.android.ui.timeline.entry.editChangeDialog
+import fr.nicopico.hugo.android.ui.timeline.entry.editFoodDialog
+import fr.nicopico.hugo.android.ui.timeline.entry.editHealthAndHygieneDialog
 import fr.nicopico.hugo.android.utils.click
 import fr.nicopico.hugo.android.utils.dimensionForOffset
 import fr.nicopico.hugo.android.utils.toggle
