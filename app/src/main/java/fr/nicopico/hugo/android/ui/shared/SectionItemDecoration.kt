@@ -14,6 +14,7 @@ abstract class SectionItemDecoration<T>(
     private val headerViews: SparseArray<View> = SparseArray()
     private val bounds = Rect()
     private val dataObserver = DataObserver()
+    private var rcv: RecyclerView? = null
 
     init {
         adapter.registerAdapterDataObserver(dataObserver)
@@ -21,6 +22,7 @@ abstract class SectionItemDecoration<T>(
 
     fun cleanUp() {
         adapter.unregisterAdapterDataObserver(dataObserver)
+        rcv = null
     }
 
     protected abstract fun sameHeader(itemA: T, itemB: T): Boolean
@@ -30,6 +32,7 @@ abstract class SectionItemDecoration<T>(
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         super.getItemOffsets(outRect, view, parent, state)
+        rcv = parent
 
         val position = parent.getChildAdapterPosition(view)
         if (hasHeader(parent, position)) {
@@ -80,14 +83,20 @@ abstract class SectionItemDecoration<T>(
 
     private fun refresh() {
         headerViews.clear()
+        rcv?.invalidateItemDecorations()
     }
 
     private inner class DataObserver : RecyclerView.AdapterDataObserver() {
+
         override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
             refresh()
         }
 
         override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+            refresh()
+        }
+
+        override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
             refresh()
         }
 
