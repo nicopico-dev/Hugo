@@ -20,11 +20,12 @@ class RemoteMiddleware(
 
     @Suppress("ComplexMethod")
     override fun dispatch(store: Store<AppState>, next: Dispatcher, action: Any): Any {
-        if (action is AUTHENTICATED) {
-            babyService.user = action.user
-            timelineService.user = action.user
-        } else if (action is SELECT_BABY) {
-            timelineService.baby = action.baby
+        store.state.user?.let {
+            babyService.user = it
+            timelineService.user = it
+        }
+        store.state.selectedBaby?.let {
+            timelineService.baby = it
         }
 
         when(action) {
