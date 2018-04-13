@@ -6,7 +6,9 @@ import fr.nicopico.hugo.domain.model.Timeline
 import fr.nicopico.hugo.domain.services.AnalyticsService
 import fr.nicopico.hugo.domain.services.AuthService
 import fr.nicopico.hugo.domain.services.BabyService
+import fr.nicopico.hugo.domain.services.PersistenceService
 import fr.nicopico.hugo.domain.services.TimelineService
+import kotlinx.coroutines.experimental.runBlocking
 import redux.api.Store
 import redux.applyMiddleware
 import redux.combineReducers
@@ -19,21 +21,25 @@ fun createStore(
         babyService: BabyService,
         timelineService: TimelineService,
         analyticsService: AnalyticsService,
+        persistenceService: PersistenceService,
         logger: Logger<AppState>
 ): Store<AppState> {
+
+    val selectedBaby = runBlocking { persistenceService.readBaby() }
 
     val initialState = AppState(
             user = null,
             timeline = Timeline(),
             screen = Screen.Loading,
             babies = emptyList(),
-            selectedBaby = null
+            selectedBaby = selectedBaby
     )
 
     val enhancer = applyMiddleware(
             AuthMiddleware(authService),
             MessageMiddleware(),
             RemoteMiddleware(babyService, timelineService),
+            PersistenceMiddleware(persistenceService),
             AnalyticsMiddleware(analyticsService),
             createLoggerMiddleware(logger)
     )
