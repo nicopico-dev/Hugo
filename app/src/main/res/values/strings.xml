@@ -22,6 +22,8 @@
     <string name="care_type_food">Nourriture</string>
     <string name="care_type_health_hygiene">Santé &amp; hygiène</string>
 
+    <string name="section_total_milk">%d mL</string>
+
     <string name="care_umbilical_cord">Soin du cordon</string>
     <string name="care_face">Soin du visage</string>
     <string name="care_bath">Bain</string>

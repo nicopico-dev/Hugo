@@ -24,7 +24,7 @@
         android:paddingTop="@dimen/vertical_margin"
         android:scrollbarStyle="outsideInset"
         android:scrollbars="vertical"
-        tools:listitem="@layout/item_timeline"/>
+        tools:listitem="@layout/item_timeline_entry"/>
 
     <!-- TODO Add HideOnScroll behavior -->
     <android.support.constraint.ConstraintLayout

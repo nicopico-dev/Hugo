@@ -39,7 +39,7 @@ class TimelineFragment : BaseFragment(), HugoLogger {
     private val timelineAdapter by lazy {
         TimelineAdapter(context!!)
     }
-    private var firstEntryTime: Date? = null
+    private var firstSectionDate: Date? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +63,6 @@ class TimelineFragment : BaseFragment(), HugoLogger {
 
             // Decorations
             addItemDecoration(SpaceItemDecoration(layoutManager, dimensionForOffset(R.dimen.space_medium)))
-            addItemDecoration(DateSectionDecoration(context, timelineAdapter))
         }
 
         fabAdd.click { toggleFabMenu() }
@@ -92,11 +91,11 @@ class TimelineFragment : BaseFragment(), HugoLogger {
     }
 
     override fun render(state: AppState) {
-        val entries = state.timeline.entries
-        timelineAdapter.data = entries
+        val sections = state.timeline.sections
+        timelineAdapter.data = sections
 
-        val newerFirstEntry = firstEntryTime?.let {
-            entries.firstOrNull()?.time?.after(firstEntryTime)
+        val newerFirstEntry = firstSectionDate?.let {
+            sections.firstOrNull()?.time?.after(firstSectionDate)
         } ?: true
 
         if (newerFirstEntry) {
@@ -107,7 +106,7 @@ class TimelineFragment : BaseFragment(), HugoLogger {
             }
         }
 
-        firstEntryTime = entries.firstOrNull()?.time
+        firstSectionDate = sections.firstOrNull()?.time
     }
 
     private fun toggleFabMenu() {

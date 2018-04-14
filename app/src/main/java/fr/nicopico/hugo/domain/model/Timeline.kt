@@ -3,14 +3,13 @@ package fr.nicopico.hugo.domain.model
 import fr.nicopico.hugo.domain.utils.onlyDate
 import java.util.*
 
-class Timeline(entries: List<Entry> = emptyList()) {
+class Timeline(private val entries: List<Entry> = emptyList()) {
 
-    @Deprecated("Use sections instead")
-    val entries = entries.sortedByDescending { it.time }
     val sections = entries
+            .sortedByDescending { it.time }
             .groupBy { it.time.onlyDate() }
             .map { (date, entries) ->
-                Section(date, entries.sortedByDescending { it.time })
+                Section(date, entries)
             }
 
     operator fun plus(entry: Timeline.Entry) = Timeline(entries + entry)
@@ -27,7 +26,7 @@ class Timeline(entries: List<Entry> = emptyList()) {
         return Timeline(updatedEntries)
     }
 
-    data class Section(val date: Date, val entries: List<Entry>) {
+    data class Section(val time: Date, val entries: List<Entry>) {
         val totalMilk by lazy {
             entries.filter { it.type == CareType.FOOD }
                     .flatMap { it.cares }
