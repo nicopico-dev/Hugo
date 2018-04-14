@@ -12,6 +12,16 @@ fun Date.closeTo(other: Date, sigma: Long, sigmaUnit: TimeUnit): Boolean {
     return Math.abs(time - other.time) <= sigmaUnit.toMillis(sigma)
 }
 
+fun Date.onlyDate(): Date {
+    return Calendar.getInstance().apply {
+        time = this@onlyDate
+        set(Calendar.HOUR_OF_DAY, 0)
+        set(Calendar.MINUTE, 0)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
+    }.time
+}
+
 fun Date.withHourMinute(hour: Int, minute: Int): Date {
     return Calendar.getInstance().apply {
         time = this@withHourMinute
