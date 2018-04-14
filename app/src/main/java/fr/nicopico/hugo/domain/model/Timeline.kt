@@ -23,4 +23,15 @@ class Timeline(entries: List<Entry> = emptyList()) {
 
     operator fun plus(entry: Timeline.Entry) = Timeline(entries + entry)
     operator fun minus(entry: Timeline.Entry) = Timeline(entries - entry)
+
+    fun replace(updatedEntry: Timeline.Entry): Timeline {
+        val updatedEntries = entries.map {
+            if (it.remoteId == updatedEntry.remoteId) {
+                updatedEntry
+            } else {
+                it
+            }
+        }
+        return Timeline(updatedEntries)
+    }
 }
