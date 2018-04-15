@@ -2,6 +2,7 @@
 /.idea/dictionaries/
 /.idea/libraries/
 /.idea/misc.xml
+/.idea/misc.xml
 /.idea/modules.xml
 /.idea/shelf/
 /.idea/workspace.xml
@@ -12,5 +13,5 @@
 .DS_Store
 *.iml
 .externalNativeBuild
-.idea/misc.xml
 fastlane/report.xml
+node_modules/
