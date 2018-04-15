@@ -2,6 +2,7 @@ package fr.nicopico.hugo.android.services
 
 import android.content.Context
 import androidx.core.os.bundleOf
+import com.crashlytics.android.Crashlytics
 import com.google.firebase.analytics.FirebaseAnalytics
 import fr.nicopico.hugo.android.utils.ActivityProvider
 import fr.nicopico.hugo.domain.services.AnalyticEvent
@@ -30,6 +31,7 @@ class FirebaseAnalyticsService(
     override fun setCurrentScreen(screenName: String) {
         activityProvider.currentActivity?.let {
             firebaseAnalytics.setCurrentScreen(it, screenName, null)
+            Crashlytics.setString("screenName", screenName)
         }
     }
 }
