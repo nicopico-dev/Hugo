@@ -21,6 +21,7 @@ import fr.nicopico.hugo.android.ui.timeline.entry.editFoodDialog
 import fr.nicopico.hugo.android.ui.timeline.entry.editHealthAndHygieneDialog
 import fr.nicopico.hugo.android.utils.click
 import fr.nicopico.hugo.android.utils.toggle
+import fr.nicopico.hugo.android.utils.trace
 import fr.nicopico.hugo.domain.model.AppState
 import fr.nicopico.hugo.domain.model.CareType.CHANGE
 import fr.nicopico.hugo.domain.model.CareType.FOOD
@@ -87,7 +88,10 @@ class TimelineFragment : BaseFragment(), HugoLogger {
 
     override fun render(state: AppState) {
         val sections = state.timeline.sections
-        timelineAdapter.data = sections
+        trace("renderTimeline") {
+            incrementCounter("sections", sections.size.toLong())
+            timelineAdapter.data = sections
+        }
 
         val newerFirstEntry = firstSectionDate?.let {
             sections.firstOrNull()?.time?.after(firstSectionDate)
