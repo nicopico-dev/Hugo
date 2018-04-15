@@ -15,3 +15,15 @@ exports.updateLastAction_DEV = functions.firestore
                 { merge: true }
             );
     });
+
+exports.updateLastAction_PROD = functions.firestore
+    .document('users/{userId}/babies/{baby}/timeline/{entry}')
+    .onCreate((snapshot, context) => {
+        const userId = context.params.userId;
+        return admin.firestore()
+            .doc(`users/${userId}`)
+            .set(
+                { lastAction: context.timestamp }, 
+                { merge: true }
+            );
+    });
