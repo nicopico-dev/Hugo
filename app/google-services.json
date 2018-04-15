@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "219309098874-pe7shpsglb7u10ujpgql5tp9f99i75r1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fr.nicopico.hugo",
+            "certificate_hash": "0f51ab71535ea3e6213a8a1866a43683d1f9e451"
+          }
+        },
+        {
+          "client_id": "219309098874-1e6quuidr42a4opgvdm1e18soise276p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fr.nicopico.hugo",
+            "certificate_hash": "0619fb4fabd9300ca578e1b90e63918c4d90af01"
+          }
+        },
+        {
           "client_id": "219309098874-eh1m3gkm492afaeeqr45vi8hlgjob87d.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -44,6 +60,37 @@
               "client_type": 3
             }
           ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:219309098874:android:c99913458ff29625",
+        "android_client_info": {
+          "package_name": "fr.nicopico.hugo.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "219309098874-a3fv246vihcvh8gpk58mtacnln8eri6p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDubL1lnjriJADLyxRNK_RtEffgb59FoQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

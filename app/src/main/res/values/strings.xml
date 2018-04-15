@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:locale="fr">
 
-    <string name="app_name">Hugo</string>
+    <string name="app_name" translatable="false">Hugo</string>
 
     <string name="submit">valider</string>
     <string name="cancel">annuler</string>

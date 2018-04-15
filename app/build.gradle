@@ -39,6 +39,20 @@ android {
         }
     }
 
+    flavorDimensions 'env'
+    productFlavors {
+        prod {
+            dimension 'env'
+            buildConfigField 'String', 'FIRESTORE_ROOT', '"/users"'
+        }
+
+        dev {
+            dimension 'env'
+            applicationIdSuffix '.dev'
+            buildConfigField 'String', 'FIRESTORE_ROOT', '"/dev_users"'
+        }
+    }
+
     packagingOptions {
         exclude 'META-INF/lib_main.kotlin_module'
     }

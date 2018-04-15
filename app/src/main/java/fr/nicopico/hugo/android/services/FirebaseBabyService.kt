@@ -1,5 +1,6 @@
 package fr.nicopico.hugo.android.services
 
+import fr.nicopico.hugo.BuildConfig
 import fr.nicopico.hugo.android.HugoLogger
 import fr.nicopico.hugo.android.verbose
 import fr.nicopico.hugo.domain.model.Baby
@@ -14,7 +15,7 @@ class FirebaseBabyService : FirebaseFetcherService<Baby>(), BabyService, HugoLog
     }
 
     override val collectionPath
-        get() = "/users/${user!!.uid}/babies"
+        get() = "${BuildConfig.FIRESTORE_ROOT}/${user!!.uid}/babies"
 
     override fun remoteId(entry: Baby): String?
             = entry.key

@@ -22,7 +22,7 @@ platform :android do
   desc "Deploy a new version to Google Play"
   lane :deploy do |options|
     gradle(task: 'clean')
-    gradle(task: 'assemble', build_type: 'release')
+    gradle(task: 'assemble', flavor: 'prod', build_type: 'release')
     upload_to_play_store(
       track: 'internal', 
       skip_upload_metadata: !options[:metadata],

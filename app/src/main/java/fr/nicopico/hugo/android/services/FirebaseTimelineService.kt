@@ -1,5 +1,6 @@
 package fr.nicopico.hugo.android.services
 
+import fr.nicopico.hugo.BuildConfig
 import fr.nicopico.hugo.android.HugoLogger
 import fr.nicopico.hugo.android.verbose
 import fr.nicopico.hugo.domain.model.Baby
@@ -31,7 +32,7 @@ class FirebaseTimelineService : FirebaseFetcherService<Timeline.Entry>(), Timeli
     }
 
     override val collectionPath
-        get() = "/users/${user!!.uid}/babies/${baby!!.key}/timeline"
+        get() = "${BuildConfig.FIRESTORE_ROOT}/${user!!.uid}/babies/${baby!!.key}/timeline"
 
     override fun remoteId(entry: Timeline.Entry): String?
             = entry.remoteId
