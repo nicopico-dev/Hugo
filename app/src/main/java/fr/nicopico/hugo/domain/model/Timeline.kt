@@ -1,6 +1,5 @@
 package fr.nicopico.hugo.domain.model
 
-import com.google.firebase.perf.FirebasePerformance
 import fr.nicopico.hugo.android.utils.trace
 import fr.nicopico.hugo.domain.utils.onlyDate
 import java.util.*
@@ -10,15 +9,15 @@ class Timeline(private val entries: List<Entry> = emptyList()) {
     val sections: List<Section>
 
     init {
-        val trace = FirebasePerformance.startTrace("Timeline.sections")
-        trace.incrementCounter("entries", entries.size.toLong())
-        sections = entries
-                .sortedByDescending { it.time }
-                .groupBy { it.time.onlyDate() }
-                .map { (date, entries) ->
-                    Section(date, entries)
-                }
-        trace.stop()
+        sections = trace("Timeline.sections") {
+            incrementCounter("entries", entries.size.toLong())
+            entries
+                    .sortedByDescending { it.time }
+                    .groupBy { it.time.onlyDate() }
+                    .map { (date, entries) ->
+                        Section(date, entries)
+                    }
+        }
     }
 
     operator fun plus(entry: Timeline.Entry) = Timeline(entries + entry)
@@ -40,7 +39,7 @@ class Timeline(private val entries: List<Entry> = emptyList()) {
     }
 
     data class Section(val time: Date, val entries: List<Entry>) {
-        val totalMilk by lazy {
+        val totalMilk: Int by lazy {
             trace("Section.totalMilk") {
                 incrementCounter("entries", entries.size.toLong())
                 entries.filter { it.type == CareType.FOOD }
