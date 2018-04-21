@@ -34,7 +34,7 @@ abstract class FirebaseFetcherService<T> : FetcherService<T>, HugoLogger {
                 .get()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        cont.resume(convert(task.result.data))
+                        cont.resume(convert(task.result.data!!))
                     } else {
                         cont.resumeWithException(task.exception!!)
                     }
@@ -62,6 +62,8 @@ abstract class FirebaseFetcherService<T> : FetcherService<T>, HugoLogger {
                         fetcher.onError(exception)
                         return@addSnapshotListener
                     }
+
+                    if (querySnapshot == null) return@addSnapshotListener
 
                     @Suppress("IMPLICIT_CAST_TO_ANY")
                     for (change in querySnapshot.documentChanges) {
