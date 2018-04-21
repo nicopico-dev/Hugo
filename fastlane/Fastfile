@@ -28,7 +28,7 @@ platform :android do
       skip_upload_metadata: !options[:metadata],
       skip_upload_images: !options[:images],
       skip_upload_screenshots: !options[:images],
-      apk: 'app/build/outputs/apk/release/app-release.apk'
+      apk: 'app/build/outputs/apk/prod/release/app-prod-release.apk'
     )
     create_version_tag(env: 'play')
     bump_version_code
