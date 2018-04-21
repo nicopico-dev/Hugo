@@ -36,5 +36,8 @@ data class ENTRY_ADDED(val entry: Timeline.Entry)
 data class ENTRY_MODIFIED(val entry: Timeline.Entry)
 data class ENTRY_REMOVED(val entry: Timeline.Entry)
 
+data class ENTRIES_ADDED(val entries: List<Timeline.Entry>)
+data class ENTRIES_REMOVED(val entries: List<Timeline.Entry>)
+
 data class DISPLAY_MESSAGE(val message: Message)
 data class REMOVE_MESSAGE(val message: Message)

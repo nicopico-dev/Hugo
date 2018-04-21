@@ -66,6 +66,10 @@ val timelineReducer = Reducer<AppState> { state, action ->
         is ENTRY_ADDED -> state.copy(timeline = state.timeline + action.entry)
         is ENTRY_MODIFIED -> state.copy(timeline = state.timeline.replace(action.entry))
         is ENTRY_REMOVED -> state.copy(timeline = state.timeline - action.entry)
+
+        is ENTRIES_ADDED -> state.copy(timeline = state.timeline + action.entries)
+        is ENTRIES_REMOVED -> state.copy(timeline = state.timeline - action.entries)
+
         else -> state
     }
 }

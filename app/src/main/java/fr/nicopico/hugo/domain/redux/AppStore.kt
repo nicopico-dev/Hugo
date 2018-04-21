@@ -41,6 +41,7 @@ fun createStore(
             RemoteMiddleware(babyService, timelineService),
             PersistenceMiddleware(persistenceService),
             AnalyticsMiddleware(analyticsService),
+            DebounceTimelineMiddleware(100),
             createLoggerMiddleware(logger)
     )
 
