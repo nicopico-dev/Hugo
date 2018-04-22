@@ -2,6 +2,7 @@ language: android
 android:
   components:
     - android-27
+    - build-tools-27.0.3
 jdk:
   - openjdk8
 dist: trusty
