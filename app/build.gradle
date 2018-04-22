@@ -6,8 +6,8 @@ apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'io.fabric'
 
 def version = loadProperties('version.properties')
-def userHome = System.getProperty('user.home')
-def keystore = loadProperties("$userHome/.secure/hugo_keystore.properties")
+def secureFolder = System.getenv('SECURE_FOLDER')
+def keystore = loadProperties("$secureFolder/hugo_keystore.properties")
 
 android {
     compileSdkVersion 27
