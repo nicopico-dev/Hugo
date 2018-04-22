@@ -41,3 +41,6 @@ data class ENTRIES_REMOVED(val entries: List<Timeline.Entry>)
 
 data class DISPLAY_MESSAGE(val message: Message)
 data class REMOVE_MESSAGE(val message: Message)
+
+data class START_LOADING(val what: String)
+data class FINISHED_LOADING(val what: String)

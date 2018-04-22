@@ -41,6 +41,8 @@ val messageReducer = Reducer<AppState> { state, action ->
     when (action) {
         is DISPLAY_MESSAGE -> state.copy(message = action.message)
         action is REMOVE_MESSAGE && state.message == action.message -> state.copy(message = null)
+        is START_LOADING -> state.copy(loading = true)
+        is FINISHED_LOADING -> state.copy(loading = false)
         else -> state
     }
 }

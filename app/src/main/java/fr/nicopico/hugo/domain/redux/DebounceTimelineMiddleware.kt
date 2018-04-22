@@ -17,6 +17,10 @@ class DebounceTimelineMiddleware(
         private val delayMs: Long
 ) : Middleware<AppState>, HugoLogger {
 
+    companion object {
+        private const val LOADING_ENTRIES = "timeline.entries"
+    }
+
     private val pendingAddedEntries = mutableListOf<Timeline.Entry>()
     private val pendingRemovedEntries = mutableListOf<Timeline.Entry>()
     private var dispatchJob: Job? = null
@@ -34,7 +38,7 @@ class DebounceTimelineMiddleware(
         }
 
         debug { "$action added to the batch actions, reset timer" }
-        // TODO Add loading state
+        store.dispatch(START_LOADING(LOADING_ENTRIES))
 
         val addedEntries = pendingAddedEntries.toList()
         val removedEntries = pendingRemovedEntries.toList()
@@ -49,6 +53,8 @@ class DebounceTimelineMiddleware(
                 pendingRemovedEntries.removeAll(removedEntries)
                 store.dispatch(ENTRIES_ADDED(addedEntries))
                 pendingAddedEntries.removeAll(addedEntries)
+
+                store.dispatch(FINISHED_LOADING(LOADING_ENTRIES))
             }
         }
 

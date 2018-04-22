@@ -21,11 +21,13 @@ import fr.nicopico.hugo.android.info
 import fr.nicopico.hugo.android.ui.babies.BabySelectionFragment
 import fr.nicopico.hugo.android.ui.timeline.TimelineFragment
 import fr.nicopico.hugo.android.utils.toast
+import fr.nicopico.hugo.android.utils.visible
 import fr.nicopico.hugo.domain.model.AppState
 import fr.nicopico.hugo.domain.model.Screen
 import fr.nicopico.hugo.domain.redux.GO_BACK
 import fr.nicopico.hugo.domain.redux.ON_APP_EXIT
 import fr.nicopico.hugo.domain.services.AuthService
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity(),
@@ -124,12 +126,14 @@ class MainActivity : AppCompatActivity(),
         }
 
         supportFragmentManager.beginTransaction()
-                .replace(R.id.formContainer, fragment)
+                .replace(R.id.screenContainer, fragment)
                 .commit()
 
         if (screen == Screen.Loading) {
             signInIfNeeded()
         }
+
+        loading_progress.visible = state.loading
     }
 }
 

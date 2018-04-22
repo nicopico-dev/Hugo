@@ -6,5 +6,6 @@ data class AppState(
         val screen: Screen,
         val babies: List<Baby>,
         val selectedBaby: Baby?,
-        val timeline: Timeline
+        val timeline: Timeline,
+        val loading: Boolean = false
 )
