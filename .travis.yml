@@ -1,8 +1,13 @@
-language: java
+language: android
+android:
+  components:
+    - android-27
+    - build-tools-27.0.3
 jdk:
   - openjdk8
 dist: trusty
 sudo: false
+script: ./gradlew lintProdDebug testProdDebugUnitTest #connectedProdDebugAndroidTest
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
