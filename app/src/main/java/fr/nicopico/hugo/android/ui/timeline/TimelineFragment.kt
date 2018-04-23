@@ -21,7 +21,6 @@ import fr.nicopico.hugo.android.ui.timeline.entry.editFoodDialog
 import fr.nicopico.hugo.android.ui.timeline.entry.editHealthAndHygieneDialog
 import fr.nicopico.hugo.android.utils.click
 import fr.nicopico.hugo.android.utils.toggle
-import fr.nicopico.hugo.android.utils.trace
 import fr.nicopico.hugo.domain.model.AppState
 import fr.nicopico.hugo.domain.model.CareType.CHANGE
 import fr.nicopico.hugo.domain.model.CareType.FOOD
@@ -30,6 +29,7 @@ import fr.nicopico.hugo.domain.model.Timeline
 import fr.nicopico.hugo.domain.redux.FETCH_TIMELINE
 import fr.nicopico.hugo.domain.redux.STOP_FETCHING_TIMELINE
 import fr.nicopico.hugo.domain.redux.UNSELECT_BABY
+import fr.nicopico.hugo.domain.services.trace
 import kotlinx.android.synthetic.main.fragment_timeline.*
 import java.util.*
 

@@ -8,6 +8,7 @@ import fr.nicopico.hugo.BuildConfig
 import fr.nicopico.hugo.android.services.FirebaseAnalyticsService
 import fr.nicopico.hugo.android.services.FirebaseAuthService
 import fr.nicopico.hugo.android.services.FirebaseBabyService
+import fr.nicopico.hugo.android.services.FirebasePerformanceService
 import fr.nicopico.hugo.android.services.FirebaseTimelineService
 import fr.nicopico.hugo.android.services.SharedPrefsPersistenceService
 import fr.nicopico.hugo.android.utils.ActivityProvider
@@ -85,6 +86,8 @@ class App : Application() {
                 }
             }
         }
+
+        FirebasePerformanceService.initialize()
     }
 
     private class CurrentActivityProvider : SimpleActivityLifecycleCallbacks(), ActivityProvider {

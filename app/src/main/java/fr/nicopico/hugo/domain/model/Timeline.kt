@@ -1,6 +1,6 @@
 package fr.nicopico.hugo.domain.model
 
-import fr.nicopico.hugo.android.utils.trace
+import fr.nicopico.hugo.domain.services.trace
 import fr.nicopico.hugo.domain.utils.onlyDate
 import java.util.*
 
