@@ -21,10 +21,7 @@ class Timeline(private val entries: List<Entry> = emptyList()) {
     }
 
     operator fun plus(entry: Timeline.Entry) = Timeline(entries + entry)
-    operator fun plus(entries: List<Timeline.Entry>) = Timeline(this.entries + entries)
     operator fun minus(entry: Timeline.Entry) = Timeline(entries - entry)
-    operator fun minus(entries: List<Timeline.Entry>) = Timeline(this.entries - entries)
-
     fun replace(updatedEntry: Timeline.Entry): Timeline {
         val updatedEntries = entries.map {
             if (it.remoteId == updatedEntry.remoteId) {
@@ -35,6 +32,8 @@ class Timeline(private val entries: List<Entry> = emptyList()) {
         }
         return Timeline(updatedEntries)
     }
+
+    fun asEntryList(): List<Entry> = entries.toList()
 
     override fun toString(): String {
         return "Timeline{${this.hashCode()} ${entries.size} entries}"
