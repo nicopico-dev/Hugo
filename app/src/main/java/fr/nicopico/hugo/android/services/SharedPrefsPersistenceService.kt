@@ -1,5 +1,6 @@
 package fr.nicopico.hugo.android.services
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.core.content.edit
 import com.squareup.moshi.JsonAdapter
@@ -9,6 +10,7 @@ import fr.nicopico.hugo.domain.services.PersistenceService
 
 private const val SELECTED_BABY_KEY = "selectedBaby"
 
+@SuppressLint("CommitPrefEdits")
 class SharedPrefsPersistenceService(context: Context) : PersistenceService {
 
     private val prefs = context.getSharedPreferences("local", Context.MODE_PRIVATE)

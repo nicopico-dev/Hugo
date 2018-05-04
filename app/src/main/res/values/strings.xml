@@ -38,7 +38,7 @@
     <string name="care_food_artificial_bottle_feeding">Biberon</string>
     <string name="care_food_extraction">Tire-lait</string>
     <string name="care_breast_feeding_left">Sein gauche, %1$d minutes</string>
-    <string name="care_breast_feeding_right">Sein droit, %2$d minutes</string>
+    <string name="care_breast_feeding_right" tools:ignore="StringFormatCount">Sein droit, %2$d minutes</string>
     <string name="care_breast_feeding_both">Sein gauche, %1$d minutes\nSein droit, %2$d minutes</string>
     <string name="care_breast_extraction">Tire-lait %d mL</string>
     <string name="care_bottle_feeding_maternal">Biberon %d mL de lait maternel</string>
@@ -58,7 +58,6 @@
     <string name="desc_remove_breast_extraction">Supprimer le tire-lait</string>
 
     <string name="menu_licenses">Licenses</string>
-    <string name="menu_connect">Connexion</string>
     <string name="menu_disconnect">Déconnexion</string>
     <string name="desc_delete">Supprimer</string>
 

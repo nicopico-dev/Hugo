@@ -9,4 +9,5 @@
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:gravity="center_vertical"
     android:background="?selectableItemBackground"
-    tools:text="@tools:sample/first_names"/>
+    tools:text="@tools:sample/first_names"
+    tools:ignore="Overdraw"/>

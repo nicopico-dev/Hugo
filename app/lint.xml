@@ -3,4 +3,7 @@
     <issue id="InvalidPackage">
         <ignore path="*/io.grpc/grpc-core/*"/>
     </issue>
+    <issue id="UnusedResources">
+        <ignore path="*/generated/*"/>
+    </issue>
 </lint>
