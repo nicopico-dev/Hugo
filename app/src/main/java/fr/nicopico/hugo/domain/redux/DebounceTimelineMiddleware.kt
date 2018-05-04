@@ -52,8 +52,10 @@ class DebounceTimelineMiddleware(
         dispatchJob = launch(Background) {
             delay(delayMs)
             launch(UI) {
-                debug("Send batch actions")
-                store.dispatch(ENTRIES_SET(pendingEntries!!))
+                pendingEntries?.let {
+                    debug("Send batch actions")
+                    store.dispatch(ENTRIES_SET(it))
+                }
                 store.dispatch(FINISHED_LOADING(LOADING_ENTRIES))
                 dispatchJob = null
                 pendingEntries = null
