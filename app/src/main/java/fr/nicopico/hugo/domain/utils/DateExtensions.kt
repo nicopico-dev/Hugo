@@ -50,7 +50,6 @@ fun Date.round(): Date {
     }.time
 }
 
-@Suppress("MagicNumber")
 private fun Int.roundToFive(): Int {
     // TODO Round to closest value
     return this - this % 5

@@ -97,7 +97,6 @@ inline fun HugoLogger.error(m: String) {
 }
 //endregion
 
-@Suppress("ComplexMethod")
 fun doLog(logger: HugoLogger, level: Int, message: String, error: Throwable? = null) {
     if (level < minLogLevel) return
 
