@@ -8,6 +8,7 @@
     <string name="cancel">annuler</string>
     <string name="unit_ml">mL</string>
     <string name="unit_minutes">minutes</string>
+    <string name="unit_g">grammes</string>
 
     <string name="baby">Bébé</string>
     <string name="baby_name">Prénom</string>
@@ -34,17 +35,22 @@
 
     <string name="care_food_breast_feeding">Allaitement</string>
     <string name="care_food_bottle_feeding">Biberon</string>
-    <string name="care_food_maternal_bottle_feeding">Biberon (lait maternel)</string>
-    <string name="care_food_artificial_bottle_feeding">Biberon</string>
+    <string name="care_food_maternal_bottle_feeding">Lait maternel</string>
+    <string name="care_food_artificial_bottle_feeding">Lait artificiel</string>
     <string name="care_food_extraction">Tire-lait</string>
+    <string name="care_food_diversification">Diversification</string>
     <string name="care_breast_feeding_left">Sein gauche, %1$d minutes</string>
     <string name="care_breast_feeding_right" tools:ignore="StringFormatCount">Sein droit, %2$d minutes</string>
     <string name="care_breast_feeding_both">Sein gauche, %1$d minutes\nSein droit, %2$d minutes</string>
     <string name="care_breast_extraction">Tire-lait %d mL</string>
-    <string name="care_bottle_feeding_maternal">Biberon %d mL de lait maternel</string>
-    <string name="care_bottle_feeding_artificial">Biberon %d mL de lait artificiel</string>
-    <string name="care_bottle_feeding_water">Biberon %d mL d\'eau</string>
-    <string name="care_bottle_feeding_other">Biberon %d mL</string>
+    <string name="care_bottle_feeding_maternal">%d mL de lait maternel</string>
+    <string name="care_bottle_feeding_artificial">%d mL de lait artificiel</string>
+    <string name="care_bottle_feeding_water">%d mL d\'eau</string>
+    <string name="care_bottle_feeding_other">%d mL</string>
+
+    <string name="care_diversification_feeding">%1$d grammes de %2$s</string>
+    <string name="care_diversification_feeding_aliment">Aliment</string>
+    <string name="care_diversification_feeding_quantity">Quantité</string>
 
     <string name="date_time_format">%1$s à %2$s</string>
     <string name="care_hygiene_bath">Bain</string>

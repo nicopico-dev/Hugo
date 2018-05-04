@@ -58,6 +58,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/care_food_extraction"/>
 
+            <TextView
+                android:id="@+id/btnAddDiversification"
+                style="@style/FoodCare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/care_food_diversification"/>
+
         </LinearLayout>
 
     </HorizontalScrollView>

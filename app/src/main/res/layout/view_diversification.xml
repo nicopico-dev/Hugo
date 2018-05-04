@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.support.constraint.ConstraintLayout">
+
+    <ImageView
+        android:id="@+id/imgRemove"
+        android:layout_width="?android:listPreferredItemHeightSmall"
+        android:layout_height="?android:listPreferredItemHeightSmall"
+        android:contentDescription="@string/desc_remove_bottle_feeding"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_remove"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/_txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/care_food_diversification"
+        app:layout_constraintBottom_toBottomOf="@id/imgRemove"
+        app:layout_constraintStart_toEndOf="@id/imgRemove"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/_txtAlimentName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/edtAlimentName"
+        android:text="@string/care_diversification_feeding_aliment"
+        app:layout_constraintBaseline_toBaselineOf="@id/edtAlimentName"
+        app:layout_constraintStart_toStartOf="@id/_txtTitle"/>
+
+    <EditText
+        android:id="@+id/edtAlimentName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_medium"
+        android:layout_marginEnd="@dimen/space_medium"
+        android:layout_marginTop="@dimen/space_small"
+        android:inputType="textAutoComplete|textCapWords"
+        app:layout_constraintStart_toEndOf="@id/barrier"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/_txtTitle"/>
+
+    <TextView
+        android:id="@+id/_txtAlimentQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/edtAlimentQuantity"
+        android:text="@string/care_diversification_feeding_quantity"
+        app:layout_constraintBaseline_toBaselineOf="@id/edtAlimentQuantity"
+        app:layout_constraintStart_toStartOf="@id/_txtAlimentName"/>
+
+    <EditText
+        android:id="@+id/edtAlimentQuantity"
+        android:layout_width="@dimen/care_edit_width"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_medium"
+        android:layout_marginTop="@dimen/space_micro"
+        android:inputType="number"
+        app:layout_constraintStart_toEndOf="@id/barrier"
+        app:layout_constraintTop_toBottomOf="@id/edtAlimentName"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_micro"
+        android:text="@string/unit_g"
+        android:textAppearance="@style/Text.Light"
+        app:layout_constraintBaseline_toBaselineOf="@id/edtAlimentQuantity"
+        app:layout_constraintStart_toEndOf="@id/edtAlimentQuantity"/>
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="_txtAlimentName,_txtAlimentQuantity"/>
+
+</merge>

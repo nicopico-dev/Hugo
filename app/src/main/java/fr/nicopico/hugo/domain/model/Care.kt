@@ -59,6 +59,12 @@ data class BottleFeeding(
     }
 }
 
+data class Diversification(
+        /** quantity in grams */
+        val quantity: Int,
+        val aliment: String
+) : Care(CareType.FOOD)
+
 enum class Breast { LEFT, RIGHT }
 
 enum class CareType {

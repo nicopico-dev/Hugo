@@ -10,6 +10,7 @@ import fr.nicopico.hugo.domain.model.Breast
 import fr.nicopico.hugo.domain.model.BreastExtraction
 import fr.nicopico.hugo.domain.model.BreastFeeding
 import fr.nicopico.hugo.domain.model.Care
+import fr.nicopico.hugo.domain.model.Diversification
 import fr.nicopico.hugo.domain.model.Face
 import fr.nicopico.hugo.domain.model.Pee
 import fr.nicopico.hugo.domain.model.Poo
@@ -55,12 +56,15 @@ private object TimelineEntrySerializer : HugoLogger {
     private const val FOOD_TYPE_BREAST_FEEDING = "BreastFeeding"
     private const val FOOD_TYPE_BREAST_EXTRACTION = "BreastExtraction"
     private const val FOOD_TYPE_BOTTLE_FEEDING = "BottleFeeding"
+    private const val FOOD_TYPE_DIVERSIFICATION = "Diversification"
 
     private const val KEY_BREASTS = "breasts"
     private const val KEY_VOLUME = "volume"
     private const val KEY_LEFT_DURATION = "leftDuration"
     private const val KEY_RIGHT_DURATION = "rightDuration"
     private const val KEY_CONTENT = "content"
+    private const val KEY_ALIMENT = "aliment"
+    private const val KEY_QUANTITY = "quantity"
 
     private const val CARE_UMBILICAL_CORD = "UmbilicalCord"
     private const val CARE_FACE = "Face"
@@ -104,6 +108,11 @@ private object TimelineEntrySerializer : HugoLogger {
                                         KEY_VOLUME to care.volume,
                                         KEY_CONTENT to care.content
                                 )
+                                is Diversification -> mapOf(
+                                        KEY_FOOD_TYPE to FOOD_TYPE_DIVERSIFICATION,
+                                        KEY_ALIMENT to care.aliment,
+                                        KEY_QUANTITY to care.quantity
+                                )
                             }
                         }
                 )
@@ -143,6 +152,10 @@ private object TimelineEntrySerializer : HugoLogger {
                                 FOOD_TYPE_BOTTLE_FEEDING -> BottleFeeding(
                                         volume = it[KEY_VOLUME].asInt(),
                                         content = it[KEY_CONTENT] as String
+                                )
+                                FOOD_TYPE_DIVERSIFICATION -> Diversification(
+                                        aliment = it[KEY_ALIMENT] as String,
+                                        quantity = it[KEY_QUANTITY].asInt()
                                 )
                                 else -> throw UnsupportedOperationException("Unable to deserialize care data $it " +
                                         "(food type)")

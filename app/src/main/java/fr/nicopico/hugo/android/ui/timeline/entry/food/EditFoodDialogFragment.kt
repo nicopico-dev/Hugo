@@ -9,6 +9,7 @@ import fr.nicopico.hugo.domain.model.BottleFeeding
 import fr.nicopico.hugo.domain.model.BreastExtraction
 import fr.nicopico.hugo.domain.model.BreastFeeding
 import fr.nicopico.hugo.domain.model.Care
+import fr.nicopico.hugo.domain.model.Diversification
 import fr.nicopico.hugo.domain.model.Timeline
 import fr.nicopico.hugo.domain.redux.UPDATE_ENTRY
 import kotlinx.android.synthetic.main.dialog_form.*
@@ -52,6 +53,7 @@ class EditFoodDialogFragment : AddFoodDialogFragment(), EditTimelineEntryDialogT
                         is BreastFeeding -> BreastFeedingView(context).bindTo(it) as FoodView<Care>
                         is BottleFeeding -> BottleFeedingView(context).bindTo(it)
                         is BreastExtraction -> BreastExtractionView(context).bindTo(it)
+                        is Diversification -> DiversificationView(context).bindTo(it)
                         else -> throw UnsupportedOperationException("Care $it")
                     }
                 }

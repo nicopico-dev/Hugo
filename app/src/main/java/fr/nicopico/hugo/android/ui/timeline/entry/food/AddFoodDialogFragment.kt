@@ -35,6 +35,7 @@ open class AddFoodDialogFragment : TimelineEntryDialogFragment() {
         btnAddArtificialBottleFeeding.click { addFoodView(BottleFeedingView(context, BottleFeeding.ARTIFICIAL_MILK)) }
         btnAddBreastFeeding.click { addFoodView(BreastFeedingView(context)) }
         btnAddBreastExtraction.click { addFoodView(BreastExtractionView(context)) }
+        btnAddDiversification.click { addFoodView(DiversificationView(context)) }
     }
 
     override fun buildEntry(): Timeline.Entry {
@@ -57,6 +58,7 @@ open class AddFoodDialogFragment : TimelineEntryDialogFragment() {
                 BottleFeeding.ARTIFICIAL_MILK -> btnAddArtificialBottleFeeding
                 else -> null
             }
+            is DiversificationView -> btnAddDiversification
             else -> null
         }
 

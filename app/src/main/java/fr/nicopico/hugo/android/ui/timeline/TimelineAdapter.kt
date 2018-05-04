@@ -18,6 +18,7 @@ import fr.nicopico.hugo.domain.model.BreastExtraction
 import fr.nicopico.hugo.domain.model.BreastFeeding
 import fr.nicopico.hugo.domain.model.Care
 import fr.nicopico.hugo.domain.model.CareType
+import fr.nicopico.hugo.domain.model.Diversification
 import fr.nicopico.hugo.domain.model.Face
 import fr.nicopico.hugo.domain.model.Pee
 import fr.nicopico.hugo.domain.model.Poo
@@ -153,6 +154,7 @@ private class EntryItem(
             is BreastFeeding -> createBreastFeedingView(care)
             is BreastExtraction -> textView(R.string.care_breast_extraction, care.volume)
             is BottleFeeding -> createBottleFeedingView(care)
+            is Diversification -> createDiversificationView(care)
         }
     }
 
@@ -176,6 +178,10 @@ private class EntryItem(
                 },
                 care.volume
         )
+    }
+
+    private fun createDiversificationView(care: Diversification): View {
+        return textView(R.string.care_diversification_feeding, care.quantity, care.aliment)
     }
 
     private fun textView(@StringRes text: Int, vararg params: Any?, icon: Int? = null): TextView {
