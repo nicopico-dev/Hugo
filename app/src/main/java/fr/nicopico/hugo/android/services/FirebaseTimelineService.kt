@@ -3,6 +3,7 @@ package fr.nicopico.hugo.android.services
 import fr.nicopico.hugo.BuildConfig
 import fr.nicopico.hugo.android.HugoLogger
 import fr.nicopico.hugo.android.verbose
+import fr.nicopico.hugo.android.warn
 import fr.nicopico.hugo.domain.model.Baby
 import fr.nicopico.hugo.domain.model.Bath
 import fr.nicopico.hugo.domain.model.BottleFeeding
@@ -35,12 +36,9 @@ class FirebaseTimelineService : FirebaseFetcherService<Timeline.Entry>(), Timeli
     override val collectionPath
         get() = "${BuildConfig.FIRESTORE_ROOT}/${user!!.uid}/babies/${baby!!.key}/timeline"
 
-    override fun remoteId(entry: Timeline.Entry): String?
-            = entry.remoteId
-    override fun convert(remoteId: String, entry: Timeline.Entry): Map<String, Any?>
-            = TimelineEntrySerializer.serialize(remoteId, entry)
-    override fun convert(data: Map<String, Any?>): Timeline.Entry
-            = TimelineEntrySerializer.deserialize(data)
+    override fun remoteId(entry: Timeline.Entry): String? = entry.remoteId
+    override fun convert(remoteId: String, entry: Timeline.Entry): Map<String, Any?> = TimelineEntrySerializer.serialize(remoteId, entry)
+    override fun convert(data: Map<String, Any?>): Timeline.Entry = TimelineEntrySerializer.deserialize(data)
 }
 
 private object TimelineEntrySerializer : HugoLogger {
@@ -62,9 +60,14 @@ private object TimelineEntrySerializer : HugoLogger {
     private const val KEY_VOLUME = "volume"
     private const val KEY_LEFT_DURATION = "leftDuration"
     private const val KEY_RIGHT_DURATION = "rightDuration"
-    private const val KEY_CONTENT = "content"
+    private const val KEY_BOTTLE_CONTENT = "content"
     private const val KEY_ALIMENT = "aliment"
     private const val KEY_QUANTITY = "quantity"
+
+    private const val BOTTLE_CONTENT_MATERNAL_MILK = "MATERNAL_MILK"
+    private const val BOTTLE_CONTENT_ARTIFICIAL_MILK = "ARTIFICIAL_MILK"
+    private const val BOTTLE_CONTENT_WATER = "WATER"
+    private const val BOTTLE_CONTENT_OTHER = "OTHER"
 
     private const val CARE_UMBILICAL_CORD = "UmbilicalCord"
     private const val CARE_FACE = "Face"
@@ -106,7 +109,12 @@ private object TimelineEntrySerializer : HugoLogger {
                                 is BottleFeeding -> mapOf(
                                         KEY_FOOD_TYPE to FOOD_TYPE_BOTTLE_FEEDING,
                                         KEY_VOLUME to care.volume,
-                                        KEY_CONTENT to care.content
+                                        KEY_BOTTLE_CONTENT to when (care) {
+                                            is BottleFeeding.Maternal -> BOTTLE_CONTENT_MATERNAL_MILK
+                                            is BottleFeeding.Artificial -> BOTTLE_CONTENT_ARTIFICIAL_MILK
+                                            is BottleFeeding.Water -> BOTTLE_CONTENT_WATER
+                                            is BottleFeeding.Other -> BOTTLE_CONTENT_OTHER
+                                        }
                                 )
                                 is Diversification -> mapOf(
                                         KEY_FOOD_TYPE to FOOD_TYPE_DIVERSIFICATION,
@@ -149,10 +157,20 @@ private object TimelineEntrySerializer : HugoLogger {
                                         volume = it[KEY_VOLUME].asInt(),
                                         breasts = it[KEY_BREASTS].asBreastSet()
                                 )
-                                FOOD_TYPE_BOTTLE_FEEDING -> BottleFeeding(
-                                        volume = it[KEY_VOLUME].asInt(),
-                                        content = it[KEY_CONTENT] as String
-                                )
+                                FOOD_TYPE_BOTTLE_FEEDING -> {
+                                    val bottleContent = it[KEY_BOTTLE_CONTENT] as String
+                                    val volume = it[KEY_VOLUME].asInt()
+                                    when (bottleContent) {
+                                        BOTTLE_CONTENT_MATERNAL_MILK -> BottleFeeding.Maternal(volume)
+                                        BOTTLE_CONTENT_ARTIFICIAL_MILK -> BottleFeeding.Artificial(volume)
+                                        BOTTLE_CONTENT_WATER -> BottleFeeding.Water(volume)
+                                        BOTTLE_CONTENT_OTHER -> BottleFeeding.Other(volume)
+                                        else -> {
+                                            warn { "Unknown content $bottleContent, use $BOTTLE_CONTENT_OTHER" }
+                                            BottleFeeding.Other(volume)
+                                        }
+                                    }
+                                }
                                 FOOD_TYPE_DIVERSIFICATION -> Diversification(
                                         aliment = it[KEY_ALIMENT] as String,
                                         quantity = it[KEY_QUANTITY].asInt()

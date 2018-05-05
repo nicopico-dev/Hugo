@@ -170,10 +170,10 @@ private class EntryItem(
 
     private fun createBottleFeedingView(care: BottleFeeding): TextView {
         return textView(
-                when (care.content) {
-                    BottleFeeding.MATERNAL_MILK -> R.string.care_bottle_feeding_maternal
-                    BottleFeeding.ARTIFICIAL_MILK -> R.string.care_bottle_feeding_artificial
-                    BottleFeeding.WATER -> R.string.care_bottle_feeding_water
+                when (care) {
+                    is BottleFeeding.Maternal -> R.string.care_bottle_feeding_maternal
+                    is BottleFeeding.Artificial -> R.string.care_bottle_feeding_artificial
+                    is BottleFeeding.Water -> R.string.care_bottle_feeding_water
                     else -> R.string.care_bottle_feeding_other
                 },
                 care.volume

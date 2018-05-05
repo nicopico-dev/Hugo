@@ -10,8 +10,8 @@ import fr.nicopico.hugo.android.utils.click
 import fr.nicopico.hugo.android.utils.hide
 import fr.nicopico.hugo.android.utils.show
 import fr.nicopico.hugo.domain.model.BottleFeeding
-import fr.nicopico.hugo.domain.model.Care
 import fr.nicopico.hugo.domain.model.CareType.FOOD
+import fr.nicopico.hugo.domain.model.FoodCare
 import fr.nicopico.hugo.domain.model.Timeline
 import fr.nicopico.hugo.domain.redux.ADD_ENTRY
 import kotlinx.android.synthetic.main.dialog_add_food.*
@@ -31,15 +31,15 @@ open class AddFoodDialogFragment : TimelineEntryDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val context = context!!
-        btnAddMaternalBottleFeeding.click { addFoodView(BottleFeedingView(context, BottleFeeding.MATERNAL_MILK)) }
-        btnAddArtificialBottleFeeding.click { addFoodView(BottleFeedingView(context, BottleFeeding.ARTIFICIAL_MILK)) }
+        btnAddMaternalBottleFeeding.click { addFoodView(BottleFeedingView(context, BottleFeeding.CONTENT_MATERNAL_MILK)) }
+        btnAddArtificialBottleFeeding.click { addFoodView(BottleFeedingView(context, BottleFeeding.CONTENT_ARTIFICIAL_MILK)) }
         btnAddBreastFeeding.click { addFoodView(BreastFeedingView(context)) }
         btnAddBreastExtraction.click { addFoodView(BreastExtractionView(context)) }
         btnAddDiversification.click { addFoodView(DiversificationView(context)) }
     }
 
     override fun buildEntry(): Timeline.Entry {
-        val cares = foodContainer.children.map { (it as FoodView<Care>).retrieve() }
+        val cares = foodContainer.children.map { (it as FoodView<FoodCare>).retrieve() }
         return Timeline.Entry(FOOD, entryTime, cares)
     }
 
@@ -49,13 +49,13 @@ open class AddFoodDialogFragment : TimelineEntryDialogFragment() {
         dismiss()
     }
 
-    protected fun addFoodView(foodView: FoodView<Care>) {
+    protected fun addFoodView(foodView: FoodView<FoodCare>) {
         val toggleView = when(foodView) {
             is BreastFeedingView -> btnAddBreastFeeding
             is BreastExtractionView -> btnAddBreastExtraction
             is BottleFeedingView -> when(foodView.content) {
-                BottleFeeding.MATERNAL_MILK -> btnAddMaternalBottleFeeding
-                BottleFeeding.ARTIFICIAL_MILK -> btnAddArtificialBottleFeeding
+                BottleFeeding.CONTENT_MATERNAL_MILK -> btnAddMaternalBottleFeeding
+                BottleFeeding.CONTENT_ARTIFICIAL_MILK -> btnAddArtificialBottleFeeding
                 else -> null
             }
             is DiversificationView -> btnAddDiversification

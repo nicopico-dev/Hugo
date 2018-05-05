@@ -8,8 +8,8 @@ import fr.nicopico.hugo.android.utils.withArguments
 import fr.nicopico.hugo.domain.model.BottleFeeding
 import fr.nicopico.hugo.domain.model.BreastExtraction
 import fr.nicopico.hugo.domain.model.BreastFeeding
-import fr.nicopico.hugo.domain.model.Care
 import fr.nicopico.hugo.domain.model.Diversification
+import fr.nicopico.hugo.domain.model.FoodCare
 import fr.nicopico.hugo.domain.model.Timeline
 import fr.nicopico.hugo.domain.redux.UPDATE_ENTRY
 import kotlinx.android.synthetic.main.dialog_form.*
@@ -50,7 +50,7 @@ class EditFoodDialogFragment : AddFoodDialogFragment(), EditTimelineEntryDialogT
                     // The `when` is cast to Any without an explicit cast... (kotlin 1.2.21)
                     @Suppress("USELESS_CAST")
                     when (it) {
-                        is BreastFeeding -> BreastFeedingView(context).bindTo(it) as FoodView<Care>
+                        is BreastFeeding -> BreastFeedingView(context).bindTo(it) as FoodView<FoodCare>
                         is BottleFeeding -> BottleFeedingView(context).bindTo(it)
                         is BreastExtraction -> BreastExtractionView(context).bindTo(it)
                         is Diversification -> DiversificationView(context).bindTo(it)

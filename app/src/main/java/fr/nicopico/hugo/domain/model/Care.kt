@@ -1,34 +1,37 @@
 package fr.nicopico.hugo.domain.model
 
 sealed class Care(val type: CareType)
+sealed class HealthCare : Care(CareType.HEALTH_HYGIENE)
+sealed class ChangeCare : Care(CareType.CHANGE)
+sealed class FoodCare : Care(CareType.FOOD)
 
-object UmbilicalCord : Care(CareType.HEALTH_HYGIENE) {
+object UmbilicalCord : HealthCare() {
     override fun toString(): String {
         return "UmbilicalCord"
     }
 }
-object Face : Care(CareType.HEALTH_HYGIENE) {
+object Face : HealthCare() {
     override fun toString(): String {
         return "Face"
     }
 }
-object Bath : Care(CareType.HEALTH_HYGIENE) {
+object Bath : HealthCare() {
     override fun toString(): String {
         return "Bath"
     }
 }
-object Vitamins : Care(CareType.HEALTH_HYGIENE) {
+object Vitamins : HealthCare() {
     override fun toString(): String {
         return "Vitamins"
     }
 }
 
-object Pee : Care(CareType.CHANGE) {
+object Pee : ChangeCare() {
     override fun toString(): String {
         return "Pee"
     }
 }
-object Poo : Care(CareType.CHANGE) {
+object Poo : ChangeCare() {
     override fun toString(): String {
         return "Poo"
     }
@@ -39,31 +42,42 @@ data class BreastFeeding(
         val leftDuration: Int?,
         /** duration in minutes */
         val rightDuration: Int?
-) : Care(CareType.FOOD)
+) : FoodCare()
 
 data class BreastExtraction(
         val volume: Int,
         val breasts: Set<Breast>
-) : Care(CareType.FOOD)
+) : FoodCare()
 
-data class BottleFeeding(
-        /** volume in milliliters */
-        val volume: Int,
-        val content: String
-) : Care(CareType.FOOD) {
+sealed class BottleFeeding(val content: String) : FoodCare() {
+    /** Volume in milliliters */
+    abstract val volume: Int
+
     companion object {
-        const val MATERNAL_MILK = "MATERNAL_MILK"
-        const val ARTIFICIAL_MILK = "ARTIFICIAL_MILK"
-        const val WATER = "WATER"
-        const val OTHER = "OTHER"
+        const val CONTENT_MATERNAL_MILK = "maternal"
+        const val CONTENT_ARTIFICIAL_MILK = "artificial"
+        const val CONTENT_WATER = "water"
+        const val CONTENT_OTHER = "other"
+
+        fun create(content: String, volume: Int): BottleFeeding = when(content) {
+            CONTENT_MATERNAL_MILK -> Maternal(volume)
+            CONTENT_ARTIFICIAL_MILK -> Artificial(volume)
+            CONTENT_WATER -> Water(volume)
+            else -> Other(volume)
+        }
     }
+
+    data class Maternal(override val volume: Int) : BottleFeeding(CONTENT_MATERNAL_MILK)
+    data class Artificial(override val volume: Int) : BottleFeeding(CONTENT_ARTIFICIAL_MILK)
+    data class Water(override val volume: Int) : BottleFeeding(CONTENT_WATER)
+    data class Other(override val volume: Int) : BottleFeeding(CONTENT_OTHER)
 }
 
 data class Diversification(
         /** quantity in grams */
         val quantity: Int,
         val aliment: String
-) : Care(CareType.FOOD)
+) : FoodCare()
 
 enum class Breast { LEFT, RIGHT }
 

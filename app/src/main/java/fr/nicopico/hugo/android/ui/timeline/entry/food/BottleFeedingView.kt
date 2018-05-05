@@ -32,14 +32,14 @@ class BottleFeedingView(
 
     override fun retrieve(): BottleFeeding {
         val volume = edtBottle.asInt()
-        return BottleFeeding(volume = volume, content = _content)
+        return BottleFeeding.create(volume = volume, content = _content)
     }
 
     private fun updateBottleContent(content: String) {
         _content = content
         txtBottleContent.textI = when (content) {
-            BottleFeeding.MATERNAL_MILK -> R.string.maternal_milk
-            BottleFeeding.ARTIFICIAL_MILK -> R.string.artificial_milk
+            BottleFeeding.CONTENT_MATERNAL_MILK -> R.string.maternal_milk
+            BottleFeeding.CONTENT_ARTIFICIAL_MILK -> R.string.artificial_milk
             else -> TODO("not implemented")
         }
     }
