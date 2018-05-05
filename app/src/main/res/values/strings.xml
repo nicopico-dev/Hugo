@@ -65,6 +65,7 @@
 
     <string name="menu_licenses">Licenses</string>
     <string name="menu_disconnect">Déconnexion</string>
+    <string name="desc_settings">Paramètres</string>
     <string name="desc_delete">Supprimer</string>
 
 </resources>
