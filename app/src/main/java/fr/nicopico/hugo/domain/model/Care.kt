@@ -49,28 +49,24 @@ data class BreastExtraction(
         val breasts: Set<Breast>
 ) : FoodCare()
 
-sealed class BottleFeeding(val content: String) : FoodCare() {
+sealed class BottleFeeding(open val content: String) : FoodCare() {
     /** Volume in milliliters */
     abstract val volume: Int
 
     companion object {
         const val CONTENT_MATERNAL_MILK = "maternal"
         const val CONTENT_ARTIFICIAL_MILK = "artificial"
-        const val CONTENT_WATER = "water"
-        const val CONTENT_OTHER = "other"
 
         fun create(content: String, volume: Int): BottleFeeding = when(content) {
             CONTENT_MATERNAL_MILK -> Maternal(volume)
             CONTENT_ARTIFICIAL_MILK -> Artificial(volume)
-            CONTENT_WATER -> Water(volume)
-            else -> Other(volume)
+            else -> Other(content, volume)
         }
     }
 
     data class Maternal(override val volume: Int) : BottleFeeding(CONTENT_MATERNAL_MILK)
     data class Artificial(override val volume: Int) : BottleFeeding(CONTENT_ARTIFICIAL_MILK)
-    data class Water(override val volume: Int) : BottleFeeding(CONTENT_WATER)
-    data class Other(override val volume: Int) : BottleFeeding(CONTENT_OTHER)
+    data class Other(override val content: String, override val volume: Int) : BottleFeeding(content)
 }
 
 data class Diversification(

@@ -3,7 +3,6 @@ package fr.nicopico.hugo.android.services
 import fr.nicopico.hugo.BuildConfig
 import fr.nicopico.hugo.android.HugoLogger
 import fr.nicopico.hugo.android.verbose
-import fr.nicopico.hugo.android.warn
 import fr.nicopico.hugo.domain.model.Baby
 import fr.nicopico.hugo.domain.model.Bath
 import fr.nicopico.hugo.domain.model.BottleFeeding
@@ -66,8 +65,6 @@ private object TimelineEntrySerializer : HugoLogger {
 
     private const val BOTTLE_CONTENT_MATERNAL_MILK = "MATERNAL_MILK"
     private const val BOTTLE_CONTENT_ARTIFICIAL_MILK = "ARTIFICIAL_MILK"
-    private const val BOTTLE_CONTENT_WATER = "WATER"
-    private const val BOTTLE_CONTENT_OTHER = "OTHER"
 
     private const val CARE_UMBILICAL_CORD = "UmbilicalCord"
     private const val CARE_FACE = "Face"
@@ -112,8 +109,7 @@ private object TimelineEntrySerializer : HugoLogger {
                                         KEY_BOTTLE_CONTENT to when (care) {
                                             is BottleFeeding.Maternal -> BOTTLE_CONTENT_MATERNAL_MILK
                                             is BottleFeeding.Artificial -> BOTTLE_CONTENT_ARTIFICIAL_MILK
-                                            is BottleFeeding.Water -> BOTTLE_CONTENT_WATER
-                                            is BottleFeeding.Other -> BOTTLE_CONTENT_OTHER
+                                            is BottleFeeding.Other -> care.content
                                         }
                                 )
                                 is Diversification -> mapOf(
@@ -163,12 +159,7 @@ private object TimelineEntrySerializer : HugoLogger {
                                     when (bottleContent) {
                                         BOTTLE_CONTENT_MATERNAL_MILK -> BottleFeeding.Maternal(volume)
                                         BOTTLE_CONTENT_ARTIFICIAL_MILK -> BottleFeeding.Artificial(volume)
-                                        BOTTLE_CONTENT_WATER -> BottleFeeding.Water(volume)
-                                        BOTTLE_CONTENT_OTHER -> BottleFeeding.Other(volume)
-                                        else -> {
-                                            warn { "Unknown content $bottleContent, use $BOTTLE_CONTENT_OTHER" }
-                                            BottleFeeding.Other(volume)
-                                        }
+                                        else -> BottleFeeding.Other(bottleContent, volume)
                                     }
                                 }
                                 FOOD_TYPE_DIVERSIFICATION -> Diversification(

@@ -43,10 +43,9 @@
     <string name="care_breast_feeding_right" tools:ignore="StringFormatCount">Sein droit, %2$d minutes</string>
     <string name="care_breast_feeding_both">Sein gauche, %1$d minutes\nSein droit, %2$d minutes</string>
     <string name="care_breast_extraction">Tire-lait %d mL</string>
-    <string name="care_bottle_feeding_maternal">%d mL de lait maternel</string>
-    <string name="care_bottle_feeding_artificial">%d mL de lait artificiel</string>
-    <string name="care_bottle_feeding_water">%d mL d\'eau</string>
-    <string name="care_bottle_feeding_other">%d mL</string>
+    <string name="care_bottle_feeding_maternal">%1$d mL de lait maternel</string>
+    <string name="care_bottle_feeding_artificial">%1$d mL de lait artificiel</string>
+    <string name="care_bottle_feeding_other">%1$d mL de %2$s</string>
 
     <string name="care_diversification_feeding">%1$d grammes de %2$s</string>
     <string name="care_diversification_feeding_aliment">Aliment</string>

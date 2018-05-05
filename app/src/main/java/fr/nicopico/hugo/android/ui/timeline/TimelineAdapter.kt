@@ -173,10 +173,10 @@ private class EntryItem(
                 when (care) {
                     is BottleFeeding.Maternal -> R.string.care_bottle_feeding_maternal
                     is BottleFeeding.Artificial -> R.string.care_bottle_feeding_artificial
-                    is BottleFeeding.Water -> R.string.care_bottle_feeding_water
                     else -> R.string.care_bottle_feeding_other
                 },
-                care.volume
+                care.volume,
+                care.content
         )
     }
 
