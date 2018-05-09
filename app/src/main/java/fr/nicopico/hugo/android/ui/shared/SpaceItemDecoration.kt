@@ -3,6 +3,7 @@ package fr.nicopico.hugo.android.ui.shared
 import android.graphics.Rect
 import android.support.annotation.Px
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 
@@ -13,9 +14,17 @@ class SpaceItemDecoration(
 ) : RecyclerView.ItemDecoration() {
 
     private val halfSize: Int = spaceSize / 2
-    private val columnCount: Int = when (layoutManager) {
-        is GridLayoutManager -> layoutManager.spanCount
-        else -> 1
+    private val columnCount: Int by lazy {
+        when (layoutManager) {
+            is GridLayoutManager -> layoutManager.spanCount
+            // FIXME Ugly hack to support horizontal LinearLayoutManager
+            is LinearLayoutManager -> if (layoutManager.orientation == RecyclerView.HORIZONTAL) {
+                layoutManager.itemCount
+            } else {
+                1
+            }
+            else -> 1
+        }
     }
     private var spanSizeLookup: GridLayoutManager.SpanSizeLookup? = null
 

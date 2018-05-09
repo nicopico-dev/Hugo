@@ -4,10 +4,18 @@ import android.content.Context
 import android.support.v7.recyclerview.extensions.ListAdapter
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import fr.nicopico.hugo.R
+import fr.nicopico.hugo.android.utils.textI
+import fr.nicopico.hugo.domain.model.BottleFeeding
+import fr.nicopico.hugo.domain.model.BreastExtraction
+import fr.nicopico.hugo.domain.model.BreastFeeding
+import fr.nicopico.hugo.domain.model.Diversification
 import fr.nicopico.hugo.domain.model.FoodType
 import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.item_food_choice.*
 
 class FoodChoiceAdapter(
         context: Context
@@ -16,6 +24,8 @@ class FoodChoiceAdapter(
     var click: (FoodType) -> Unit = {}
     private var removedFoodTypes = emptyList<FoodType>()
     private var submittedList = emptyList<FoodType>()
+
+    private val layoutInflater by lazy { LayoutInflater.from(context) }
 
     fun add(foodType: FoodType) {
         removedFoodTypes -= foodType
@@ -36,17 +46,29 @@ class FoodChoiceAdapter(
         super.submitList(submittedList - removedFoodTypes)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        TODO("onCreateViewHolder is not implemented")
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+            layoutInflater.inflate(R.layout.item_food_choice, parent, false)
+                    .let { ViewHolder(it) }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("onBindViewHolder is not implemented")
+        holder.bind(getItem(position))
     }
 
     class ViewHolder(
             override val containerView: View?
-    ) : RecyclerView.ViewHolder(containerView), LayoutContainer
+    ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+        fun bind(foodType: FoodType) {
+            val labelResId = when (foodType) {
+                BreastFeeding::class -> R.string.care_food_breast_feeding
+                BreastExtraction::class -> R.string.care_food_extraction
+                BottleFeeding.Maternal::class -> R.string.care_food_maternal_bottle_feeding
+                BottleFeeding.Artificial::class -> R.string.care_food_artificial_bottle_feeding
+                Diversification::class -> R.string.care_food_diversification
+                else -> throw UnsupportedOperationException("Unsupported FoodType $foodType")
+            }
+            txtLabel.textI = labelResId
+        }
+    }
 }
 
 private object FoodCareTypeDiffCallback : DiffUtil.ItemCallback<FoodType>() {

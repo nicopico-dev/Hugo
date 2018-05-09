@@ -1,14 +1,17 @@
 package fr.nicopico.hugo.android.ui.timeline.entry.food
 
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.android.StateProvider
+import fr.nicopico.hugo.android.ui.shared.SpaceItemDecoration
 import fr.nicopico.hugo.android.ui.timeline.entry.TimelineEntryDialogFragment
 import fr.nicopico.hugo.android.utils.children
 import fr.nicopico.hugo.android.utils.click
+import fr.nicopico.hugo.android.utils.dimensionForOffset
 import fr.nicopico.hugo.domain.model.AppState
 import fr.nicopico.hugo.domain.model.BottleFeeding
 import fr.nicopico.hugo.domain.model.BreastExtraction
@@ -45,8 +48,10 @@ open class AddFoodDialogFragment : TimelineEntryDialogFragment(), StateProvider 
 
         val context = context!!
 
-        rcvFoodChoice.layoutManager = GridLayoutManager(context, 3)
+        rcvFoodChoice.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         rcvFoodChoice.adapter = foodChoiceAdapter
+        SpaceItemDecoration(rcvFoodChoice.layoutManager, dimensionForOffset(R.dimen.space_micro))
+                .also { rcvFoodChoice.addItemDecoration(it) }
 
         // TODO Use state to render only food types enabled for selectedBaby
         foodChoiceAdapter.submitList(allFoodTypes)
@@ -72,7 +77,7 @@ open class AddFoodDialogFragment : TimelineEntryDialogFragment(), StateProvider 
             BottleFeeding.Maternal::class -> BottleFeedingView(context, BottleFeeding.CONTENT_MATERNAL_MILK)
             BottleFeeding.Artificial::class -> BottleFeedingView(context, BottleFeeding.CONTENT_ARTIFICIAL_MILK)
             Diversification::class -> DiversificationView(context)
-            else -> throw UnsupportedOperationException("Unsupported FoodCareType $foodType")
+            else -> throw UnsupportedOperationException("Unsupported FoodType $foodType")
         }
 
         foodContainer.addView(foodView as View)

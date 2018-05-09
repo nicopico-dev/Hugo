@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/care_type_food"
                 android:drawableEnd="@drawable/ic_food"
-                style="@style/FoodLabel"/>
+                style="@style/EntryType"/>
 
             <TextView
                 android:id="@+id/txtFabAddChange"
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/care_type_change"
                 android:drawableEnd="@drawable/ic_change"
-                style="@style/FoodLabel"/>
+                style="@style/EntryType"/>
 
             <TextView
                 android:id="@+id/txtFabAddHealthHygiene"
@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/care_type_health_hygiene"
                 android:drawableEnd="@drawable/ic_health_hygiene"
-                style="@style/FoodLabel"/>
+                style="@style/EntryType"/>
 
         </LinearLayout>
 
