@@ -5,10 +5,6 @@ import android.view.View
 import fr.nicopico.hugo.android.ui.timeline.entry.EditTimelineEntryDialogTrait
 import fr.nicopico.hugo.android.utils.argument
 import fr.nicopico.hugo.android.utils.withArguments
-import fr.nicopico.hugo.domain.model.BottleFeeding
-import fr.nicopico.hugo.domain.model.BreastExtraction
-import fr.nicopico.hugo.domain.model.BreastFeeding
-import fr.nicopico.hugo.domain.model.Diversification
 import fr.nicopico.hugo.domain.model.FoodCare
 import fr.nicopico.hugo.domain.model.Timeline
 import fr.nicopico.hugo.domain.redux.UPDATE_ENTRY
@@ -44,22 +40,10 @@ class EditFoodDialogFragment : AddFoodDialogFragment(), EditTimelineEntryDialogT
     override fun displayEntry(entry: Timeline.Entry) {
         entryTime = entry.time
 
-        val context = context!!
-        entry.cares
-                .map {
-                    // The `when` is cast to Any without an explicit cast... (kotlin 1.2.21)
-                    @Suppress("USELESS_CAST")
-                    when (it) {
-                        is BreastFeeding -> BreastFeedingView(context).bindTo(it) as FoodView<FoodCare>
-                        is BottleFeeding -> BottleFeedingView(context).bindTo(it)
-                        is BreastExtraction -> BreastExtractionView(context).bindTo(it)
-                        is Diversification -> DiversificationView(context).bindTo(it)
-                        else -> throw UnsupportedOperationException("Care $it")
-                    }
-                }
-                .forEach {
-                    addFoodView(it)
-                }
+        for (care in entry.cares) {
+            val foodCare = care as FoodCare
+            addFoodView(foodCare.foodType).bindTo(care)
+        }
     }
 
     override fun onSubmit(view: View) {

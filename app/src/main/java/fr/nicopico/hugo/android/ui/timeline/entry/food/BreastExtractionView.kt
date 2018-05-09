@@ -6,20 +6,21 @@ import fr.nicopico.hugo.R
 import fr.nicopico.hugo.android.utils.textS
 import fr.nicopico.hugo.domain.model.Breast
 import fr.nicopico.hugo.domain.model.BreastExtraction
+import fr.nicopico.hugo.domain.model.FoodCare
 import kotlinx.android.synthetic.main.view_breast_extraction.view.*
 import java.util.*
 
-class BreastExtractionView(context: Context) : ConstraintLayout(context), FoodView<BreastExtraction> {
+class BreastExtractionView(context: Context) : ConstraintLayout(context), FoodView {
 
     init {
         inflate(context, R.layout.view_breast_extraction, this)
     }
 
-    fun bindTo(care: BreastExtraction): BreastExtractionView {
-        edtExtraction.textS = care.volume.toString()
-        chkLeftBreast.isChecked = Breast.LEFT in care.breasts
-        chkRightBreast.isChecked = Breast.RIGHT in care.breasts
-        return this
+    override fun bindTo(foodCare: FoodCare) {
+        if (foodCare !is BreastExtraction) throw IllegalArgumentException("foodCare is not BreastExtraction")
+        edtExtraction.textS = foodCare.volume.toString()
+        chkLeftBreast.isChecked = Breast.LEFT in foodCare.breasts
+        chkRightBreast.isChecked = Breast.RIGHT in foodCare.breasts
     }
 
     override fun retrieve(): BreastExtraction {

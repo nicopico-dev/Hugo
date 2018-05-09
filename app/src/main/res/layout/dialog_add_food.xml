@@ -16,6 +16,12 @@
         android:gravity="center_vertical"
         tools:text="4 janvier 2018 à 10h20"/>
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rcvFoodChoice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_small"/>
+
     <HorizontalScrollView
         android:id="@+id/_choice"
         android:layout_width="match_parent"

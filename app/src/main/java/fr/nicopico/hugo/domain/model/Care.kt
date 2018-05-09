@@ -1,9 +1,17 @@
 package fr.nicopico.hugo.domain.model
 
+import kotlin.reflect.KClass
+
 sealed class Care(val type: CareType)
+
+enum class CareType {
+    CHANGE,
+    FOOD,
+    HEALTH_HYGIENE
+}
+
+//region Health & Hygiene
 sealed class HealthCare : Care(CareType.HEALTH_HYGIENE)
-sealed class ChangeCare : Care(CareType.CHANGE)
-sealed class FoodCare : Care(CareType.FOOD)
 
 object UmbilicalCord : HealthCare() {
     override fun toString(): String {
@@ -25,6 +33,10 @@ object Vitamins : HealthCare() {
         return "Vitamins"
     }
 }
+//endregion
+
+//region Change
+sealed class ChangeCare : Care(CareType.CHANGE)
 
 object Pee : ChangeCare() {
     override fun toString(): String {
@@ -36,6 +48,23 @@ object Poo : ChangeCare() {
         return "Poo"
     }
 }
+//endregion
+
+//region Food
+typealias FoodType = KClass<out FoodCare>
+
+val allFoodTypes: List<FoodType> = listOf(
+        BreastFeeding::class,
+        BreastExtraction::class,
+        BottleFeeding.Maternal::class,
+        BottleFeeding.Artificial::class,
+        Diversification::class
+)
+
+sealed class FoodCare : Care(CareType.FOOD) {
+    val foodType: FoodType
+        get() = this::class
+}
 
 data class BreastFeeding(
         /** duration in minutes */
@@ -43,6 +72,8 @@ data class BreastFeeding(
         /** duration in minutes */
         val rightDuration: Int?
 ) : FoodCare()
+
+enum class Breast { LEFT, RIGHT }
 
 data class BreastExtraction(
         val volume: Int,
@@ -74,11 +105,4 @@ data class Diversification(
         val quantity: Int,
         val aliment: String
 ) : FoodCare()
-
-enum class Breast { LEFT, RIGHT }
-
-enum class CareType {
-    CHANGE,
-    FOOD,
-    HEALTH_HYGIENE
-}
+//endregion

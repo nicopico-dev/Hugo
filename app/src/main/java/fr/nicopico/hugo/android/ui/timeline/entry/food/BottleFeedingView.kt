@@ -6,12 +6,13 @@ import fr.nicopico.hugo.R
 import fr.nicopico.hugo.android.utils.textI
 import fr.nicopico.hugo.android.utils.textS
 import fr.nicopico.hugo.domain.model.BottleFeeding
+import fr.nicopico.hugo.domain.model.FoodCare
 import kotlinx.android.synthetic.main.view_bottle_feeding.view.*
 
 class BottleFeedingView(
         context: Context,
-        val content: String? = null
-) : ConstraintLayout(context), FoodView<BottleFeeding> {
+        content: String? = null
+) : ConstraintLayout(context), FoodView {
 
     constructor(context: Context): this(context, null)
 
@@ -24,10 +25,10 @@ class BottleFeedingView(
         }
     }
 
-    fun bindTo(care: BottleFeeding): BottleFeedingView {
-        edtBottle.textS = care.volume.toString()
-        updateBottleContent(care.content)
-        return this
+    override fun bindTo(foodCare: FoodCare) {
+        if (foodCare !is BottleFeeding) throw IllegalArgumentException("foodCare is not BottleFeeding")
+        edtBottle.textS = foodCare.volume.toString()
+        updateBottleContent(foodCare.content)
     }
 
     override fun retrieve(): BottleFeeding {
