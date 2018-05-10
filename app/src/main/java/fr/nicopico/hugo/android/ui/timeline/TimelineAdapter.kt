@@ -36,18 +36,22 @@ typealias TimelineListener = (Timeline.Entry) -> Unit
 
 class TimelineAdapter(private val context: Context) : GroupAdapter<ViewHolder>() {
 
-    var longClickListener: TimelineListener? = null
     var data: List<Timeline.Section> by Delegates.observable(emptyList(), ::onDataChanged)
 
     private val rootSection = Section(emptyList())
+    private var itemLongClickListener: TimelineListener? = null
 
     init {
         setOnItemLongClickListener { item, _ ->
             (item as? EntryItem)
-                    ?.let { longClickListener?.invoke(it.entry); true }
+                    ?.let { itemLongClickListener?.invoke(it.entry); true }
                     ?: false
         }
         add(rootSection)
+    }
+
+    fun itemLongClick(listener: TimelineListener) {
+        this.itemLongClickListener = listener
     }
 
     @Suppress("UNUSED_PARAMETER")

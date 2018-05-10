@@ -47,8 +47,8 @@ class BabySelectionFragment : BaseFragment() {
 
         // Interactions
         fabAdd.click { addBabyDialog() }
-        babyAdapter.clickListener = { baby -> dispatch(SELECT_BABY(baby)) }
-        babyAdapter.longClickListener = { baby -> editBabyDialog(baby) }
+        babyAdapter.itemClick { baby -> dispatch(SELECT_BABY(baby)) }
+        babyAdapter.itemLongClick { baby -> editBabyDialog(baby) }
     }
 
     override fun render(state: AppState) {

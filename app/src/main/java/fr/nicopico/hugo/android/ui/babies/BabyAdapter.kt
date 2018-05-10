@@ -17,8 +17,16 @@ import kotlinx.android.synthetic.main.item_baby.*
 class BabyAdapter(context: Context) : ListAdapter<Baby, BabyAdapter.ViewHolder>(BabyDiffCallback) {
 
     private val inflater = LayoutInflater.from(context)
-    var clickListener: BabyListener? = null
-    var longClickListener: BabyListener? = null
+    private var itemClickListener: BabyListener? = null
+    private var itemLongClickListener: BabyListener? = null
+
+    fun itemClick(listener: BabyListener) {
+        this.itemClickListener = listener
+    }
+
+    fun itemLongClick(listener: BabyListener) {
+        this.itemLongClickListener = listener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
             inflater.inflate(R.layout.item_baby, parent, false)
@@ -35,8 +43,8 @@ class BabyAdapter(context: Context) : ListAdapter<Baby, BabyAdapter.ViewHolder>(
         private lateinit var baby: Baby
 
         init {
-            containerView.click { clickListener?.invoke(baby) }
-            containerView.longClick { longClickListener?.invoke(baby) }
+            containerView.click { itemClickListener?.invoke(baby) }
+            containerView.longClick { itemLongClickListener?.invoke(baby) }
         }
 
         fun bindTo(baby: Baby) {

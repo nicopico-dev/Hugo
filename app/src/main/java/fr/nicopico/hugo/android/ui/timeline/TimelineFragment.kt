@@ -66,7 +66,7 @@ class TimelineFragment : BaseFragment(), HugoLogger {
         txtFabAddFood.click { addFoodDialog(); toggleFabMenu() }
         txtFabAddHealthHygiene.click { addHealthAndHygieneDialog(); toggleFabMenu() }
 
-        timelineAdapter.longClickListener = { entry: Timeline.Entry ->
+        timelineAdapter.itemLongClick { entry: Timeline.Entry ->
             when (entry.type) {
                 CHANGE -> editChangeDialog(entry)
                 FOOD -> editFoodDialog(entry)
