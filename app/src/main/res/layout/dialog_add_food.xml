@@ -20,60 +20,10 @@
         android:id="@+id/rcvFoodChoice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space_small"/>
-
-    <HorizontalScrollView
-        android:id="@+id/_choice"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/space_small"
-        android:scrollbars="none">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:divider="@drawable/space"
-            android:orientation="horizontal"
-            android:showDividers="middle">
-
-            <TextView
-                android:id="@+id/btnAddArtificialBottleFeeding"
-                style="@style/FoodCare"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/care_food_artificial_bottle_feeding"/>
-
-            <TextView
-                android:id="@+id/btnAddMaternalBottleFeeding"
-                style="@style/FoodCare"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/care_food_maternal_bottle_feeding"/>
-
-            <TextView
-                android:id="@+id/btnAddBreastFeeding"
-                style="@style/FoodCare"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/care_food_breast_feeding"/>
-
-            <TextView
-                android:id="@+id/btnAddBreastExtraction"
-                style="@style/FoodCare"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/care_food_extraction"/>
-
-            <TextView
-                android:id="@+id/btnAddDiversification"
-                style="@style/FoodCare"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/care_food_diversification"/>
-
-        </LinearLayout>
-
-    </HorizontalScrollView>
+        tools:listitem="@layout/item_food_choice"
+        tools:layoutManager="LinearLayoutManager"
+        tools:orientation="horizontal"/>
 
     <LinearLayout
         android:id="@+id/foodContainer"

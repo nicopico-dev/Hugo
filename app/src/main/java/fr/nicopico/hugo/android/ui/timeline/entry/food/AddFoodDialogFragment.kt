@@ -37,24 +37,22 @@ open class AddFoodDialogFragment : TimelineEntryDialogFragment(), StateProvider 
     override val state: AppState
         get() = _state
 
-    private val foodChoiceAdapter by lazy {
-        FoodChoiceAdapter(context!!).apply {
-            click = { addFoodView(it) }
-        }
-    }
+    private val foodChoiceAdapter by lazy { FoodChoiceAdapter(context!!) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val context = context!!
 
-        rcvFoodChoice.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-        rcvFoodChoice.adapter = foodChoiceAdapter
-        SpaceItemDecoration(rcvFoodChoice.layoutManager, dimensionForOffset(R.dimen.space_micro))
-                .also { rcvFoodChoice.addItemDecoration(it) }
+        with(rcvFoodChoice) {
+            layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+            adapter = foodChoiceAdapter
+            addItemDecoration(SpaceItemDecoration(layoutManager, dimensionForOffset(R.dimen.space_micro)))
+        }
 
         // TODO Use state to render only food types enabled for selectedBaby
         foodChoiceAdapter.submitList(allFoodTypes)
+        foodChoiceAdapter.itemClick { addFoodView(it) }
     }
 
     override fun buildEntry(): Timeline.Entry {

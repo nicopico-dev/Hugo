@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import fr.nicopico.hugo.R
+import fr.nicopico.hugo.android.utils.click
 import fr.nicopico.hugo.android.utils.textI
 import fr.nicopico.hugo.domain.model.BottleFeeding
 import fr.nicopico.hugo.domain.model.BreastExtraction
@@ -17,15 +18,21 @@ import fr.nicopico.hugo.domain.model.FoodType
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_food_choice.*
 
+typealias FoodChoiceListener = (FoodType) -> Unit
+
 class FoodChoiceAdapter(
         context: Context
 ) : ListAdapter<FoodType, FoodChoiceAdapter.ViewHolder>(FoodCareTypeDiffCallback) {
 
-    var click: (FoodType) -> Unit = {}
     private var removedFoodTypes = emptyList<FoodType>()
     private var submittedList = emptyList<FoodType>()
+    private var itemClickListener: FoodChoiceListener = {}
 
     private val layoutInflater by lazy { LayoutInflater.from(context) }
+
+    fun itemClick(listener: FoodChoiceListener) {
+        itemClickListener = listener
+    }
 
     fun add(foodType: FoodType) {
         removedFoodTypes -= foodType
@@ -54,10 +61,18 @@ class FoodChoiceAdapter(
         holder.bind(getItem(position))
     }
 
-    class ViewHolder(
+    inner class ViewHolder(
             override val containerView: View?
     ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+
+        private lateinit var foodType: FoodType
+
+        init {
+            itemView.click { itemClickListener.invoke(foodType) }
+        }
+
         fun bind(foodType: FoodType) {
+            this.foodType = foodType
             val labelResId = when (foodType) {
                 BreastFeeding::class -> R.string.care_food_breast_feeding
                 BreastExtraction::class -> R.string.care_food_extraction
