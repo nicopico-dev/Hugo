@@ -44,9 +44,11 @@ class ReduxLifecycleListener private constructor(
     private var latestState: AppState? = null
     private var changeDetector: StateChangeDetector = { _, _ -> true }
 
-    fun restrictOn(changeDetector: StateChangeDetector): ReduxLifecycleListener {
+    fun restrictOn(keyExtractor: (AppState) -> Any?): ReduxLifecycleListener {
         return this.apply {
-            this.changeDetector = changeDetector
+            this.changeDetector = { s1, s2 ->
+                keyExtractor(s1) != keyExtractor(s2)
+            }
         }
     }
 

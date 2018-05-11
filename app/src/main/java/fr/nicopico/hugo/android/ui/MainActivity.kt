@@ -53,16 +53,12 @@ class MainActivity : AppCompatActivity(),
 
         ReduxLifecycleListener
                 .create(this)
-                .restrictOn { s1, s2 ->
-                    s1.screen != s2.screen
-                }
+                .restrictOn(AppState::screen)
                 .observe()
 
         ReduxLifecycleListener
                 .create(this, reduxView = Toaster(this))
-                .restrictOn { s1, s2 ->
-                    s1.message != s2.message
-                }
+                .restrictOn(AppState::message)
                 .observe()
     }
 
