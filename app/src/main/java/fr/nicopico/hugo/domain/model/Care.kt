@@ -53,13 +53,44 @@ object Poo : ChangeCare() {
 //region Food
 typealias FoodType = KClass<out FoodCare>
 
-val allFoodTypes: List<FoodType> = listOf(
-        BreastFeeding::class,
-        BreastExtraction::class,
-        BottleFeeding.Maternal::class,
-        BottleFeeding.Artificial::class,
-        Diversification::class
-)
+object FoodTypes {
+
+    private const val BREAST_FEEDING = "BREAST_FEEDING"
+    private const val BREAST_EXTRACTION = "BREAST_EXTRACTION"
+    private const val MATERNAL_MILK = "MATERNAL_MILK"
+    private const val ARTIFICIAL_MILK = "ARTIFICIAL_MILK"
+    private const val DIVERSIFICATION = "DIVERSIFICATION"
+
+    val allTypes: List<FoodType> = listOf(
+            BreastFeeding::class,
+            BreastExtraction::class,
+            BottleFeeding.Maternal::class,
+            BottleFeeding.Artificial::class,
+            Diversification::class
+    )
+
+    fun getCode(foodType: FoodType): String {
+        return when(foodType) {
+            BreastFeeding::class -> BREAST_FEEDING
+            BreastExtraction::class -> BREAST_EXTRACTION
+            BottleFeeding.Maternal::class -> MATERNAL_MILK
+            BottleFeeding.Artificial::class -> ARTIFICIAL_MILK
+            Diversification::class -> DIVERSIFICATION
+            else -> throw UnsupportedOperationException("Unsupported FoodType $foodType")
+        }
+    }
+
+    fun getType(code: String): FoodType {
+        return when(code) {
+            BREAST_FEEDING -> BreastFeeding::class
+            BREAST_EXTRACTION -> BreastExtraction::class
+            MATERNAL_MILK -> BottleFeeding.Maternal::class
+            ARTIFICIAL_MILK -> BottleFeeding.Artificial::class
+            DIVERSIFICATION -> Diversification::class
+            else -> throw UnsupportedOperationException("Unknown FoodType code $code")
+        }
+    }
+}
 
 sealed class FoodCare : Care(CareType.FOOD) {
     val foodType: FoodType

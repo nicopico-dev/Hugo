@@ -5,7 +5,8 @@ import java.util.*
 
 data class Baby(
         val key: String,
-        val name: String
+        val name: String,
+        val disabledFoodTypes: Set<FoodType> = emptySet()
 ) {
 
     companion object {
