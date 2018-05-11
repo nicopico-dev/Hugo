@@ -42,6 +42,8 @@ class FirebaseTimelineService : FirebaseFetcherService<Timeline.Entry>(), Timeli
 
 private object TimelineEntrySerializer : HugoLogger {
 
+    private const val LATEST_SCHEMA = 2
+
     private const val KEY_SCHEMA = "schema"
     private const val KEY_REMOTE_ID = "remoteId"
     private const val KEY_TYPE = "type"
@@ -74,55 +76,51 @@ private object TimelineEntrySerializer : HugoLogger {
     private const val CARE_POO = "Poo"
 
     @Suppress("IMPLICIT_CAST_TO_ANY")
-    fun serialize(remoteId: String, entry: Timeline.Entry, schema: Int = 1): Map<String, *> {
-        verbose { "Serializing $entry to Firebase (schema $schema)" }
+    fun serialize(remoteId: String, entry: Timeline.Entry): Map<String, *> {
+        verbose { "Serializing $entry to Firebase (schema $LATEST_SCHEMA)" }
 
-        if (schema == 1) {
-            return entry.run {
-                mapOf(
-                        KEY_SCHEMA to 1,
-                        KEY_REMOTE_ID to remoteId,
-                        KEY_TYPE to type.toString(),
-                        KEY_TIME to time,
-                        KEY_NOTES to notes,
-                        KEY_CARES to cares.map { care: Care ->
-                            when (care) {
-                                UmbilicalCord -> CARE_UMBILICAL_CORD
-                                Face -> CARE_FACE
-                                Bath -> CARE_BATH
-                                Vitamins -> CARE_VITAMINS
-                                Pee -> CARE_PEE
-                                Poo -> CARE_POO
-                                is BreastFeeding -> mapOf(
-                                        KEY_FOOD_TYPE to FOOD_TYPE_BREAST_FEEDING,
-                                        KEY_LEFT_DURATION to care.leftDuration,
-                                        KEY_RIGHT_DURATION to care.rightDuration
-                                )
-                                is BreastExtraction -> mapOf(
-                                        KEY_FOOD_TYPE to FOOD_TYPE_BREAST_EXTRACTION,
-                                        KEY_BREASTS to care.breasts.map { it.name },
-                                        KEY_VOLUME to care.volume
-                                )
-                                is BottleFeeding -> mapOf(
-                                        KEY_FOOD_TYPE to FOOD_TYPE_BOTTLE_FEEDING,
-                                        KEY_VOLUME to care.volume,
-                                        KEY_BOTTLE_CONTENT to when (care) {
-                                            is BottleFeeding.Maternal -> BOTTLE_CONTENT_MATERNAL_MILK
-                                            is BottleFeeding.Artificial -> BOTTLE_CONTENT_ARTIFICIAL_MILK
-                                            is BottleFeeding.Other -> care.content
-                                        }
-                                )
-                                is Diversification -> mapOf(
-                                        KEY_FOOD_TYPE to FOOD_TYPE_DIVERSIFICATION,
-                                        KEY_ALIMENT to care.aliment,
-                                        KEY_QUANTITY to care.quantity
-                                )
-                            }
+        return entry.run {
+            mapOf(
+                    KEY_SCHEMA to 1,
+                    KEY_REMOTE_ID to remoteId,
+                    KEY_TYPE to type.toString(),
+                    KEY_TIME to time,
+                    KEY_NOTES to notes,
+                    KEY_CARES to cares.map { care: Care ->
+                        when (care) {
+                            UmbilicalCord -> CARE_UMBILICAL_CORD
+                            Face -> CARE_FACE
+                            Bath -> CARE_BATH
+                            Vitamins -> CARE_VITAMINS
+                            Pee -> CARE_PEE
+                            Poo -> CARE_POO
+                            is BreastFeeding -> mapOf(
+                                    KEY_FOOD_TYPE to FOOD_TYPE_BREAST_FEEDING,
+                                    KEY_LEFT_DURATION to care.leftDuration,
+                                    KEY_RIGHT_DURATION to care.rightDuration
+                            )
+                            is BreastExtraction -> mapOf(
+                                    KEY_FOOD_TYPE to FOOD_TYPE_BREAST_EXTRACTION,
+                                    KEY_BREASTS to care.breasts.map { it.name },
+                                    KEY_VOLUME to care.volume
+                            )
+                            is BottleFeeding -> mapOf(
+                                    KEY_FOOD_TYPE to FOOD_TYPE_BOTTLE_FEEDING,
+                                    KEY_VOLUME to care.volume,
+                                    KEY_BOTTLE_CONTENT to when (care) {
+                                        is BottleFeeding.Maternal -> BOTTLE_CONTENT_MATERNAL_MILK
+                                        is BottleFeeding.Artificial -> BOTTLE_CONTENT_ARTIFICIAL_MILK
+                                        is BottleFeeding.Other -> care.content
+                                    }
+                            )
+                            is Diversification -> mapOf(
+                                    KEY_FOOD_TYPE to FOOD_TYPE_DIVERSIFICATION,
+                                    KEY_ALIMENT to care.aliment,
+                                    KEY_QUANTITY to care.quantity
+                            )
                         }
-                )
-            }
-        } else {
-            throw UnsupportedOperationException("Serialization of schema $schema is not supported")
+                    }
+            )
         }
     }
 
