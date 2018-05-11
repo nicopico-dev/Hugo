@@ -4,6 +4,7 @@ import fr.nicopico.hugo.BuildConfig
 import fr.nicopico.hugo.android.HugoLogger
 import fr.nicopico.hugo.android.verbose
 import fr.nicopico.hugo.domain.model.Baby
+import fr.nicopico.hugo.domain.model.FoodType
 import fr.nicopico.hugo.domain.model.FoodTypes
 import fr.nicopico.hugo.domain.model.User
 import fr.nicopico.hugo.domain.services.BabyService
@@ -18,12 +19,9 @@ class FirebaseBabyService : FirebaseFetcherService<Baby>(), BabyService, HugoLog
     override val collectionPath
         get() = "${BuildConfig.FIRESTORE_ROOT}/${user!!.uid}/babies"
 
-    override fun remoteId(entry: Baby): String?
-            = entry.key
-    override fun convert(remoteId: String, entry: Baby): Map<String, Any?>
-            = BabySerializer.serialize(entry)
-    override fun convert(data: Map<String, Any?>): Baby
-            = BabySerializer.deserialize(data)
+    override fun remoteId(entry: Baby): String? = entry.key
+    override fun convert(remoteId: String, entry: Baby): Map<String, Any?> = BabySerializer.serialize(entry)
+    override fun convert(data: Map<String, Any?>): Baby = BabySerializer.deserialize(data)
 }
 
 private object BabySerializer : HugoLogger {
@@ -33,37 +31,36 @@ private object BabySerializer : HugoLogger {
     private const val KEY_NAME = "name"
     private const val KEY_DISABLED_FOOD_TYPES = "disabledFoodTypes"
 
-    fun serialize(baby: Baby, schema: Int = 1): Map<String, *> {
-        verbose { "Serializing $baby to Firebase (schema $schema)" }
+    private const val LATEST_SCHEMA = 2
 
-        if (schema == 1) {
-            return baby.run {
-                mapOf(
-                        KEY_SCHEMA to schema,
-                        KEY_KEY to baby.key,
-                        KEY_NAME to baby.name,
-                        KEY_DISABLED_FOOD_TYPES to baby.disabledFoodTypes.map {
-                            FoodTypes.getCode(it)
-                        }
-                )
-            }
+    fun serialize(baby: Baby): Map<String, *> {
+        verbose { "Serializing $baby to Firebase (schema $LATEST_SCHEMA)" }
+
+        return baby.run {
+            mapOf(
+                    KEY_SCHEMA to LATEST_SCHEMA,
+                    KEY_KEY to baby.key,
+                    KEY_NAME to baby.name,
+                    KEY_DISABLED_FOOD_TYPES to baby.disabledFoodTypes.map {
+                        FoodTypes.getCode(it)
+                    }
+            )
         }
-        throw UnsupportedOperationException("De-serialization of schema $schema is not supported")
     }
 
     fun deserialize(data: Map<String, Any?>): Baby {
         val schema = data[KEY_SCHEMA] as Long
         verbose { "De-serializing from Firebase $data (schema $schema)" }
 
-        if (schema == 1L) {
-            return Baby(
-                    data[KEY_KEY] as String,
-                    data[KEY_NAME] as String,
-                    (data[KEY_DISABLED_FOOD_TYPES] as List<*>).map {
-                        FoodTypes.getType(it as String)
-                    }.toSet()
-            )
+        val babyKey = data[KEY_KEY] as String
+        val babyName = data[KEY_NAME] as String
+        val disabledFoods: Set<FoodType> = when(schema) {
+            1L -> emptySet()
+            2L -> (data[KEY_DISABLED_FOOD_TYPES] as List<*>)
+                    .map { FoodTypes.getType(it as String) }
+                    .toSet()
+            else -> throw UnsupportedOperationException("De-serialization of schema $schema is not supported")
         }
-        throw UnsupportedOperationException("De-serialization of schema $schema is not supported")
+        return Baby(babyKey, babyName, disabledFoods)
     }
 }

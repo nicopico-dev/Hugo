@@ -6,7 +6,7 @@ import java.util.*
 data class Baby(
         val key: String,
         val name: String,
-        val disabledFoodTypes: Set<FoodType> = emptySet()
+        val disabledFoodTypes: Set<FoodType>
 ) {
 
     companion object {
@@ -18,5 +18,5 @@ data class Baby(
         }
     }
 
-    constructor(name: String) : this(createKey(name), name)
+    constructor(name: String) : this(createKey(name), name, emptySet())
 }
