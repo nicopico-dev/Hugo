@@ -49,6 +49,12 @@ val messageReducer = Reducer<AppState> { state, action ->
 
 val babyReducer = Reducer<AppState> { state, action ->
     when (action) {
+        is UPDATE_BABY -> if (action.baby.key == state.selectedBaby?.key) {
+            // Update selected baby immediately
+            state.copy(selectedBaby = action.baby)
+        } else {
+            state
+        }
         is BABY_ADDED -> state.copy(babies = state.babies + action.baby)
         is BABY_MODIFIED -> {
             val index = state.babies.indexOfFirst { it.key == action.baby.key }

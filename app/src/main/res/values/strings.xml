@@ -33,6 +33,9 @@
     <string name="care_change_poo">Caca</string>
     <string name="care_change_nothing">Pas de pipi ni de caca</string>
 
+    <string name="care_food_settings_dialog_title">Types d\'alimentation proposés</string>
+    <string name="care_food_settings_invalid_selection">Au moins un type d\'aliment doit être sélectionné</string>
+
     <string name="care_food_breast_feeding">Allaitement</string>
     <string name="care_food_bottle_feeding">Biberon</string>
     <string name="care_food_maternal_bottle_feeding">Lait maternel</string>

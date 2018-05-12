@@ -14,6 +14,7 @@ import fr.nicopico.hugo.android.ui.timeline.entry.TimelineEntryDialogFragment
 import fr.nicopico.hugo.android.utils.children
 import fr.nicopico.hugo.android.utils.click
 import fr.nicopico.hugo.android.utils.dimensionForOffset
+import fr.nicopico.hugo.android.utils.visible
 import fr.nicopico.hugo.domain.model.AppState
 import fr.nicopico.hugo.domain.model.BottleFeeding
 import fr.nicopico.hugo.domain.model.BreastExtraction
@@ -25,6 +26,7 @@ import fr.nicopico.hugo.domain.model.FoodTypes
 import fr.nicopico.hugo.domain.model.Timeline
 import fr.nicopico.hugo.domain.redux.ADD_ENTRY
 import kotlinx.android.synthetic.main.dialog_add_food.*
+import kotlinx.android.synthetic.main.dialog_form.*
 
 open class AddFoodDialogFragment
     : TimelineEntryDialogFragment(), StateProvider, ReduxView {
@@ -55,7 +57,6 @@ open class AddFoodDialogFragment
         super.onViewCreated(view, savedInstanceState)
 
         val context = context!!
-
         with(rcvFoodChoice) {
             layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
             adapter = foodChoiceAdapter
@@ -63,6 +64,11 @@ open class AddFoodDialogFragment
         }
 
         foodChoiceAdapter.itemClick { addFoodView(it) }
+
+        imgSettings.apply {
+            visible = true
+            click { FoodSettingsDialogFragment.show(fragmentManager!!) }
+        }
     }
 
     override fun subscribe(subscriber: () -> Unit) = _subscribe(subscriber)
