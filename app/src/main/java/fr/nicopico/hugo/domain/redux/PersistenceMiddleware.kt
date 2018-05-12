@@ -13,13 +13,19 @@ class PersistenceMiddleware(
         private val persistenceService: PersistenceService
 ) : Middleware<AppState> {
 
+    private var restored = false
+
     override fun dispatch(store: Store<AppState>, next: Dispatcher, action: Any): Any {
         when (action) {
             is SELECT_BABY -> // Persist the selected baby
                 async { persistenceService.saveSelectedBaby(action.baby) }
-            is BABY_ADDED -> async {
-                if (persistenceService.isSelectedBaby(action.baby)) {
-                    launch(UI) { store.dispatch(SELECT_BABY(action.baby)) }
+            is BABY_ADDED -> if (!restored) {
+                async {
+                    if (persistenceService.isSelectedBaby(action.baby)) {
+                        launch(UI) { store.dispatch(SELECT_BABY(action.baby)) }
+                        // Only restore once
+                        restored = true
+                    }
                 }
             }
         }
