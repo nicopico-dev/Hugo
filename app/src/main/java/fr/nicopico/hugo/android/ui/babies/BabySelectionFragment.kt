@@ -12,7 +12,9 @@ import fr.nicopico.hugo.android.ui.shared.SpaceItemDecoration
 import fr.nicopico.hugo.android.utils.click
 import fr.nicopico.hugo.android.utils.dimensionForOffset
 import fr.nicopico.hugo.domain.model.AppState
+import fr.nicopico.hugo.domain.model.Screen
 import fr.nicopico.hugo.domain.redux.FETCH_BABIES
+import fr.nicopico.hugo.domain.redux.PUSH_SCREEN
 import fr.nicopico.hugo.domain.redux.SELECT_BABY
 import fr.nicopico.hugo.domain.redux.STOP_FETCHING_BABIES
 import kotlinx.android.synthetic.main.fragment_baby_selection.*
@@ -47,7 +49,10 @@ class BabySelectionFragment : BaseFragment() {
 
         // Interactions
         fabAdd.click { addBabyDialog() }
-        babyAdapter.itemClick { baby -> dispatch(SELECT_BABY(baby)) }
+        babyAdapter.itemClick { baby ->
+            dispatch(SELECT_BABY(baby))
+            dispatch(PUSH_SCREEN(Screen.Timeline))
+        }
         babyAdapter.itemLongClick { baby -> editBabyDialog(baby) }
     }
 

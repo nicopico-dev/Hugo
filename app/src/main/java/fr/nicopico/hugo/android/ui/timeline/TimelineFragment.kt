@@ -25,10 +25,11 @@ import fr.nicopico.hugo.domain.model.AppState
 import fr.nicopico.hugo.domain.model.CareType.CHANGE
 import fr.nicopico.hugo.domain.model.CareType.FOOD
 import fr.nicopico.hugo.domain.model.CareType.HEALTH_HYGIENE
+import fr.nicopico.hugo.domain.model.Screen
 import fr.nicopico.hugo.domain.model.Timeline
 import fr.nicopico.hugo.domain.redux.FETCH_TIMELINE
+import fr.nicopico.hugo.domain.redux.PUSH_SCREEN
 import fr.nicopico.hugo.domain.redux.STOP_FETCHING_TIMELINE
-import fr.nicopico.hugo.domain.redux.UNSELECT_BABY
 import fr.nicopico.hugo.domain.services.trace
 import kotlinx.android.synthetic.main.fragment_timeline.*
 import java.util.*
@@ -81,7 +82,7 @@ class TimelineFragment : BaseFragment(), HugoLogger {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menu_select_baby) {
-            dispatch(UNSELECT_BABY)
+            dispatch(PUSH_SCREEN(Screen.BabySelection))
         }
         return super.onOptionsItemSelected(item)
     }

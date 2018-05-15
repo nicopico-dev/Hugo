@@ -4,19 +4,22 @@ package fr.nicopico.hugo.domain.redux
 
 import fr.nicopico.hugo.domain.model.Baby
 import fr.nicopico.hugo.domain.model.Message
+import fr.nicopico.hugo.domain.model.Screen
 import fr.nicopico.hugo.domain.model.Timeline
 import fr.nicopico.hugo.domain.model.User
 
 data class AUTHENTICATED(val user: User)
 object DISCONNECTED
-object GO_BACK
+
 object EXIT_APP
 object ON_APP_EXIT
+data class PUSH_SCREEN(val screen: Screen)
+data class POP_SCREEN_UNTIL(val screen: Screen)
+object POP_SCREEN
 
 object FETCH_BABIES
 object STOP_FETCHING_BABIES
 data class SELECT_BABY(val baby: Baby)
-object UNSELECT_BABY
 data class ADD_BABY(val baby: Baby)
 data class UPDATE_BABY(val baby: Baby)
 data class REMOVE_BABY(val baby: Baby)

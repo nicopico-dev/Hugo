@@ -2,6 +2,7 @@ package fr.nicopico.hugo.domain.redux
 
 import fr.nicopico.hugo.domain.model.AppState
 import fr.nicopico.hugo.domain.model.Screen
+import fr.nicopico.hugo.domain.model.ScreenStack
 import fr.nicopico.hugo.domain.model.Timeline
 import fr.nicopico.hugo.domain.services.AnalyticsService
 import fr.nicopico.hugo.domain.services.AuthService
@@ -27,7 +28,7 @@ fun createStore(
     val initialState = AppState(
             user = null,
             timeline = Timeline(),
-            screen = Screen.Loading,
+            screenStack = ScreenStack(Screen.Loading),
             babies = emptyList(),
             selectedBaby = null
     )
@@ -47,7 +48,6 @@ fun createStore(
             timelineReducer,
             createRemoteReducer(initialState),
             navigationReducer,
-            goBackReducer,
             messageReducer
     )
 

@@ -24,8 +24,8 @@ import fr.nicopico.hugo.android.utils.toast
 import fr.nicopico.hugo.android.utils.visible
 import fr.nicopico.hugo.domain.model.AppState
 import fr.nicopico.hugo.domain.model.Screen
-import fr.nicopico.hugo.domain.redux.GO_BACK
 import fr.nicopico.hugo.domain.redux.ON_APP_EXIT
+import fr.nicopico.hugo.domain.redux.POP_SCREEN
 import fr.nicopico.hugo.domain.services.AuthService
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity(),
 
     override fun onBackPressed() {
         // DO NOT CALL super.onBackPressed()
-        dispatch(GO_BACK)
+        dispatch(POP_SCREEN)
     }
 
     override fun render(state: AppState) {

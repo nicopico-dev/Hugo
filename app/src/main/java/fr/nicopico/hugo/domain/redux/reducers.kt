@@ -2,40 +2,37 @@ package fr.nicopico.hugo.domain.redux
 
 import fr.nicopico.hugo.domain.model.AppState
 import fr.nicopico.hugo.domain.model.Screen
+import fr.nicopico.hugo.domain.model.ScreenStack
 import fr.nicopico.hugo.domain.model.Timeline
 import redux.api.Reducer
 
-private fun AppState.withDefaultScreen(): AppState {
-    val defaultScreen: Screen = when {
-        user == null -> Screen.Loading
-        // Go directly to the timeline if a baby is selected
-        selectedBaby != null -> Screen.Timeline
-        else -> Screen.BabySelection
-    }
-
-    return if (screen == defaultScreen) this
-    else return copy(screen = defaultScreen)
-}
-
 val navigationReducer = Reducer<AppState> { state, action ->
     when (action) {
-        is AUTHENTICATED -> state.withDefaultScreen()
-        is SELECT_BABY -> state.copy(screen = Screen.Timeline, selectedBaby = action.baby)
-        UNSELECT_BABY -> state.copy(screen = Screen.BabySelection, selectedBaby = null)
-        EXIT_APP -> state.copy(screen = Screen.Exit)
-        // Allow returning to the application
-        ON_APP_EXIT -> state.withDefaultScreen()
+        is AUTHENTICATED,
+        // Allows coming back to app after ON_EXIT
+        is ON_APP_EXIT -> state.copy(screenStack = ScreenStack(state.defaultScreen))
+        is EXIT_APP -> state.copy(screenStack = ScreenStack(Screen.Exit))
+
+        is PUSH_SCREEN -> state.copy(screenStack = state.screenStack.push(action.screen))
+        is POP_SCREEN -> state.copy(screenStack = state.screenStack.pop())
+        is POP_SCREEN_UNTIL -> state.copy(screenStack = state.screenStack.popUntil(action.screen))
         else -> state
+    }.let {
+        // Un-select baby when going back to the selection screen
+        if (it.screen == Screen.BabySelection && it.selectedBaby != null) {
+            it.copy(selectedBaby = null)
+        } else {
+            it
+        }
     }
 }
 
-val goBackReducer = Reducer<AppState> { state, action ->
-    if (action != GO_BACK) state
-    else when (state.screen) {
-        Screen.Timeline -> navigationReducer.reduce(state, UNSELECT_BABY)
-        else -> navigationReducer.reduce(state, EXIT_APP)
+private val AppState.defaultScreen: List<Screen>
+    get() = listOf(Screen.Exit) + when {
+        user == null -> listOf(Screen.Loading)
+        selectedBaby == null -> listOf(Screen.BabySelection)
+        else -> listOf(Screen.BabySelection, Screen.Timeline)
     }
-}
 
 val messageReducer = Reducer<AppState> { state, action ->
     when (action) {
@@ -49,6 +46,7 @@ val messageReducer = Reducer<AppState> { state, action ->
 
 val babyReducer = Reducer<AppState> { state, action ->
     when (action) {
+        is SELECT_BABY -> state.copy(selectedBaby = action.baby)
         is UPDATE_BABY -> if (action.baby.key == state.selectedBaby?.key) {
             // Update selected baby immediately
             state.copy(selectedBaby = action.baby)
@@ -83,9 +81,9 @@ fun createRemoteReducer(initialState: AppState) =
         Reducer<AppState> { state, action ->
             when (action) {
                 is AUTHENTICATED -> state.copy(user = action.user)
-                DISCONNECTED -> initialState
-                FETCH_BABIES -> state.copy(babies = emptyList())
-                FETCH_TIMELINE -> state.copy(timeline = Timeline())
+                is DISCONNECTED -> initialState
+                is FETCH_BABIES -> state.copy(babies = emptyList())
+                is FETCH_TIMELINE -> state.copy(timeline = Timeline())
                 else -> state
             }
         }
