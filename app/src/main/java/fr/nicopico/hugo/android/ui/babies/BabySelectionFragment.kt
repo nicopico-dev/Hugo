@@ -48,12 +48,12 @@ class BabySelectionFragment : BaseFragment() {
         }
 
         // Interactions
-        fabAdd.click { addBabyDialog() }
+        fabAdd.click { dispatch(PUSH_SCREEN(Screen.BabyAddition)) }
         babyAdapter.itemClick { baby ->
             dispatch(SELECT_BABY(baby))
             dispatch(PUSH_SCREEN(Screen.Timeline))
         }
-        babyAdapter.itemLongClick { baby -> editBabyDialog(baby) }
+        babyAdapter.itemLongClick { baby -> dispatch(PUSH_SCREEN(Screen.BabyEdition(baby))) }
     }
 
     override fun render(state: AppState) {

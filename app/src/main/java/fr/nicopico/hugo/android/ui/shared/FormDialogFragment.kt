@@ -1,5 +1,6 @@
 package fr.nicopico.hugo.android.ui.shared
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.support.annotation.CallSuper
 import android.support.design.widget.BottomSheetDialogFragment
@@ -12,6 +13,7 @@ import fr.nicopico.hugo.android.ReduxDispatcher
 import fr.nicopico.hugo.android.utils.click
 import fr.nicopico.hugo.android.utils.drawables
 import fr.nicopico.hugo.android.utils.visible
+import fr.nicopico.hugo.domain.redux.POP_SCREEN
 import kotlinx.android.synthetic.main.dialog_form.*
 import kotlin.properties.Delegates
 
@@ -54,6 +56,11 @@ abstract class FormDialogFragment : BottomSheetDialogFragment(),
             visible = isCancelable
             click(::onCancel)
         }
+    }
+
+    override fun onDismiss(dialog: DialogInterface?) {
+        super.onDismiss(dialog)
+        dispatch(POP_SCREEN)
     }
 
     protected abstract fun onSubmit(view: View)
