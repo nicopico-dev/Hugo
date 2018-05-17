@@ -1,6 +1,7 @@
 package fr.nicopico.hugo.domain.redux
 
 import fr.nicopico.hugo.domain.model.AppState
+import fr.nicopico.hugo.domain.model.Screen
 import fr.nicopico.hugo.domain.services.PersistenceService
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
@@ -22,7 +23,10 @@ class PersistenceMiddleware(
             is BABY_ADDED -> if (!restored) {
                 async {
                     if (persistenceService.isSelectedBaby(action.baby)) {
-                        launch(UI) { store.dispatch(SELECT_BABY(action.baby)) }
+                        launch(UI) {
+                            store.dispatch(SELECT_BABY(action.baby))
+                            store.dispatch(PUSH_SCREEN(Screen.Timeline))
+                        }
                         // Only restore once
                         restored = true
                     }
