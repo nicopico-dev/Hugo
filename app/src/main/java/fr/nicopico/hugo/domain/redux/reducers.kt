@@ -28,7 +28,7 @@ val navigationReducer = Reducer<AppState> { state, action ->
 }
 
 private val AppState.defaultScreen: List<Screen>
-    get() = listOf(Screen.Exit) + when {
+    get() = when {
         user == null -> listOf(Screen.Loading)
         selectedBaby == null -> listOf(Screen.BabySelection)
         else -> listOf(Screen.BabySelection, Screen.Timeline)

@@ -9,5 +9,5 @@ data class AppState(
         val timeline: Timeline,
         val loading: Boolean = false
 ) {
-    val screen: Screen = screenStack.current
+    val screen: Screen = screenStack.current ?: Screen.Exit
 }

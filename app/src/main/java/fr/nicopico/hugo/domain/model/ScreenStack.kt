@@ -8,7 +8,7 @@ data class ScreenStack(
         val popped: Boolean = false
 ) : HugoLogger {
 
-    val current: Screen = stack.last()
+    val current: Screen? = stack.lastOrNull()
 
     constructor(rootScreen: Screen) : this(listOf(rootScreen))
 
@@ -22,7 +22,7 @@ data class ScreenStack(
     }
 
     fun pop(): ScreenStack {
-        if (stack.size > 1) {
+        if (stack.isNotEmpty()) {
             return ScreenStack(stack.subList(0, stack.lastIndex), true)
         }
         return this
