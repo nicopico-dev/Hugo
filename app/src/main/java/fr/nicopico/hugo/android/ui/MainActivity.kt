@@ -2,6 +2,7 @@ package fr.nicopico.hugo.android.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
@@ -44,6 +45,7 @@ class MainActivity : AppCompatActivity(),
 
     //region Redux
     override fun dispatch(action: Any) = _dispatch(action)
+
     override fun subscribe(subscriber: () -> Unit) = _subscribe(subscriber)
     override val state: AppState
         get() = _state
@@ -87,7 +89,9 @@ class MainActivity : AppCompatActivity(),
                 startActivity(Intent(this, OssLicensesMenuActivity::class.java))
                 true
             }
-            item.itemId == R.id.menu_sign_out -> { signOut(); true }
+            item.itemId == R.id.menu_sign_out -> {
+                signOut(); true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -113,7 +117,7 @@ class MainActivity : AppCompatActivity(),
         }
 
         debug { "Switch screen to $screen" }
-        val fragment: Fragment = when(screen) {
+        val fragment: Fragment = when (screen) {
             Screen.Exit -> {
                 // Screen.Exit is a special case
                 throw IllegalStateException("EXIT")
@@ -125,9 +129,16 @@ class MainActivity : AppCompatActivity(),
             Screen.Timeline -> TimelineFragment()
         }
 
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.screenContainer, fragment)
-                .commit()
+        val fm = supportFragmentManager
+        (fm.findFragmentByTag(DIALOG_FRAG_TAG) as? DialogFragment)?.dismiss()
+
+        if (fragment is DialogFragment) {
+            fragment.show(fm, DIALOG_FRAG_TAG)
+        } else {
+            fm.beginTransaction()
+                    .replace(R.id.screenContainer, fragment)
+                    .commit()
+        }
 
         if (screen == Screen.Loading) {
             signInIfNeeded()
@@ -136,6 +147,8 @@ class MainActivity : AppCompatActivity(),
         loading_progress.visible = state.loading
     }
 }
+
+private const val DIALOG_FRAG_TAG = "DIALOG_FRAG_TAG"
 
 class LoadingFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -147,6 +160,6 @@ private class Toaster(
         private val activity: MainActivity
 ) : ReduxView by activity {
     override fun render(state: AppState) {
-        state.message?.let{ message -> activity.toast(message.content) }
+        state.message?.let { message -> activity.toast(message.content) }
     }
 }
