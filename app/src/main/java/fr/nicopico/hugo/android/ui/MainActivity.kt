@@ -19,9 +19,8 @@ import fr.nicopico.hugo.android.ReduxView
 import fr.nicopico.hugo.android.StateProvider
 import fr.nicopico.hugo.android.debug
 import fr.nicopico.hugo.android.info
-import fr.nicopico.hugo.android.ui.babies.AddBabyDialogFragment
+import fr.nicopico.hugo.android.ui.babies.BabyEditionDialogFragment
 import fr.nicopico.hugo.android.ui.babies.BabySelectionFragment
-import fr.nicopico.hugo.android.ui.babies.EditBabyDialogFragment
 import fr.nicopico.hugo.android.ui.timeline.TimelineFragment
 import fr.nicopico.hugo.android.utils.toast
 import fr.nicopico.hugo.android.utils.visible
@@ -124,8 +123,7 @@ class MainActivity : AppCompatActivity(),
             }
             Screen.Loading -> LoadingFragment()
             Screen.BabySelection -> BabySelectionFragment()
-            Screen.BabyAddition -> AddBabyDialogFragment()
-            is Screen.BabyEdition -> EditBabyDialogFragment()
+            Screen.BabyAddition, is Screen.BabyEdition -> BabyEditionDialogFragment()
             Screen.Timeline -> TimelineFragment()
         }
 

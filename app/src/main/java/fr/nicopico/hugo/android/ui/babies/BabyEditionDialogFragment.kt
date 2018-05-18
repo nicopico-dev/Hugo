@@ -21,10 +21,14 @@ import fr.nicopico.hugo.domain.redux.UPDATE_BABY
 import kotlinx.android.synthetic.main.dialog_form.*
 import kotlinx.android.synthetic.main.form_baby.*
 
-open class AddBabyDialogFragment : FormDialogFragment() {
+class BabyEditionDialogFragment : FormDialogFragment(), StateProvider {
 
     override val dialogTitleId: Int = R.string.baby
     override val formLayoutId: Int = R.layout.form_baby
+
+    override val state: AppState
+        get() = _state
+    private val baby: Baby? by lazy { (state.screen as? Screen.BabyEdition)?.baby }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,43 +36,33 @@ open class AddBabyDialogFragment : FormDialogFragment() {
             textChanged { submittable = edtName.isNotEmpty() }
             editorAction { onSubmit(it) }
         }
+
+        if (baby != null) {
+            imgDelete.apply {
+                show()
+                click {
+                    dispatch(REMOVE_BABY(buildBaby()))
+                    dismiss()
+                }
+            }
+
+            edtName.textS = baby!!.name
+            edtName.selectAll()
+        }
     }
 
     @CallSuper
-    protected open fun buildBaby(): Baby = Baby(edtName.text.toString())
-
-    override fun onSubmit(view: View) {
-        dispatch(ADD_BABY(buildBaby()))
-    }
-}
-
-class EditBabyDialogFragment : AddBabyDialogFragment(), StateProvider {
-
-    override val state: AppState
-        get() = _state
-    private val baby by lazy { (state.screen as Screen.BabyEdition).baby }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        imgDelete.apply {
-            show()
-            click {
-                dispatch(REMOVE_BABY(buildBaby()))
-                dismiss()
+    private fun buildBaby(): Baby = Baby(edtName.text.toString())
+            .let {
+                if (baby != null) it.copy(key = baby!!.key) else it
             }
-        }
-
-        edtName.textS = baby.name
-        edtName.selectAll()
-    }
-
-    override fun buildBaby(): Baby {
-        return super.buildBaby().copy(key = baby.key)
-    }
 
     override fun onSubmit(view: View) {
-        val updatedBaby = buildBaby()
-        dispatch(UPDATE_BABY(updatedBaby))
+        if (baby == null) {
+            dispatch(ADD_BABY(buildBaby()))
+        } else {
+            dispatch(UPDATE_BABY(buildBaby()))
+        }
         dismiss()
     }
 }
