@@ -13,6 +13,7 @@ import fr.nicopico.hugo.domain.redux.REMOVE_ENTRY
 import fr.nicopico.hugo.domain.services.TimelineService
 import kotlinx.coroutines.experimental.Deferred
 
+@Deprecated(message = "Use BaseEntryEditionDialogFragment")
 interface EditTimelineEntryDialogTrait : LifecycleOwner, ReduxDispatcher {
 
     companion object {

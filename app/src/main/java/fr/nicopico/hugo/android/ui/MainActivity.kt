@@ -22,9 +22,11 @@ import fr.nicopico.hugo.android.info
 import fr.nicopico.hugo.android.ui.babies.BabyEditionDialogFragment
 import fr.nicopico.hugo.android.ui.babies.BabySelectionFragment
 import fr.nicopico.hugo.android.ui.timeline.TimelineFragment
+import fr.nicopico.hugo.android.ui.timeline.entry.change.ChangeEditionDialogFragment
 import fr.nicopico.hugo.android.utils.toast
 import fr.nicopico.hugo.android.utils.visible
 import fr.nicopico.hugo.domain.model.AppState
+import fr.nicopico.hugo.domain.model.CareType
 import fr.nicopico.hugo.domain.model.Screen
 import fr.nicopico.hugo.domain.redux.ON_APP_EXIT
 import fr.nicopico.hugo.domain.redux.POP_SCREEN
@@ -117,14 +119,24 @@ class MainActivity : AppCompatActivity(),
 
         debug { "Switch screen to $screen" }
         val fragment: Fragment = when (screen) {
-            Screen.Exit -> {
+            is Screen.Exit -> {
                 // Screen.Exit is a special case
                 throw IllegalStateException("EXIT")
             }
-            Screen.Loading -> LoadingFragment()
-            Screen.BabySelection -> BabySelectionFragment()
-            Screen.BabyAddition, is Screen.BabyEdition -> BabyEditionDialogFragment()
-            Screen.Timeline -> TimelineFragment()
+            is Screen.Loading -> LoadingFragment()
+            is Screen.BabySelection -> BabySelectionFragment()
+            is Screen.BabyAddition, is Screen.BabyEdition -> BabyEditionDialogFragment()
+            is Screen.Timeline -> TimelineFragment()
+            is Screen.TimelineEntryAddition -> when(screen.careType) {
+                CareType.CHANGE -> ChangeEditionDialogFragment()
+                CareType.FOOD -> TODO()
+                CareType.HEALTH_HYGIENE -> TODO()
+            }
+            is Screen.TimelineEntryEdition -> when(screen.entry.type) {
+                CareType.CHANGE -> ChangeEditionDialogFragment()
+                CareType.FOOD -> TODO()
+                CareType.HEALTH_HYGIENE -> TODO()
+            }
         }
 
         val fm = supportFragmentManager

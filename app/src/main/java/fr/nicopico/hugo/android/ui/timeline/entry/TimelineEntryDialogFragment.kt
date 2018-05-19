@@ -17,6 +17,7 @@ import fr.nicopico.hugo.domain.utils.round
 import java.util.*
 import kotlin.properties.Delegates
 
+@Deprecated(message = "Use BaseEntryEditionDialogFragment")
 abstract class TimelineEntryDialogFragment : FormDialogFragment() {
 
     companion object {
