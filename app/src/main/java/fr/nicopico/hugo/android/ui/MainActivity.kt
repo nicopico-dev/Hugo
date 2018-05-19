@@ -142,13 +142,19 @@ class MainActivity : AppCompatActivity(),
         }
 
         val fm = supportFragmentManager
+
+        // Dismiss previous dialog
         (fm.findFragmentByTag(DIALOG_FRAG_TAG) as? DialogFragment)?.dismiss()
 
-        if (fragment is DialogFragment) {
+        // Check current screen if the previous one was just popped
+        val currentFrag: Fragment? = fm.findFragmentByTag(SCREEN_FRAG_TAG)
+        if (state.screenStack.popped && currentFrag != null && currentFrag::class == fragment::class) {
+            debug { "Popped back to $screen" }
+        } else if (fragment is DialogFragment) {
             fragment.show(fm, DIALOG_FRAG_TAG)
         } else {
             fm.beginTransaction()
-                    .replace(R.id.screenContainer, fragment)
+                    .replace(R.id.screenContainer, fragment, SCREEN_FRAG_TAG)
                     .commit()
         }
 
@@ -161,6 +167,7 @@ class MainActivity : AppCompatActivity(),
 }
 
 private const val DIALOG_FRAG_TAG = "DIALOG_FRAG_TAG"
+private const val SCREEN_FRAG_TAG = "SCREEN_FRAG_TAG"
 
 class LoadingFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
