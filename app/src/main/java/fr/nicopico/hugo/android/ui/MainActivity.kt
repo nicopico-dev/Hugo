@@ -23,6 +23,7 @@ import fr.nicopico.hugo.android.ui.babies.BabyEditionDialogFragment
 import fr.nicopico.hugo.android.ui.babies.BabySelectionFragment
 import fr.nicopico.hugo.android.ui.timeline.TimelineFragment
 import fr.nicopico.hugo.android.ui.timeline.entry.change.ChangeEditionDialogFragment
+import fr.nicopico.hugo.android.ui.timeline.entry.food.FoodEditionDialogFragment
 import fr.nicopico.hugo.android.ui.timeline.entry.health.HealthEditionDialogFragment
 import fr.nicopico.hugo.android.utils.toast
 import fr.nicopico.hugo.android.utils.visible
@@ -130,12 +131,12 @@ class MainActivity : AppCompatActivity(),
             is Screen.Timeline -> TimelineFragment()
             is Screen.TimelineEntryAddition -> when(screen.careType) {
                 CareType.CHANGE -> ChangeEditionDialogFragment()
-                CareType.FOOD -> TODO()
+                CareType.FOOD -> FoodEditionDialogFragment()
                 CareType.HEALTH_HYGIENE -> HealthEditionDialogFragment()
             }
             is Screen.TimelineEntryEdition -> when(screen.entry.type) {
                 CareType.CHANGE -> ChangeEditionDialogFragment()
-                CareType.FOOD -> TODO()
+                CareType.FOOD -> FoodEditionDialogFragment()
                 CareType.HEALTH_HYGIENE -> HealthEditionDialogFragment()
             }
         }

@@ -7,10 +7,9 @@ interface FoodView {
     fun bindTo(foodCare: FoodCare)
     fun retrieve(): FoodCare
 
-    fun TextView.asInt(): Int = asIntOrNull()!!
+    fun TextView.asInt(): Int = asIntOrNull() ?: 0
     fun TextView.asIntOrNull(): Int? = when {
         text.isNullOrEmpty() -> null
         else -> Integer.parseInt(text.toString())
     }
 }
-

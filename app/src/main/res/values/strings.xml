@@ -37,6 +37,8 @@
 
     <string name="care_food_settings_dialog_title">Types d\'alimentation proposés</string>
     <string name="care_food_settings_invalid_selection">Au moins un type d\'aliment doit être sélectionné</string>
+    <string name="care_food_invalid_selection">Au moins un type d\'aliment doit être sélectionné</string>
+    <string name="care_food_invalid_input">Saisie invalide</string>
 
     <string name="care_food_breast_feeding">Allaitement</string>
     <string name="care_food_bottle_feeding">Biberon</string>

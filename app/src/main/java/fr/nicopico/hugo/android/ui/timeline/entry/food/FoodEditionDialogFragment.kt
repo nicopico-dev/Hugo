@@ -7,10 +7,9 @@ import android.view.View
 import android.widget.TextView
 import fr.nicopico.hugo.R
 import fr.nicopico.hugo.android.ReduxView
-import fr.nicopico.hugo.android.StateProvider
 import fr.nicopico.hugo.android.ui.ReduxLifecycleListener
 import fr.nicopico.hugo.android.ui.shared.SpaceItemDecoration
-import fr.nicopico.hugo.android.ui.timeline.entry.TimelineEntryDialogFragment
+import fr.nicopico.hugo.android.ui.timeline.entry.BaseEntryEditionDialogFragment
 import fr.nicopico.hugo.android.utils.children
 import fr.nicopico.hugo.android.utils.click
 import fr.nicopico.hugo.android.utils.dimensionForOffset
@@ -19,28 +18,24 @@ import fr.nicopico.hugo.domain.model.AppState
 import fr.nicopico.hugo.domain.model.BottleFeeding
 import fr.nicopico.hugo.domain.model.BreastExtraction
 import fr.nicopico.hugo.domain.model.BreastFeeding
-import fr.nicopico.hugo.domain.model.CareType.FOOD
+import fr.nicopico.hugo.domain.model.Care
+import fr.nicopico.hugo.domain.model.CareType
 import fr.nicopico.hugo.domain.model.Diversification
+import fr.nicopico.hugo.domain.model.FoodCare
 import fr.nicopico.hugo.domain.model.FoodType
 import fr.nicopico.hugo.domain.model.FoodTypes
+import fr.nicopico.hugo.domain.model.Screen
 import fr.nicopico.hugo.domain.model.Timeline
-import fr.nicopico.hugo.domain.redux.ADD_ENTRY
 import kotlinx.android.synthetic.main.dialog_add_food.*
 import kotlinx.android.synthetic.main.dialog_form.*
+import java.util.*
 
-open class AddFoodDialogFragment
-    : TimelineEntryDialogFragment(), StateProvider, ReduxView {
-
-    companion object {
-        fun create() = AddFoodDialogFragment()
-    }
+class FoodEditionDialogFragment : BaseEntryEditionDialogFragment(), ReduxView {
 
     override val dialogTitleId = R.string.care_type_food
     override val formLayoutId: Int? = R.layout.dialog_add_food
     override val dateOrTimeTextView: TextView
         get() = txtDateOrTime
-    override val state: AppState
-        get() = _state
 
     private val foodChoiceAdapter by lazy { FoodChoiceAdapter(context!!) }
 
@@ -79,18 +74,31 @@ open class AddFoodDialogFragment
         foodChoiceAdapter.submitList(allowedFoodTypes)
     }
 
-    override fun buildEntry(): Timeline.Entry {
-        val cares = foodContainer.children.map { (it as FoodView).retrieve() }
-        return Timeline.Entry(FOOD, entryTime, cares)
+    override fun getStateEntry(): Timeline.Entry? = (state.screen as? Screen.TimelineEntryEdition)?.entry
+
+    override fun buildUpdatedEntry(entry: Timeline.Entry?, entryTime: Date): Timeline.Entry {
+        val cares = foodContainer.children.map {
+            (it as FoodView).retrieve()
+        }
+        return Timeline.Entry(entry?.remoteId, CareType.FOOD, entryTime, cares)
     }
 
-    override fun onSubmit(view: View) {
-        val entry = buildEntry()
-        dispatch(ADD_ENTRY(entry))
-        dismiss()
+    override fun checkEntryValidity(entry: Timeline.Entry): ValidityResult {
+        return when {
+            entry.cares.isEmpty() -> ValidityResult.Invalid(R.string.care_food_invalid_selection)
+            entry.cares.all(::validateFoodCare) -> ValidityResult.Valid
+            else -> ValidityResult.Invalid(R.string.care_food_invalid_input)
+        }
     }
 
-    protected fun addFoodView(foodType: FoodType): FoodView {
+    override fun render(entry: Timeline.Entry) {
+        for (care in entry.cares) {
+            val foodCare = care as FoodCare
+            addFoodView(foodCare.foodType).bindTo(care)
+        }
+    }
+
+    private fun addFoodView(foodType: FoodType): FoodView {
         val context = context!!
 
         val foodView: FoodView = when (foodType) {
@@ -113,4 +121,17 @@ open class AddFoodDialogFragment
 
         return foodView
     }
+
+    private fun validateFoodCare(care: Care): Boolean {
+        return when (care) {
+            is BreastFeeding -> arrayOf(care.leftDuration, care.rightDuration).any { it != null }
+            is BreastExtraction -> care.volume > 0
+            is BottleFeeding.Maternal,
+            is BottleFeeding.Artificial,
+            is BottleFeeding.Other -> with(care as BottleFeeding) { volume > 0 && content.isNotBlank() }
+            is Diversification -> care.quantity > 0 && care.aliment.isNotBlank()
+            else -> throw IllegalStateException("$care is not valid for FoodEdition")
+        }
+    }
+
 }
