@@ -21,7 +21,7 @@ class DebounceTimelineMiddleware(
         private const val LOADING_ENTRIES = "timeline.entries"
     }
 
-    private var pendingEntries: List<Timeline.Entry>? = null
+    private var pendingEntries: Entries? = null
     private var dispatchJob: Job? = null
 
     @Suppress("RedundantUnitExpression")
@@ -29,13 +29,15 @@ class DebounceTimelineMiddleware(
         val timelineAction: TimelineAction = when (action) {
             is ENTRY_ADDED -> { entries: Entries -> entries + action.entry }
             is ENTRY_MODIFIED -> { entries: Entries ->
-                entries.map {
-                    if (it.remoteId == action.entry.remoteId) {
-                        action.entry
-                    } else {
-                        it
-                    }
-                }
+                entries
+                        .map {
+                            if (it.remoteId == action.entry.remoteId) {
+                                action.entry
+                            } else {
+                                it
+                            }
+                        }
+                        .toSet()
             }
             is ENTRY_REMOVED -> { entries: Entries -> entries - action.entry }
             else -> return next.dispatch(action)
@@ -46,7 +48,7 @@ class DebounceTimelineMiddleware(
             store.dispatch(START_LOADING(LOADING_ENTRIES))
         }
 
-        pendingEntries = timelineAction(pendingEntries ?: store.state.timeline.asEntryList())
+        pendingEntries = timelineAction(pendingEntries ?: store.state.timeline.asEntrySet())
 
         dispatchJob?.cancel()
         dispatchJob = launch(Background) {
@@ -66,5 +68,5 @@ class DebounceTimelineMiddleware(
     }
 }
 
-private typealias Entries = List<Timeline.Entry>
-private typealias TimelineAction = (List<Timeline.Entry>) -> List<Timeline.Entry>
+private typealias Entries = Set<Timeline.Entry>
+private typealias TimelineAction = (Entries) -> Entries

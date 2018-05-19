@@ -4,7 +4,7 @@ import fr.nicopico.hugo.domain.services.trace
 import fr.nicopico.hugo.domain.utils.onlyDate
 import java.util.*
 
-class Timeline(private val entries: List<Entry> = emptyList()) {
+class Timeline(private val entries: Collection<Entry> = emptyList()) {
 
     val sections: List<Section>
 
@@ -33,7 +33,7 @@ class Timeline(private val entries: List<Entry> = emptyList()) {
         return Timeline(updatedEntries)
     }
 
-    fun asEntryList(): List<Entry> = entries.toList()
+    fun asEntrySet(): Set<Entry> = entries.toSet()
 
     override fun toString(): String {
         return "Timeline{${this.hashCode()} ${entries.size} entries}"
