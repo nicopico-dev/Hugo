@@ -5,7 +5,6 @@ import fr.nicopico.hugo.android.ReduxDispatcher
 import fr.nicopico.hugo.android.ReduxView
 import fr.nicopico.hugo.android.StateProvider
 import fr.nicopico.hugo.domain.model.AppState
-import redux.api.Store
 
 abstract class BaseFragment : Fragment(),
         ReduxView, ReduxDispatcher, StateProvider {

@@ -39,10 +39,9 @@ class App : Application() {
         )
     }
 
-    // FIXME These services should be private
     val authService: AuthService by lazy { FirebaseAuthService() }
-    val babyService: BabyService by lazy { FirebaseBabyService() }
-    val timelineService: TimelineService by lazy { FirebaseTimelineService() }
+    private val babyService: BabyService by lazy { FirebaseBabyService() }
+    private val timelineService: TimelineService by lazy { FirebaseTimelineService() }
     private val persistenceService: PersistenceService by lazy { SharedPrefsPersistenceService(this) }
     private val analyticsService: AnalyticsService by lazy {
         if (BuildConfig.DEBUG) {
