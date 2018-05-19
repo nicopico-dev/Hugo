@@ -29,6 +29,8 @@
     <string name="care_face">Soin du visage</string>
     <string name="care_bath">Bain</string>
     <string name="care_vitamins">Vitamines</string>
+    <string name="care_hygiene_invalid_selection">Au moins un type de soin doit être sélectionné</string>
+
     <string name="care_change_pee">Pipi</string>
     <string name="care_change_poo">Caca</string>
     <string name="care_change_nothing">Pas de pipi ni de caca</string>

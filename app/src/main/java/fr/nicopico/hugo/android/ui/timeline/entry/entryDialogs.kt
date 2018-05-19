@@ -4,8 +4,6 @@ import android.support.v4.app.Fragment
 import fr.nicopico.hugo.android.ReduxDispatcher
 import fr.nicopico.hugo.android.ui.timeline.entry.food.AddFoodDialogFragment
 import fr.nicopico.hugo.android.ui.timeline.entry.food.EditFoodDialogFragment
-import fr.nicopico.hugo.android.ui.timeline.entry.health.AddHealthAndHygieneDialogFragment
-import fr.nicopico.hugo.android.ui.timeline.entry.health.EditHealthAndHygieneDialogFragment
 import fr.nicopico.hugo.domain.model.CareType
 import fr.nicopico.hugo.domain.model.Screen
 import fr.nicopico.hugo.domain.model.Timeline
@@ -23,8 +21,8 @@ fun ReduxDispatcher.addChangeDialog()
 fun ReduxDispatcher.editChangeDialog(entry: Timeline.Entry)
         = dispatch(PUSH_SCREEN(Screen.TimelineEntryEdition(entry)))
 
-fun Fragment.addHealthAndHygieneDialog() = AddHealthAndHygieneDialogFragment.create()
-        .show(fragmentManager!!, null)
+fun ReduxDispatcher.addHealthAndHygieneDialog()
+        = dispatch(PUSH_SCREEN(Screen.TimelineEntryAddition(CareType.HEALTH_HYGIENE)))
 
-fun Fragment.editHealthAndHygieneDialog(entry: Timeline.Entry): Unit = EditHealthAndHygieneDialogFragment.create(entry)
-        .show(fragmentManager!!, null)
+fun ReduxDispatcher.editHealthAndHygieneDialog(entry: Timeline.Entry): Unit
+        = dispatch(PUSH_SCREEN(Screen.TimelineEntryEdition(entry)))
