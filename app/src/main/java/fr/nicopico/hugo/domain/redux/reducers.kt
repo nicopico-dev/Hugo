@@ -15,15 +15,10 @@ val navigationReducer = Reducer<AppState> { state, action ->
 
         is PUSH_SCREEN -> state.copy(screenStack = state.screenStack.push(action.screen))
         is POP_SCREEN -> state.copy(screenStack = state.screenStack.pop())
+                .let(popScreenSideEffect)
         is POP_SCREEN_UNTIL -> state.copy(screenStack = state.screenStack.popUntil(action.screen))
+                .let(popScreenSideEffect)
         else -> state
-    }.let {
-        // Un-select baby when going back to the selection screen
-        if (it.screen == Screen.BabySelection && it.selectedBaby != null) {
-            it.copy(selectedBaby = null)
-        } else {
-            it
-        }
     }
 }
 
@@ -33,6 +28,15 @@ private val AppState.defaultScreen: List<Screen>
         selectedBaby == null -> listOf(Screen.BabySelection)
         else -> listOf(Screen.BabySelection, Screen.Timeline)
     }
+
+private val popScreenSideEffect: (AppState) -> AppState = {
+    // Un-select baby when going back to the selection screen
+    if (it.screen == Screen.BabySelection && it.selectedBaby != null) {
+        it.copy(selectedBaby = null)
+    } else {
+        it
+    }
+}
 
 val messageReducer = Reducer<AppState> { state, action ->
     when (action) {
