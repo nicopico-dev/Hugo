@@ -49,15 +49,15 @@ private object BabySerializer : HugoLogger {
     }
 
     fun deserialize(data: Map<String, Any?>): Baby {
-        val schema = data[KEY_SCHEMA] as Long
+        val schema = data[KEY_SCHEMA].fsLong()
         verbose { "De-serializing from Firebase $data (schema $schema)" }
 
-        val babyKey = data[KEY_KEY] as String
-        val babyName = data[KEY_NAME] as String
+        val babyKey = data[KEY_KEY].fsString()
+        val babyName = data[KEY_NAME].fsString()
         val disabledFoods: Set<FoodType> = when(schema) {
             1L -> emptySet()
-            2L -> (data[KEY_DISABLED_FOOD_TYPES] as List<*>)
-                    .map { FoodTypes.getType(it as String) }
+            2L -> data[KEY_DISABLED_FOOD_TYPES].fsList()
+                    .map { FoodTypes.getType(it.fsString()) }
                     .toSet()
             else -> throw UnsupportedOperationException("De-serialization of schema $schema is not supported")
         }

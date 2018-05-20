@@ -19,7 +19,6 @@ import fr.nicopico.hugo.domain.model.UmbilicalCord
 import fr.nicopico.hugo.domain.model.User
 import fr.nicopico.hugo.domain.model.Vitamins
 import fr.nicopico.hugo.domain.services.TimelineService
-import java.util.*
 import kotlin.properties.Delegates
 
 
@@ -126,15 +125,15 @@ private object TimelineEntrySerializer : HugoLogger {
 
     @Suppress("UNCHECKED_CAST")
     fun deserialize(data: Map<String, Any?>): Timeline.Entry {
-        val schema = data[KEY_SCHEMA] as Long
+        val schema = data[KEY_SCHEMA].fsLong()
         verbose { "De-serializing from Firebase $data (schema $schema)" }
 
         if (schema == 1L) {
             return Timeline.Entry(
-                    remoteId = data[KEY_REMOTE_ID] as String?,
-                    type = data[KEY_TYPE].asEnum(),
-                    time = data[KEY_TIME] as Date,
-                    cares = (data[KEY_CARES] as List<*>).map {
+                    remoteId = data[KEY_REMOTE_ID].fsStringOrNull(),
+                    type = data[KEY_TYPE].fsEnum(),
+                    time = data[KEY_TIME].fsDate(),
+                    cares = data[KEY_CARES].fsList().map {
                         when (it) {
                             CARE_UMBILICAL_CORD -> UmbilicalCord
                             CARE_FACE -> Face
@@ -142,18 +141,18 @@ private object TimelineEntrySerializer : HugoLogger {
                             CARE_VITAMINS -> Vitamins
                             CARE_PEE -> Pee
                             CARE_POO -> Poo
-                            is Map<*, *> -> when (it[KEY_FOOD_TYPE]) {
+                            is FsMap -> when (it[KEY_FOOD_TYPE]) {
                                 FOOD_TYPE_BREAST_FEEDING -> BreastFeeding(
-                                        leftDuration = it[KEY_LEFT_DURATION].asIntOrNull(),
-                                        rightDuration = it[KEY_RIGHT_DURATION].asIntOrNull()
+                                        leftDuration = it[KEY_LEFT_DURATION].fsIntOrNull(),
+                                        rightDuration = it[KEY_RIGHT_DURATION].fsIntOrNull()
                                 )
                                 FOOD_TYPE_BREAST_EXTRACTION -> BreastExtraction(
-                                        volume = it[KEY_VOLUME].asInt(),
-                                        breasts = it[KEY_BREASTS].asBreastSet()
+                                        volume = it[KEY_VOLUME].fsInt(),
+                                        breasts = it[KEY_BREASTS].fsBreastSet()
                                 )
                                 FOOD_TYPE_BOTTLE_FEEDING -> {
-                                    val bottleContent = it[KEY_BOTTLE_CONTENT] as String
-                                    val volume = it[KEY_VOLUME].asInt()
+                                    val bottleContent = it[KEY_BOTTLE_CONTENT].fsString()
+                                    val volume = it[KEY_VOLUME].fsInt()
                                     when (bottleContent) {
                                         BOTTLE_CONTENT_MATERNAL_MILK -> BottleFeeding.Maternal(volume)
                                         BOTTLE_CONTENT_ARTIFICIAL_MILK -> BottleFeeding.Artificial(volume)
@@ -161,8 +160,8 @@ private object TimelineEntrySerializer : HugoLogger {
                                     }
                                 }
                                 FOOD_TYPE_DIVERSIFICATION -> Diversification(
-                                        aliment = it[KEY_ALIMENT] as String,
-                                        quantity = it[KEY_QUANTITY].asInt()
+                                        aliment = it[KEY_ALIMENT].fsString(),
+                                        quantity = it[KEY_QUANTITY].fsInt()
                                 )
                                 else -> throw UnsupportedOperationException("Unable to deserialize care data $it " +
                                         "(food type)")
@@ -170,13 +169,13 @@ private object TimelineEntrySerializer : HugoLogger {
                             else -> throw UnsupportedOperationException("Unable to deserialize care data $it")
                         }
                     },
-                    notes = data[KEY_NOTES] as String?
+                    notes = data[KEY_NOTES].fsStringOrNull()
             )
         }
         throw UnsupportedOperationException("De-serialization of schema $schema is not supported")
     }
 
-    private fun Any?.asBreastSet() = (this as Iterable<*>)
-            .map { it.asEnum<Breast>() }
+    private fun Any?.fsBreastSet() = this.fsList()
+            .map { it.fsEnum<Breast>() }
             .toSet()
 }

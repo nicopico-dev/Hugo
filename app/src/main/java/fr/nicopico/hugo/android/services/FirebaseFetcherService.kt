@@ -2,6 +2,7 @@ package fr.nicopico.hugo.android.services
 
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.ListenerRegistration
 import fr.nicopico.hugo.android.HugoLogger
 import fr.nicopico.hugo.android.error
@@ -13,9 +14,18 @@ import fr.nicopico.hugo.domain.services.FetcherService
 import kotlin.coroutines.experimental.suspendCoroutine
 import kotlin.properties.Delegates
 
+
+
 abstract class FirebaseFetcherService<T> : FetcherService<T>, HugoLogger {
 
-    private val db by lazy { FirebaseFirestore.getInstance() }
+    private val db by lazy {
+        FirebaseFirestore.getInstance().apply {
+            firestoreSettings = FirebaseFirestoreSettings.Builder()
+                    .setTimestampsInSnapshotsEnabled(true)
+                    .build()
+        }
+    }
+
     protected abstract val collectionPath: String
     protected var ready: Boolean by Delegates.observable(false) { _, _, newValue ->
         val fetcher = shouldFetcher
