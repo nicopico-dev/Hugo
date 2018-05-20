@@ -67,6 +67,11 @@ class MainActivity : AppCompatActivity(),
                 .create(this, reduxView = Toaster(this))
                 .restrictOn(AppState::message)
                 .observe()
+
+        ReduxLifecycleListener
+                .create(this, reduxView = Loader(this))
+                .restrictOn(AppState::loading)
+                .observe()
     }
 
     override fun onDestroy() {
@@ -161,8 +166,6 @@ class MainActivity : AppCompatActivity(),
         if (screen == Screen.Loading) {
             signInIfNeeded()
         }
-
-        loading_progress.visible = state.loading
     }
 }
 
@@ -172,6 +175,14 @@ private const val SCREEN_FRAG_TAG = "SCREEN_FRAG_TAG"
 class LoadingFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_loading, container, false)
+    }
+}
+
+private class Loader(
+        private val activity: MainActivity
+) : ReduxView by activity {
+    override fun render(state: AppState) {
+        activity.loading_progress.visible = state.loading
     }
 }
 
