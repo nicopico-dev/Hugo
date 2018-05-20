@@ -32,6 +32,6 @@ private class FirebaseTrace(
     }
 
     override fun incrementCounter(counterName: String, value: Long) {
-        trace.incrementCounter(counterName, value)
+        trace.incrementMetric(counterName, value)
     }
 }
