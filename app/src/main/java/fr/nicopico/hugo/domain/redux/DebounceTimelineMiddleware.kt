@@ -3,6 +3,7 @@ package fr.nicopico.hugo.domain.redux
 import fr.nicopico.hugo.android.Background
 import fr.nicopico.hugo.android.HugoLogger
 import fr.nicopico.hugo.android.debug
+import fr.nicopico.hugo.android.verbose
 import fr.nicopico.hugo.domain.model.AppState
 import fr.nicopico.hugo.domain.model.Timeline
 import kotlinx.coroutines.experimental.Job
@@ -43,7 +44,7 @@ class DebounceTimelineMiddleware(
             else -> return next.dispatch(action)
         }
 
-        debug { "$action added to the batch actions, reset timer" }
+        verbose { "$action added to the batch actions, reset timer" }
         if (!store.state.loading) {
             store.dispatch(START_LOADING(LOADING_ENTRIES))
         }

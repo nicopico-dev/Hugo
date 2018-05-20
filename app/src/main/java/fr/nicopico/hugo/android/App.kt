@@ -55,7 +55,7 @@ class App : Application() {
     private val reduxLogger = object : Logger<AppState> {
         private val logger = HugoLogger("REDUX")
         override fun log(entry: Logger.Entry<AppState>) {
-            logger.debug { "${entry.action} -> ${entry.newState}" }
+            logger.info { "${entry.action} -> ${entry.newState}" }
 
             // Log REMOTE_ERROR as error too
             entry.action.let {
