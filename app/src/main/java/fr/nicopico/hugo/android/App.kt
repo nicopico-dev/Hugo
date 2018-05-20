@@ -6,10 +6,10 @@ import android.util.Log
 import com.crashlytics.android.Crashlytics
 import fr.nicopico.hugo.BuildConfig
 import fr.nicopico.hugo.android.services.FirebaseAnalyticsService
-import fr.nicopico.hugo.android.services.FirebaseAuthService
 import fr.nicopico.hugo.android.services.FirebaseBabyService
 import fr.nicopico.hugo.android.services.FirebasePerformanceService
 import fr.nicopico.hugo.android.services.FirebaseTimelineService
+import fr.nicopico.hugo.android.services.FirebaseUserService
 import fr.nicopico.hugo.android.services.SharedPrefsPersistenceService
 import fr.nicopico.hugo.android.utils.ActivityProvider
 import fr.nicopico.hugo.android.utils.SimpleActivityLifecycleCallbacks
@@ -17,11 +17,11 @@ import fr.nicopico.hugo.domain.model.AppState
 import fr.nicopico.hugo.domain.redux.REMOTE_ERROR
 import fr.nicopico.hugo.domain.redux.createStore
 import fr.nicopico.hugo.domain.services.AnalyticsService
-import fr.nicopico.hugo.domain.services.AuthService
 import fr.nicopico.hugo.domain.services.BabyService
 import fr.nicopico.hugo.domain.services.DisabledAnalyticsService
 import fr.nicopico.hugo.domain.services.PersistenceService
 import fr.nicopico.hugo.domain.services.TimelineService
+import fr.nicopico.hugo.domain.services.UserService
 import redux.api.Store
 import redux.logger.Logger
 import java.lang.ref.WeakReference
@@ -30,7 +30,7 @@ class App : Application() {
 
     val store: Store<AppState> by lazy {
         createStore(
-                authService = authService,
+                userService = userService,
                 babyService = babyService,
                 timelineService = timelineService,
                 analyticsService = analyticsService,
@@ -39,7 +39,7 @@ class App : Application() {
         )
     }
 
-    val authService: AuthService by lazy { FirebaseAuthService() }
+    val userService: UserService by lazy { FirebaseUserService() }
     private val babyService: BabyService by lazy { FirebaseBabyService() }
     private val timelineService: TimelineService by lazy { FirebaseTimelineService() }
     private val persistenceService: PersistenceService by lazy { SharedPrefsPersistenceService(this) }

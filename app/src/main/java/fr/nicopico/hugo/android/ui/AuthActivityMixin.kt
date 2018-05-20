@@ -16,7 +16,7 @@ import fr.nicopico.hugo.domain.redux.AUTHENTICATED
 import fr.nicopico.hugo.domain.redux.DISCONNECTED
 import fr.nicopico.hugo.domain.redux.EXIT_APP
 import fr.nicopico.hugo.domain.redux.REMOTE_ERROR
-import fr.nicopico.hugo.domain.services.AuthService
+import fr.nicopico.hugo.domain.services.UserService
 
 private const val RC_SIGN_IN = 42
 private val AUTH_PROVIDERS = listOf(
@@ -28,9 +28,9 @@ private val AUTH_PROVIDERS = listOf(
 // see https://github.com/firebase/FirebaseUI-Android/issues/123
 interface AuthActivityMixin : HugoLogger, ReduxDispatcher {
 
-    val authService: AuthService
+    val userService: UserService
     val connected: Boolean
-        get() = authService.currentUser?.let { it !is AnonymousUser } ?: false
+        get() = userService.currentUser?.let { it !is AnonymousUser } ?: false
 
     // Dirty fix for onActivityResult is never being called when the signIn activity is closed...
     var waitingForSignInResult: Boolean

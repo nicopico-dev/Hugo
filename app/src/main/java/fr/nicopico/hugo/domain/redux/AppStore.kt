@@ -5,10 +5,10 @@ import fr.nicopico.hugo.domain.model.Screen
 import fr.nicopico.hugo.domain.model.ScreenStack
 import fr.nicopico.hugo.domain.model.Timeline
 import fr.nicopico.hugo.domain.services.AnalyticsService
-import fr.nicopico.hugo.domain.services.AuthService
 import fr.nicopico.hugo.domain.services.BabyService
 import fr.nicopico.hugo.domain.services.PersistenceService
 import fr.nicopico.hugo.domain.services.TimelineService
+import fr.nicopico.hugo.domain.services.UserService
 import redux.api.Store
 import redux.applyMiddleware
 import redux.combineReducers
@@ -17,7 +17,7 @@ import redux.logger.Logger
 import redux.logger.createLoggerMiddleware
 
 fun createStore(
-        authService: AuthService,
+        userService: UserService,
         babyService: BabyService,
         timelineService: TimelineService,
         analyticsService: AnalyticsService,
@@ -34,7 +34,7 @@ fun createStore(
     )
 
     val enhancer = applyMiddleware(
-            AuthMiddleware(authService),
+            AuthMiddleware(userService),
             MessageMiddleware(),
             RemoteMiddleware(babyService, timelineService),
             PersistenceMiddleware(persistenceService),

@@ -32,7 +32,7 @@ import fr.nicopico.hugo.domain.model.CareType
 import fr.nicopico.hugo.domain.model.Screen
 import fr.nicopico.hugo.domain.redux.ON_APP_EXIT
 import fr.nicopico.hugo.domain.redux.POP_SCREEN
-import fr.nicopico.hugo.domain.services.AuthService
+import fr.nicopico.hugo.domain.services.UserService
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -42,8 +42,8 @@ class MainActivity : AppCompatActivity(),
 
     //region AuthActivityMixin
     override var waitingForSignInResult: Boolean = false
-    override val authService: AuthService
-        get() = (application as App).authService
+    val userService: UserService
+        get() = (application as App).userService
     //endregion
 
     //region Redux
