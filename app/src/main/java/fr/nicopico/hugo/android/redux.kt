@@ -41,6 +41,11 @@ interface ReduxDispatcher {
     }
 
     fun Fragment._dispatch(action: Any) {
-        store.dispatch(action)
+        if (activity != null) {
+            store.dispatch(action)
+        } else {
+            HugoLogger(this::class.java)
+                    .error(IllegalStateException("Unable to dispatch action $action. Fragment activity is null"))
+        }
     }
 }
